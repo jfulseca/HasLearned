@@ -72,7 +72,7 @@ matrixConcat matrices = do
 
 prop_convert_csv_file :: Property
 prop_convert_csv_file = monadicIO $ do
-  let filePath = "src/HML/Test/data/csvTest.csv"
+  let filePath = "test/data/csvTest.csv"
   let bFileName = "test.dat"
   let header = MatrixHeader DBL (Positive 51) (Positive 3)
   writeRes <- testRun $ csvToBinary filePath

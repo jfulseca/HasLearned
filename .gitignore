@@ -1,0 +1,6 @@
+dist/
+.stack-work/
+.cabal-sandbox/
+/**/*.save*
+*.csv
+*.dat
