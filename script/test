@@ -1,5 +1,5 @@
 set -euo pipefail
 
-stack test
+stack test --coverage
 
 set +euo pipefail

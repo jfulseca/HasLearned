@@ -14,17 +14,17 @@ import Control.Monad (replicateM)
 import Data.ByteString (ByteString)
 import Data.Serialize.Get (Get, runGet)
 import Foreign.Storable (Storable)
-import HML.Aux (doubleSize, errorContext)
 import HML.FileIO.AppIO (AppIO, Confirmer, appIOFail,
                          confirmAtom, liftAppIO)
 import HML.FileIO.MatrixHeader (MatrixHeader(..), compatibleHeaders)
 import HML.Types.DoubleToBinary (doubleFromBinary)
-import HML.Types.Constants (binarySeparator, separator)
+import HML.Types.Errors (errorContext)
 import HML.Types.PosInt (PosInt, getPosInt)
 import HML.Types.TypeName (TypeName(..))
 import Numeric.LinearAlgebra (Element)
 import Numeric.LinearAlgebra.Data ((><), Matrix)
 import System.FilePath (FilePath)
+import HML.Utils.Constants (binSeparator, doubleSize, separator)
 
 matrixDoubleSource :: MatrixHeader
                    -> FilePath
@@ -45,7 +45,7 @@ matrixDoubleSource header path = do
 confirmMatrixHeader :: MatrixHeader -> Confirmer
 confirmMatrixHeader header = do
   takeCE 1 .| confirmAtom (==separator)
-  takeWhileCE (/= binarySeparator) .| confirmAtom (compatibleHeaders header)
+  takeWhileCE (/= binSeparator) .| confirmAtom (compatibleHeaders header)
   takeCE 1 .| confirmAtom (==separator)
   mapC id
 

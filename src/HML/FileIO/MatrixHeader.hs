@@ -9,9 +9,9 @@ import Data.Attoparsec.ByteString.Char8 (char)
 import Data.ByteString (ByteString)
 import Data.ByteString.Conversion (FromByteString(..), ToByteString(..))
 import Data.Monoid ((<>))
-import HML.Types.Constants (separator)
 import HML.Types.PosInt (PosInt)
 import HML.Types.TypeName (TypeName)
+import HML.Utils.Constants (separator)
 
 data MatrixHeader = MatrixHeader
   { dataType :: TypeName

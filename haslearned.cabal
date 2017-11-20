@@ -13,8 +13,7 @@ extra-source-files:  ChangeLog.md
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     HML.Aux
-                     , HML.FileIO.AppIO
+  exposed-modules:     HML.FileIO.AppIO
                      , HML.FileIO.CSVReader
                      , HML.FileIO.MatrixHeader
                      , HML.FileIO.MatrixSink
@@ -23,8 +22,10 @@ library
                      , HML.Types.FloatEq
                      , HML.Types.TypeName
                      , HML.Types.PosInt
+                     , HML.Utils.Constants
+                     , HML.Utils.Debug
                      , HML.Utils.SafeEncoding
-  other-modules:       HML.Types.Constants
+  other-modules:       HML.Types.Errors
   build-depends:       QuickCheck
                      , attoparsec
                      , base >=4.9

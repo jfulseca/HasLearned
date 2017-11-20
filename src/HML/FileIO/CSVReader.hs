@@ -16,8 +16,8 @@ import qualified Data.Conduit.Binary as CB
 import HML.FileIO.AppIO (AppIO, ConduitAppIO, maybeToAppIO)
 import HML.FileIO.MatrixHeader (MatrixHeader(..))
 import HML.FileIO.MatrixSink (matrixDoubleSink)
-import HML.Types.Constants (binComma)
 import HML.Types.PosInt (getPosInt)
+import HML.Utils.Constants (binComma)
 import Numeric.LinearAlgebra ((><), Matrix)
 
 parseDoubles :: [BS.ByteString] -> Maybe [Double]
