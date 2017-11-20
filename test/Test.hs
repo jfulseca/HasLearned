@@ -24,11 +24,11 @@ fileIOProps = testGroup "FileIO"
   , matrixSourceTest
   ]
 
-hmlTest :: TestTree
-hmlTest = testGroup "hml"
+hlTest :: TestTreea
+hlTest = testGroup "HasLearned"
   [ typeProps
   , fileIOProps
   ]
 
 main :: IO ()
-main = putStrLn "" >> defaultMain hmlTest
+main = putStrLn "" >> defaultMain hlTest
