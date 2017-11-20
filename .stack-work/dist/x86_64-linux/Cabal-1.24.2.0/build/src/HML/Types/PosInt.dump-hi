@@ -1,0 +1,900 @@
+
+==================== FINAL INTERFACE ====================
+2017-11-20 04:54:02.308689 UTC
+
+interface haslearned-0.1.0.0-1MYfuCwSlxlBXzMx3VqeuN:HML.Types.PosInt [orphan module] 8002
+  interface hash: add94a548bde29ffb7ea77acf4362fe3
+  ABI hash: e76284e9d561a007ee931c212ba10a01
+  export-list hash: cb9dc14fda9b216a29a6ff1f144bd6c0
+  orphan hash: f980fb7e632e651d81ac3d177aff5dfc
+  flag hash: 6cd24486e4830f0aa331269f38aae8d9
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  HML.Types.PosInt.extractPosInts
+  HML.Types.PosInt.getPosInt
+  HML.Types.PosInt.posInt
+  HML.Types.PosInt.PosInt
+module dependencies:
+package dependencies: QuickCheck-2.9.2@QuickCheck-2.9.2-LvlomhGMxrFBkX1zwiWpQu
+                      array-0.5.1.1@array-0.5.1.1
+                      attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ
+                      base-4.9.1.0 binary-0.8.3.0@binary-0.8.3.0
+                      bytestring-0.10.8.1@bytestring-0.10.8.1
+                      bytestring-conversion-0.3.1@bytestring-conversion-0.3.1-KSK6l7QmbIf1TbIBILuJUV
+                      case-insensitive-1.2.0.10@case-insensitive-1.2.0.10-1D5OUKQ7UrJ7IpOe0di4Un
+                      containers-0.5.7.1@containers-0.5.7.1
+                      deepseq-1.4.2.0@deepseq-1.4.2.0
+                      double-conversion-2.0.2.0@double-conversion-2.0.2.0-Ls1AZoWRK0TKpzR8XpTsSD
+                      ghc-prim-0.5.0.0
+                      hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol
+                      integer-gmp-1.0.0.1
+                      integer-logarithms-1.0.2@integer-logarithms-1.0.2-92lMiWV9mmYAwfMEYgfQ0D
+                      primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh
+                      random-1.1@random-1.1-9tceXaeYIMZ4JrKq20Egog
+                      scientific-0.3.5.2@scientific-0.3.5.2-FM2NdrNTcdbCDq9wuNnhIA
+                      text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00
+                      tf-random-0.5@tf-random-0.5-CJZw1ZWS5MOJlR60HqKEZL
+                      time-1.6.0.1@time-1.6.0.1 transformers-0.5.2.0@transformers-0.5.2.0
+orphans: attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ:Data.Attoparsec.ByteString.Char8
+         base-4.9.1.0:GHC.Base base-4.9.1.0:GHC.Float
+         binary-0.8.3.0@binary-0.8.3.0:Data.Binary.Generic
+         bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Builder
+         hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol:Data.Hashable.Generic
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Show
+         time-1.6.0.1@time-1.6.0.1:Data.Time.Calendar.Gregorian
+         time-1.6.0.1@time-1.6.0.1:Data.Time.Format.Parse
+         time-1.6.0.1@time-1.6.0.1:Data.Time.LocalTime.LocalTime
+         transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.Error
+family instance modules: attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ:Data.Attoparsec.Internal.Types
+                         base-4.9.1.0:Control.Applicative base-4.9.1.0:Data.Complex
+                         base-4.9.1.0:Data.Either base-4.9.1.0:Data.Functor.Compose
+                         base-4.9.1.0:Data.Functor.Const base-4.9.1.0:Data.Functor.Identity
+                         base-4.9.1.0:Data.Functor.Product base-4.9.1.0:Data.Functor.Sum
+                         base-4.9.1.0:Data.List.NonEmpty base-4.9.1.0:Data.Monoid
+                         base-4.9.1.0:Data.Semigroup base-4.9.1.0:Data.Type.Equality
+                         base-4.9.1.0:Data.Version base-4.9.1.0:Data.Void
+                         base-4.9.1.0:GHC.Exts base-4.9.1.0:GHC.Generics
+                         base-4.9.1.0:GHC.IO.Exception base-4.9.1.0:GHC.TypeLits
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntMap.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntSet.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Sequence
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Set.Base
+                         primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh:Control.Monad.Primitive
+                         primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh:Data.Primitive.Array
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
+import  -/  QuickCheck-2.9.2@QuickCheck-2.9.2-LvlomhGMxrFBkX1zwiWpQu:Test.QuickCheck.Modifiers ae3baaf3e5d352f0e3d312ac60c1f420
+import  -/  attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ:Data.Attoparsec.ByteString 95552c58dcce0357c7f3698b92a0ce9b
+import  -/  attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ:Data.Attoparsec.ByteString.Char8 435773ef0b92061bddf7a2c20f1a009b
+import  -/  attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ:Data.Attoparsec.ByteString.Internal eadd217906370ab7c792393e893ec0ea
+import  -/  base-4.9.1.0:Data.Functor 5ab1dc703df5b482e77efb697833ca3c
+import  -/  base-4.9.1.0:Data.Traversable 556020d7cf3c4a34a774600512918a37
+import  -/  base-4.9.1.0:GHC.Base c4231c43c07e46080a26bf94094c7aa1
+import  -/  base-4.9.1.0:GHC.Num 00bfaa7b2f9d6084913c0697a8a49ec8
+import  -/  base-4.9.1.0:GHC.Real 82e4e59051a13dba1da63e1e970a69e6
+import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
+import  -/  bytestring-conversion-0.3.1@bytestring-conversion-0.3.1-KSK6l7QmbIf1TbIBILuJUV:Data.ByteString.Conversion ff5b7c2f893209b9038238a8e75ea663
+import  -/  bytestring-conversion-0.3.1@bytestring-conversion-0.3.1-KSK6l7QmbIf1TbIBILuJUV:Data.ByteString.Conversion.From 6e6788790b799ba6a2f4a1563369b1f4
+import  -/  bytestring-conversion-0.3.1@bytestring-conversion-0.3.1-KSK6l7QmbIf1TbIBILuJUV:Data.ByteString.Conversion.To 780591d36b5ca20d40e5412d5c0fdf88
+import  -/  ghc-prim-0.5.0.0:GHC.Classes 0bdf3d057a415ec1b84a7b1994efbe47
+9302b980210114d60c016bfddb2b0989
+  $fFromByteStringPositive ::
+    Data.ByteString.Conversion.From.FromByteString
+      HML.Types.PosInt.PosInt
+  DFunId
+  {- Arity: 5,
+     Strictness: <S(SLSSSS),1*U(U,U,U,U,U,U)><S(S),1*U(U)><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
+     Inline: INLINE (sat-args=0),
+     Unfolding: InlineRule (0, False, True)
+                HML.Types.PosInt.$fFromByteStringPositive_$cparser
+                  `cast`
+                (Sym (Data.ByteString.Conversion.From.N:FromByteString[0]) <HML.Types.PosInt.PosInt>_N) -}
+b29247b80dd466e472ad1e637ac69b10
+  $fFromByteStringPositive1 ::
+    Data.Attoparsec.Internal.Types.State
+      Data.ByteString.Internal.ByteString
+    -> Data.Attoparsec.Internal.Types.Pos
+    -> Data.Attoparsec.Internal.Types.More
+    -> Data.Attoparsec.Internal.Types.Failure
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         r
+    -> Data.Attoparsec.Internal.Types.Success
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         HML.Types.PosInt.PosInt
+         r
+    -> Data.Attoparsec.Internal.Types.IResult
+         Data.ByteString.Internal.ByteString r
+  {- Arity: 5,
+     Strictness: <S(SLSSSS),1*U(U,U,U,U,U,U)><S(S),1*U(U)><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (5, True, False)
+                (\ @ r
+                   (w :: Data.Attoparsec.Internal.Types.State
+                           Data.ByteString.Internal.ByteString)
+                   (w1 :: Data.Attoparsec.Internal.Types.Pos)
+                   (w2 :: Data.Attoparsec.Internal.Types.More)
+                   (w3 :: Data.Attoparsec.Internal.Types.Failure
+                            Data.ByteString.Internal.ByteString
+                            (Data.Attoparsec.Internal.Types.State
+                               Data.ByteString.Internal.ByteString)
+                            r)
+                   (w4 :: Data.Attoparsec.Internal.Types.Success
+                            Data.ByteString.Internal.ByteString
+                            (Data.Attoparsec.Internal.Types.State
+                               Data.ByteString.Internal.ByteString)
+                            HML.Types.PosInt.PosInt
+                            r) ->
+                 case w `cast`
+                      (Sub (Data.Attoparsec.Internal.Types.D:R:StateByteString[0])) of ww { Data.Attoparsec.ByteString.Buffer.Buf ww1 ww2 ww3 ww4 ww5 ww6 ->
+                 case w1
+                        `cast`
+                      (Data.Attoparsec.Internal.Types.N:Pos[0]) of ww7 { GHC.Types.I# ww8 ->
+                 HML.Types.PosInt.$w$cparser
+                   @ r
+                   ww1
+                   ww2
+                   ww3
+                   ww4
+                   ww5
+                   ww6
+                   ww8
+                   w2
+                   w3
+                   w4 } }) -}
+63f26f47cbba3b81022c89c11474f3d3
+  $fFromByteStringPositive_$cparser ::
+    Data.Attoparsec.ByteString.Internal.Parser HML.Types.PosInt.PosInt
+  {- Arity: 5,
+     Strictness: <S(SLSSSS),1*U(U,U,U,U,U,U)><S(S),1*U(U)><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
+     Unfolding: InlineRule (0, True, True)
+                HML.Types.PosInt.$fFromByteStringPositive1
+                  `cast`
+                (Sym (Data.Attoparsec.Internal.Types.N:Parser[0]
+                          <Data.ByteString.Internal.ByteString>_N
+                          <HML.Types.PosInt.PosInt>_R)) -}
+322140c43bf29b17b3fcaeac6215b038
+  $fFromByteStringPositive_msg3 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString#
+                   "Failed reading: Negative number"#) -}
+dbf4b9dd25558d964e34b5062ddf87ac
+  $fIntegralPositive :: GHC.Real.Integral HML.Types.PosInt.PosInt
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ HML.Types.PosInt.PosInt
+                  HML.Types.PosInt.$fRealPositive
+                  HML.Types.PosInt.$fIntegralPositive_$cp2Integral
+                  HML.Types.PosInt.$fIntegralPositive_$cquot
+                  HML.Types.PosInt.$fIntegralPositive_$crem
+                  HML.Types.PosInt.$fIntegralPositive_$cdiv
+                  HML.Types.PosInt.$fIntegralPositive_$cmod
+                  HML.Types.PosInt.$fIntegralPositive_$cquotRem
+                  HML.Types.PosInt.$fIntegralPositive_$cdivMod
+                  HML.Types.PosInt.$fIntegralPositive_$ctoInteger -}
+1cc1aa018eee05154602046a4f496a97
+  $fIntegralPositive1 :: GHC.Types.Int
+  {- HasNoCafRefs, Unfolding: (GHC.Types.I# 0#) -}
+3b6645306c37972df8356313e1d66539
+  $fIntegralPositive2 :: (GHC.Types.Int, GHC.Types.Int)
+  {- Unfolding: ((GHC.Real.overflowError @ GHC.Types.Int,
+                  GHC.Real.$fIntegralInt1)) -}
+6fe2934bd3854cf8aeae84057a24f950
+  $fIntegralPositive_$cdiv ::
+    HML.Types.PosInt.PosInt
+    -> HML.Types.PosInt.PosInt -> HML.Types.PosInt.PosInt
+  {- Arity: 2, Strictness: <L,U><L,U>, Inline: INLINE (sat-args=2),
+     Unfolding: InlineRule (2, False, False)
+                (\ (n :: HML.Types.PosInt.PosInt) (d :: HML.Types.PosInt.PosInt) ->
+                 case HML.Types.PosInt.$fIntegralPositive_$cdivMod
+                        n
+                        d of wild { (,) q ds ->
+                 q }) -}
+d5e1aa5d492617159c3d38cd3bd2d1fe
+  $fIntegralPositive_$cdivMod ::
+    HML.Types.PosInt.PosInt
+    -> HML.Types.PosInt.PosInt
+    -> (HML.Types.PosInt.PosInt, HML.Types.PosInt.PosInt)
+  {- Arity: 2, Strictness: <S(S),1*U(U)><S(S),1*U(U)>m,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: HML.Types.PosInt.PosInt)
+                   (w1 :: HML.Types.PosInt.PosInt) ->
+                 case w `cast`
+                      (Test.QuickCheck.Modifiers.N:Positive[0]
+                           <GHC.Types.Int>_R) of ww { GHC.Types.I# ww1 ->
+                 case w1
+                        `cast`
+                      (Test.QuickCheck.Modifiers.N:Positive[0]
+                           <GHC.Types.Int>_R) of ww2 { GHC.Types.I# ww3 ->
+                 case HML.Types.PosInt.$w$cdivMod ww1 ww3 of ww4 { (#,#) ww5 ww6 ->
+                 (ww5, ww6) } } }) -}
+724f7071be0bd5bdd046e59674cd9cc4
+  $fIntegralPositive_$cmod ::
+    HML.Types.PosInt.PosInt
+    -> HML.Types.PosInt.PosInt -> HML.Types.PosInt.PosInt
+  {- Arity: 2, Strictness: <L,U><L,U>, Inline: INLINE (sat-args=2),
+     Unfolding: InlineRule (2, False, False)
+                (\ (n :: HML.Types.PosInt.PosInt) (d :: HML.Types.PosInt.PosInt) ->
+                 case HML.Types.PosInt.$fIntegralPositive_$cdivMod
+                        n
+                        d of wild { (,) ds r ->
+                 r }) -}
+cf80c2ac69fbf66e018dddf116e6b860
+  $fIntegralPositive_$cp2Integral ::
+    GHC.Enum.Enum HML.Types.PosInt.PosInt
+  {- Strictness: m,
+     Unfolding: InlineRule (0, True, True)
+                HML.Types.PosInt.$fIntegralPositive_$s$fEnumPositive -}
+5e260224da86b6e63c7aba4fc4b5c8d0
+  $fIntegralPositive_$cquot ::
+    HML.Types.PosInt.PosInt
+    -> HML.Types.PosInt.PosInt -> HML.Types.PosInt.PosInt
+  {- Arity: 2, Strictness: <L,U><L,U>, Inline: INLINE (sat-args=2),
+     Unfolding: InlineRule (2, False, False)
+                (\ (n :: HML.Types.PosInt.PosInt) (d :: HML.Types.PosInt.PosInt) ->
+                 case HML.Types.PosInt.$fIntegralPositive_$cquotRem
+                        n
+                        d of wild { (,) q ds ->
+                 q }) -}
+a4a384704fdc4608fe93c740f2497b43
+  $fIntegralPositive_$cquotRem ::
+    HML.Types.PosInt.PosInt
+    -> HML.Types.PosInt.PosInt
+    -> (HML.Types.PosInt.PosInt, HML.Types.PosInt.PosInt)
+  {- Arity: 2, Strictness: <L,1*U(U)><L,1*U(1*U)>m,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: HML.Types.PosInt.PosInt)
+                   (w1 :: HML.Types.PosInt.PosInt) ->
+                 case HML.Types.PosInt.$w$cquotRem w w1 of ww { (#,#) ww1 ww2 ->
+                 (ww1, ww2) }) -}
+eed9aa8115efbf141f57e3a8e3506c1b
+  $fIntegralPositive_$crem ::
+    HML.Types.PosInt.PosInt
+    -> HML.Types.PosInt.PosInt -> HML.Types.PosInt.PosInt
+  {- Arity: 2, Strictness: <L,U><L,U>, Inline: INLINE (sat-args=2),
+     Unfolding: InlineRule (2, False, False)
+                (\ (n :: HML.Types.PosInt.PosInt) (d :: HML.Types.PosInt.PosInt) ->
+                 case HML.Types.PosInt.$fIntegralPositive_$cquotRem
+                        n
+                        d of wild { (,) ds r ->
+                 r }) -}
+b25629ec03e8cecd57c903acf5bf6a1a
+  $fIntegralPositive_$ctoInteger ::
+    HML.Types.PosInt.PosInt -> GHC.Integer.Type.Integer
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>m1,
+     Unfolding: InlineRule (1, True, False)
+                (\ (x :: HML.Types.PosInt.PosInt) ->
+                 case x `cast`
+                      (Test.QuickCheck.Modifiers.N:Positive[0]
+                           <GHC.Types.Int>_R) of wild { GHC.Types.I# i ->
+                 GHC.Integer.Type.smallInteger i }) -}
+f0ef112f870d2369fdf38cc8ba3fa81a
+  $fIntegralPositive_$s$fEnumPositive ::
+    GHC.Enum.Enum (Test.QuickCheck.Modifiers.Positive GHC.Types.Int)
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ (Test.QuickCheck.Modifiers.Positive GHC.Types.Int)
+                  (Test.QuickCheck.Modifiers.$fEnumPositive_$csucc
+                     @ GHC.Types.Int
+                     GHC.Enum.$fEnumInt)
+                  (Test.QuickCheck.Modifiers.$fEnumPositive_$cpred
+                     @ GHC.Types.Int
+                     GHC.Enum.$fEnumInt)
+                  (Test.QuickCheck.Modifiers.$fEnumPositive_$ctoEnum
+                     @ GHC.Types.Int
+                     GHC.Enum.$fEnumInt)
+                  (Test.QuickCheck.Modifiers.$fEnumPositive_$cfromEnum
+                     @ GHC.Types.Int
+                     GHC.Enum.$fEnumInt)
+                  (Test.QuickCheck.Modifiers.$fEnumPositive_$cenumFrom
+                     @ GHC.Types.Int
+                     GHC.Enum.$fEnumInt)
+                  (Test.QuickCheck.Modifiers.$fEnumPositive_$cenumFromThen
+                     @ GHC.Types.Int
+                     GHC.Enum.$fEnumInt)
+                  (Test.QuickCheck.Modifiers.$fEnumPositive_$cenumFromTo
+                     @ GHC.Types.Int
+                     GHC.Enum.$fEnumInt)
+                  (Test.QuickCheck.Modifiers.$fEnumPositive_$cenumFromThenTo
+                     @ GHC.Types.Int
+                     GHC.Enum.$fEnumInt) -}
+975175b8d2a9119705d8dca897f1d791
+  $fNumPositive :: GHC.Num.Num HML.Types.PosInt.PosInt
+  DFunId
+  {- HasNoCafRefs, Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ HML.Types.PosInt.PosInt
+                  HML.Types.PosInt.$fNumPositive_$c+
+                  HML.Types.PosInt.$fNumPositive_$c-
+                  HML.Types.PosInt.$fNumPositive_$c*
+                  HML.Types.PosInt.$fNumPositive_$cnegate
+                  HML.Types.PosInt.$fNumPositive_$cabs
+                  HML.Types.PosInt.$fNumPositive_$csignum
+                  HML.Types.PosInt.$fNumPositive_$cfromInteger -}
+5ad0b236c2b148f8a9f53eb84c64bfe4
+  $fNumPositive_$c* ::
+    HML.Types.PosInt.PosInt
+    -> HML.Types.PosInt.PosInt -> HML.Types.PosInt.PosInt
+  {- Arity: 2, HasNoCafRefs, Strictness: <S(S),1*U(U)><S(S),1*U(U)>m,
+     Unfolding: InlineRule (0, True, True)
+                GHC.Num.$fNumInt_$c*
+                  `cast`
+                (Sym (Test.QuickCheck.Modifiers.N:Positive[0] <GHC.Types.Int>_R)
+                 ->_R Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                               <GHC.Types.Int>_R)
+                 ->_R Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                               <GHC.Types.Int>_R)) -}
+62f902ec45e6e65f37e983c5f200c29f
+  $fNumPositive_$c+ ::
+    HML.Types.PosInt.PosInt
+    -> HML.Types.PosInt.PosInt -> HML.Types.PosInt.PosInt
+  {- Arity: 2, HasNoCafRefs, Strictness: <S(S),1*U(U)><S(S),1*U(U)>m,
+     Unfolding: InlineRule (0, True, True)
+                GHC.Num.$fNumInt_$c+
+                  `cast`
+                (Sym (Test.QuickCheck.Modifiers.N:Positive[0] <GHC.Types.Int>_R)
+                 ->_R Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                               <GHC.Types.Int>_R)
+                 ->_R Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                               <GHC.Types.Int>_R)) -}
+230358a9af1b7a71d3f086688fe325c3
+  $fNumPositive_$c- ::
+    HML.Types.PosInt.PosInt
+    -> HML.Types.PosInt.PosInt -> HML.Types.PosInt.PosInt
+  {- Arity: 2, HasNoCafRefs, Strictness: <S(S),1*U(U)><S(S),1*U(U)>m,
+     Unfolding: InlineRule (0, True, True)
+                GHC.Num.$fNumInt_$c-
+                  `cast`
+                (Sym (Test.QuickCheck.Modifiers.N:Positive[0] <GHC.Types.Int>_R)
+                 ->_R Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                               <GHC.Types.Int>_R)
+                 ->_R Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                               <GHC.Types.Int>_R)) -}
+e59ae69600f92fb761e4677b3ed937c7
+  $fNumPositive_$cabs ::
+    HML.Types.PosInt.PosInt -> HML.Types.PosInt.PosInt
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>m,
+     Unfolding: InlineRule (0, True, True)
+                GHC.Num.$fNumInt_$cabs
+                  `cast`
+                (Sym (Test.QuickCheck.Modifiers.N:Positive[0] <GHC.Types.Int>_R)
+                 ->_R Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                               <GHC.Types.Int>_R)) -}
+8ee5154279ec041647958201c0fdb2b7
+  $fNumPositive_$cfromInteger ::
+    GHC.Integer.Type.Integer -> HML.Types.PosInt.PosInt
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>m,
+     Unfolding: InlineRule (0, True, True)
+                GHC.Num.$fNumInt_$cfromInteger
+                  `cast`
+                (<GHC.Integer.Type.Integer>_R
+                 ->_R Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                               <GHC.Types.Int>_R)) -}
+280d2087f1804e17fd97ff0466e2260c
+  $fNumPositive_$cnegate ::
+    HML.Types.PosInt.PosInt -> HML.Types.PosInt.PosInt
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>m,
+     Unfolding: InlineRule (0, True, True)
+                GHC.Num.$fNumInt_$cnegate
+                  `cast`
+                (Sym (Test.QuickCheck.Modifiers.N:Positive[0] <GHC.Types.Int>_R)
+                 ->_R Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                               <GHC.Types.Int>_R)) -}
+a4f6f41b881f24f959c27e79d7359820
+  $fNumPositive_$csignum ::
+    HML.Types.PosInt.PosInt -> HML.Types.PosInt.PosInt
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>m,
+     Unfolding: InlineRule (0, True, True)
+                GHC.Num.$fNumInt_$csignum
+                  `cast`
+                (Sym (Test.QuickCheck.Modifiers.N:Positive[0] <GHC.Types.Int>_R)
+                 ->_R Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                               <GHC.Types.Int>_R)) -}
+217f24ac87f7471736d8268cb8316110
+  $fRealPositive :: GHC.Real.Real HML.Types.PosInt.PosInt
+  DFunId
+  {- HasNoCafRefs, Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ HML.Types.PosInt.PosInt
+                  HML.Types.PosInt.$fNumPositive
+                  HML.Types.PosInt.$fRealPositive_$cp2Real
+                  HML.Types.PosInt.$fRealPositive_$ctoRational -}
+74f55131a37491a5427a04b37a39c655
+  $fRealPositive_$cp2Real :: GHC.Classes.Ord HML.Types.PosInt.PosInt
+  {- Strictness: m,
+     Unfolding: InlineRule (0, True, True)
+                HML.Types.PosInt.$fRealPositive_$s$fOrdPositive -}
+55b5f91f1ac54d2936ce2b3f3df4c2f6
+  $fRealPositive_$ctoRational ::
+    HML.Types.PosInt.PosInt -> GHC.Real.Rational
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ (x :: HML.Types.PosInt.PosInt) ->
+                 case x `cast`
+                      (Test.QuickCheck.Modifiers.N:Positive[0]
+                           <GHC.Types.Int>_R) of wild { GHC.Types.I# i ->
+                 case GHC.Integer.Type.smallInteger i of dt { DEFAULT ->
+                 GHC.Real.:%
+                   @ GHC.Integer.Type.Integer
+                   dt
+                   GHC.Real.$fEnumRatio1 } }) -}
+cbb0a4d122feea1296f83be190218574
+  $fRealPositive_$dEq :: GHC.Classes.Eq GHC.Types.Int
+  {- Strictness: m,
+     Unfolding: InlineRule (0, True, True) GHC.Classes.$fEqInt -}
+29bdeae89d8bcf01222197fc475824df
+  $fRealPositive_$s$fEqPositive ::
+    GHC.Classes.Eq (Test.QuickCheck.Modifiers.Positive GHC.Types.Int)
+  {- HasNoCafRefs, Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ (Test.QuickCheck.Modifiers.Positive GHC.Types.Int)
+                  (Test.QuickCheck.Modifiers.$fEqPositive_$c==
+                     @ GHC.Types.Int
+                     HML.Types.PosInt.$fRealPositive_$dEq)
+                  (Test.QuickCheck.Modifiers.$fEqPositive_$c/=
+                     @ GHC.Types.Int
+                     HML.Types.PosInt.$fRealPositive_$dEq) -}
+ce68d6aa4277d1a7bb48c5f24a94d4b5
+  $fRealPositive_$s$fOrdPositive ::
+    GHC.Classes.Ord (Test.QuickCheck.Modifiers.Positive GHC.Types.Int)
+  {- HasNoCafRefs, Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ (Test.QuickCheck.Modifiers.Positive GHC.Types.Int)
+                  HML.Types.PosInt.$fRealPositive_$s$fOrdPositive_$cp1Ord
+                  (Test.QuickCheck.Modifiers.$fOrdPositive_$ccompare
+                     @ GHC.Types.Int
+                     GHC.Classes.$fOrdInt)
+                  (Test.QuickCheck.Modifiers.$fOrdPositive_$c<
+                     @ GHC.Types.Int
+                     GHC.Classes.$fOrdInt)
+                  (Test.QuickCheck.Modifiers.$fOrdPositive_$c<=
+                     @ GHC.Types.Int
+                     GHC.Classes.$fOrdInt)
+                  (Test.QuickCheck.Modifiers.$fOrdPositive_$c>
+                     @ GHC.Types.Int
+                     GHC.Classes.$fOrdInt)
+                  (Test.QuickCheck.Modifiers.$fOrdPositive_$c>=
+                     @ GHC.Types.Int
+                     GHC.Classes.$fOrdInt)
+                  (Test.QuickCheck.Modifiers.$fOrdPositive_$cmax
+                     @ GHC.Types.Int
+                     GHC.Classes.$fOrdInt)
+                  (Test.QuickCheck.Modifiers.$fOrdPositive_$cmin
+                     @ GHC.Types.Int
+                     GHC.Classes.$fOrdInt) -}
+68b1a24f68fdc0fe3c4bbd53a9f12a3a
+  $fRealPositive_$s$fOrdPositive_$cp1Ord ::
+    GHC.Classes.Eq (Test.QuickCheck.Modifiers.Positive GHC.Types.Int)
+  {- Strictness: m,
+     Unfolding: InlineRule (0, True, True)
+                HML.Types.PosInt.$fRealPositive_$s$fEqPositive -}
+5cdea42ea19a6f60c0d21ba03851282b
+  $fToByteStringPositive ::
+    Data.ByteString.Conversion.To.ToByteString HML.Types.PosInt.PosInt
+  DFunId
+  {- Arity: 4, HasNoCafRefs, Strictness: <L,U>,
+     Inline: INLINE (sat-args=0),
+     Unfolding: InlineRule (0, False, True)
+                HML.Types.PosInt.$fToByteStringPositive_$cbuilder
+                  `cast`
+                (Sym (Data.ByteString.Conversion.To.N:ToByteString[0]
+                          <HML.Types.PosInt.PosInt>_N)) -}
+e2ddb034a4ffb35d0ce131c7b7cc8f75
+  $fToByteStringPositive_$cbuilder ::
+    HML.Types.PosInt.PosInt -> Data.ByteString.Builder.Internal.Builder
+  {- Arity: 4, HasNoCafRefs, Strictness: <L,U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Test.QuickCheck.Modifiers.Positive GHC.Types.Int)
+                   @ r
+                   (eta :: Data.ByteString.Builder.Internal.BuildStep r)
+                   (eta1 :: Data.ByteString.Builder.Internal.BufferRange)
+                   (eta2 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 ((Data.ByteString.Builder.Prim.primBounded
+                     @ GHC.Types.Int
+                     Data.ByteString.Builder.Prim.ASCII.intDec
+                     ds
+                       `cast`
+                     (Test.QuickCheck.Modifiers.N:Positive[0] <GHC.Types.Int>_R))
+                    `cast`
+                  (Data.ByteString.Builder.Internal.N:Builder[0])
+                    @ r
+                    eta
+                    eta1)
+                   `cast`
+                 (GHC.Types.N:IO[0]
+                      <Data.ByteString.Builder.Internal.BuildSignal r>_R)
+                   eta2)
+                  `cast`
+                (<Test.QuickCheck.Modifiers.Positive GHC.Types.Int>_R
+                 ->_R Trans
+                          (forall (r :: <*>_N).
+                           <Data.ByteString.Builder.Internal.BuildStep r>_R
+                           ->_R <Data.ByteString.Builder.Internal.BufferRange>_R
+                           ->_R Sym (GHC.Types.N:IO[0]
+                                         <Data.ByteString.Builder.Internal.BuildSignal r>_R))
+                          (Sym (Data.ByteString.Builder.Internal.N:Builder[0]))) -}
+b2600bdb9e8bb8f34578385cc30d2fe4
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module
+                   HML.Types.PosInt.$trModule2
+                   HML.Types.PosInt.$trModule1) -}
+01119f33a813a571173113f85a6eed1e
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "HML.Types.PosInt"#) -}
+87e13fa4256cac9a0fa866493f7ea93b
+  $trModule2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS
+                   "haslearned-0.1.0.0-1MYfuCwSlxlBXzMx3VqeuN"#) -}
+60f967baf89dc816d2998b76659e5894
+  $w$cdivMod ::
+    GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> (# HML.Types.PosInt.PosInt, HML.Types.PosInt.PosInt #)
+  {- Arity: 2, Strictness: <S,U><S,U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.Int#) (ww1 :: GHC.Prim.Int#) ->
+                 let {
+                   $w$j :: GHC.Types.Int
+                           -> GHC.Prim.Int#
+                           -> (# HML.Types.PosInt.PosInt, HML.Types.PosInt.PosInt #)
+                     {- Arity: 2, Strictness: <L,U(U)><S,U>, Inline: [0] -}
+                   = \ (w :: GHC.Types.Int)[OneShot]
+                       (ww2 :: GHC.Prim.Int#)[OneShot] ->
+                     case GHC.Prim.tagToEnum#
+                            @ GHC.Types.Bool
+                            (GHC.Prim.<# ww1 0#) of wild1 {
+                       GHC.Types.False
+                       -> case ww1 of wild2 {
+                            DEFAULT
+                            -> case GHC.Prim.tagToEnum#
+                                      @ GHC.Types.Bool
+                                      (GHC.Prim.<# ww2 0#) of wild4 {
+                                 GHC.Types.False
+                                 -> case ww2 of wild5 {
+                                      DEFAULT
+                                      -> (# w `cast`
+                                            (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                                                      <GHC.Types.Int>_R)),
+                                            (GHC.Types.I# wild5)
+                                              `cast`
+                                            (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                                                      <GHC.Types.Int>_R)) #)
+                                      0#
+                                      -> (# w `cast`
+                                            (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                                                      <GHC.Types.Int>_R)),
+                                            HML.Types.PosInt.$fIntegralPositive1
+                                              `cast`
+                                            (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                                                      <GHC.Types.Int>_R)) #) }
+                                 GHC.Types.True
+                                 -> (# case w of wild { GHC.Types.I# x ->
+                                       (GHC.Types.I# (GHC.Prim.-# x 1#))
+                                         `cast`
+                                       (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                                                 <GHC.Types.Int>_R)) },
+                                       (GHC.Types.I# (GHC.Prim.+# ww2 wild2))
+                                         `cast`
+                                       (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                                                 <GHC.Types.Int>_R)) #) }
+                            0#
+                            -> case GHC.Prim.tagToEnum#
+                                      @ GHC.Types.Bool
+                                      (GHC.Prim.<# ww2 0#) of wild4 {
+                                 GHC.Types.False
+                                 -> case ww2 of wild5 {
+                                      DEFAULT
+                                      -> (# w `cast`
+                                            (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                                                      <GHC.Types.Int>_R)),
+                                            (GHC.Types.I# wild5)
+                                              `cast`
+                                            (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                                                      <GHC.Types.Int>_R)) #)
+                                      0#
+                                      -> (# case w of wild { GHC.Types.I# x ->
+                                            (GHC.Types.I# (GHC.Prim.-# x 1#))
+                                              `cast`
+                                            (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                                                      <GHC.Types.Int>_R)) },
+                                            HML.Types.PosInt.$fIntegralPositive1
+                                              `cast`
+                                            (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                                                      <GHC.Types.Int>_R)) #) }
+                                 GHC.Types.True
+                                 -> (# w `cast`
+                                       (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                                                 <GHC.Types.Int>_R)),
+                                       (GHC.Types.I# ww2)
+                                         `cast`
+                                       (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                                                 <GHC.Types.Int>_R)) #) } }
+                       GHC.Types.True
+                       -> case GHC.Prim.tagToEnum#
+                                 @ GHC.Types.Bool
+                                 (GHC.Prim.<# ww2 0#) of wild2 {
+                            GHC.Types.False
+                            -> case ww2 of wild3 {
+                                 DEFAULT
+                                 -> (# case w of wild { GHC.Types.I# x ->
+                                       (GHC.Types.I# (GHC.Prim.-# x 1#))
+                                         `cast`
+                                       (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                                                 <GHC.Types.Int>_R)) },
+                                       (GHC.Types.I# (GHC.Prim.+# wild3 ww1))
+                                         `cast`
+                                       (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                                                 <GHC.Types.Int>_R)) #)
+                                 0#
+                                 -> (# w `cast`
+                                       (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                                                 <GHC.Types.Int>_R)),
+                                       HML.Types.PosInt.$fIntegralPositive1
+                                         `cast`
+                                       (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                                                 <GHC.Types.Int>_R)) #) }
+                            GHC.Types.True
+                            -> (# w `cast`
+                                  (Sym (Test.QuickCheck.Modifiers.N:Positive[0] <GHC.Types.Int>_R)),
+                                  (GHC.Types.I# ww2)
+                                    `cast`
+                                  (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                                            <GHC.Types.Int>_R)) #) } }
+                 } in
+                 case ww1 of wild {
+                   DEFAULT
+                   -> case GHC.Prim.quotRemInt# ww wild of ds2 { (#,#) ipv ipv1 ->
+                      $w$j (GHC.Types.I# ipv) ipv1 }
+                   -1#
+                   -> case ww of wild1 {
+                        DEFAULT
+                        -> case GHC.Prim.quotRemInt# wild1 -1# of ds2 { (#,#) ipv ipv1 ->
+                           $w$j (GHC.Types.I# ipv) ipv1 }
+                        -9223372036854775808#
+                        -> $w$j (GHC.Real.overflowError @ GHC.Types.Int) 0# }
+                   0#
+                   -> case GHC.Real.divZeroError
+                      ret_ty (# HML.Types.PosInt.PosInt, HML.Types.PosInt.PosInt #)
+                      of {} }) -}
+0f1b268a91cbd4dfd4d82e937442ce12
+  $w$cparser ::
+    GHC.Prim.Addr#
+    -> GHC.ForeignPtr.ForeignPtrContents
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> Data.Attoparsec.Internal.Types.More
+    -> Data.Attoparsec.Internal.Types.Failure
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         r
+    -> Data.Attoparsec.Internal.Types.Success
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         HML.Types.PosInt.PosInt
+         r
+    -> Data.Attoparsec.Internal.Types.IResult
+         Data.ByteString.Internal.ByteString r
+  {- Arity: 10,
+     Strictness: <S,U><L,U><S,U><S,U><S,U><S,U><S,U><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
+     Inline: [0],
+     Unfolding: (\ @ r
+                   (ww :: GHC.Prim.Addr#)
+                   (ww1 :: GHC.ForeignPtr.ForeignPtrContents)
+                   (ww2 :: GHC.Prim.Int#)
+                   (ww3 :: GHC.Prim.Int#)
+                   (ww4 :: GHC.Prim.Int#)
+                   (ww5 :: GHC.Prim.Int#)
+                   (ww6 :: GHC.Prim.Int#)
+                   (w :: Data.Attoparsec.Internal.Types.More)
+                   (w1 :: Data.Attoparsec.Internal.Types.Failure
+                            Data.ByteString.Internal.ByteString
+                            (Data.Attoparsec.Internal.Types.State
+                               Data.ByteString.Internal.ByteString)
+                            r)
+                   (w2 :: Data.Attoparsec.Internal.Types.Success
+                            Data.ByteString.Internal.ByteString
+                            (Data.Attoparsec.Internal.Types.State
+                               Data.ByteString.Internal.ByteString)
+                            HML.Types.PosInt.PosInt
+                            r) ->
+                 Data.Attoparsec.ByteString.Char8.$w$sdecimal10
+                   @ r
+                   ww
+                   ww1
+                   ww2
+                   ww3
+                   ww4
+                   ww5
+                   ww6
+                   w
+                   w1
+                   (\ (t' :: Data.Attoparsec.Internal.Types.State
+                               Data.ByteString.Internal.ByteString)
+                      (pos' :: Data.Attoparsec.Internal.Types.Pos)[OneShot]
+                      (more' :: Data.Attoparsec.Internal.Types.More)[OneShot]
+                      (a1 :: GHC.Types.Int)[OneShot] ->
+                    case pos'
+                           `cast`
+                         (Data.Attoparsec.Internal.Types.N:Pos[0]) of nt1 { GHC.Types.I# ipv1 ->
+                    case a1 of wild { GHC.Types.I# x ->
+                    case GHC.Prim.tagToEnum#
+                           @ GHC.Types.Bool
+                           (GHC.Prim.<=# x 0#) of wild1 {
+                      GHC.Types.False
+                      -> w2
+                           t'
+                           nt1 `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
+                           more'
+                           wild
+                             `cast`
+                           (Sym (Test.QuickCheck.Modifiers.N:Positive[0] <GHC.Types.Int>_R))
+                      GHC.Types.True
+                      -> w1
+                           t'
+                           nt1 `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
+                           more'
+                           (GHC.Types.[] @ GHC.Base.String)
+                           HML.Types.PosInt.$fFromByteStringPositive_msg3 } } })) -}
+09ca8fee136d737f82cd9d79e0278cbf
+  $w$cquotRem ::
+    HML.Types.PosInt.PosInt
+    -> HML.Types.PosInt.PosInt
+    -> (# HML.Types.PosInt.PosInt, HML.Types.PosInt.PosInt #)
+  {- Arity: 2, Strictness: <L,1*U(U)><L,1*U(1*U)>, Inline: [0],
+     Unfolding: (\ (w :: HML.Types.PosInt.PosInt)
+                   (w1 :: HML.Types.PosInt.PosInt) ->
+                 let {
+                   ds :: (GHC.Types.Int, GHC.Types.Int)
+                   = case w `cast`
+                          (Test.QuickCheck.Modifiers.N:Positive[0]
+                               <GHC.Types.Int>_R) of ww { GHC.Types.I# ww1 ->
+                     case w1
+                            `cast`
+                          (Test.QuickCheck.Modifiers.N:Positive[0]
+                               <GHC.Types.Int>_R) of ww2 { GHC.Types.I# ww3 ->
+                     case ww3 of wild {
+                       DEFAULT
+                       -> case GHC.Prim.quotRemInt# ww1 wild of ds2 { (#,#) ipv ipv1 ->
+                          (GHC.Types.I# ipv, GHC.Types.I# ipv1) }
+                       -1#
+                       -> case ww1 of wild1 {
+                            DEFAULT
+                            -> case GHC.Prim.quotRemInt# wild1 -1# of ds2 { (#,#) ipv ipv1 ->
+                               (GHC.Types.I# ipv, GHC.Types.I# ipv1) }
+                            -9223372036854775808# -> HML.Types.PosInt.$fIntegralPositive2 }
+                       0#
+                       -> case GHC.Real.divZeroError
+                          ret_ty (GHC.Types.Int, GHC.Types.Int)
+                          of {} } } }
+                 } in
+                 (# case ds of wild { (,) q r ->
+                    q `cast`
+                    (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                              <GHC.Types.Int>_R)) },
+                    case ds of wild { (,) q r ->
+                    r `cast`
+                    (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                              <GHC.Types.Int>_R)) } #)) -}
+5108cb4455de278e3ba122e1d7edf8ea
+  type PosInt = Test.QuickCheck.Modifiers.Positive GHC.Types.Int
+3b00055f436e706d028263b402374910
+  extractPosInts ::
+    [a -> GHC.Types.Int]
+    -> a -> GHC.Base.Maybe [HML.Types.PosInt.PosInt]
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,U>,
+     Unfolding: (\ @ a (getters :: [a -> GHC.Types.Int]) (dat :: a) ->
+                 letrec {
+                   go1 :: [a -> GHC.Types.Int]
+                          -> [GHC.Base.Maybe HML.Types.PosInt.PosInt]
+                     {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds :: [a -> GHC.Types.Int]) ->
+                     case ds of wild {
+                       [] -> GHC.Types.[] @ (GHC.Base.Maybe HML.Types.PosInt.PosInt)
+                       : y ys
+                       -> GHC.Types.:
+                            @ (GHC.Base.Maybe HML.Types.PosInt.PosInt)
+                            (case y dat of wild1 { GHC.Types.I# x ->
+                             case GHC.Prim.tagToEnum#
+                                    @ GHC.Types.Bool
+                                    (GHC.Prim.<=# x 0#) of wild2 {
+                               GHC.Types.False
+                               -> GHC.Base.Just
+                                    @ (Test.QuickCheck.Modifiers.Positive GHC.Types.Int)
+                                    wild1
+                                      `cast`
+                                    (Sym (Test.QuickCheck.Modifiers.N:Positive[0]
+                                              <GHC.Types.Int>_R))
+                               GHC.Types.True -> GHC.Base.Nothing @ HML.Types.PosInt.PosInt } })
+                            (go1 ys) }
+                 } in
+                 HML.Types.PosInt.extractPosInts_go (go1 getters)) -}
+86bdd49bbd4078336f89e6a1983a6029
+  extractPosInts_go ::
+    [GHC.Base.Maybe HML.Types.PosInt.PosInt]
+    -> GHC.Base.Maybe [HML.Types.PosInt.PosInt]
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U> -}
+0d8ac78274d442f7a8a44a7e0f8db2a0
+  getPosInt :: HML.Types.PosInt.PosInt -> GHC.Types.Int
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U(U)>m,
+     Unfolding: InlineRule (0, True, True)
+                HML.Types.PosInt.getPosInt1
+                  `cast`
+                (<Test.QuickCheck.Modifiers.Positive GHC.Types.Int>_R
+                 ->_R Test.QuickCheck.Modifiers.N:Positive[0] <GHC.Types.Int>_R) -}
+cc0b747c1586a719e3b4524d3ca275b7
+  getPosInt1 ::
+    Test.QuickCheck.Modifiers.Positive GHC.Types.Int
+    -> Test.QuickCheck.Modifiers.Positive GHC.Types.Int
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U(U)>m,
+     Unfolding: InlineRule (1, True, True)
+                (\ (ds :: Test.QuickCheck.Modifiers.Positive GHC.Types.Int) ->
+                 ds) -}
+1392ab480719db92d552d35ceb7c416d
+  posInt :: GHC.Types.Int -> GHC.Base.Maybe HML.Types.PosInt.PosInt
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (k :: GHC.Types.Int) ->
+                 case k of wild { GHC.Types.I# x ->
+                 case GHC.Prim.tagToEnum#
+                        @ GHC.Types.Bool
+                        (GHC.Prim.<=# x 0#) of wild1 {
+                   GHC.Types.False
+                   -> GHC.Base.Just
+                        @ (Test.QuickCheck.Modifiers.Positive GHC.Types.Int)
+                        wild
+                          `cast`
+                        (Sym (Test.QuickCheck.Modifiers.N:Positive[0] <GHC.Types.Int>_R))
+                   GHC.Types.True
+                   -> GHC.Base.Nothing @ HML.Types.PosInt.PosInt } }) -}
+instance Data.ByteString.Conversion.From.FromByteString [Test.QuickCheck.Modifiers.Positive]
+  = HML.Types.PosInt.$fFromByteStringPositive
+instance GHC.Real.Integral [Test.QuickCheck.Modifiers.Positive]
+  = HML.Types.PosInt.$fIntegralPositive
+instance GHC.Num.Num [Test.QuickCheck.Modifiers.Positive]
+  = HML.Types.PosInt.$fNumPositive
+instance GHC.Real.Real [Test.QuickCheck.Modifiers.Positive]
+  = HML.Types.PosInt.$fRealPositive
+instance Data.ByteString.Conversion.To.ToByteString [Test.QuickCheck.Modifiers.Positive]
+  = HML.Types.PosInt.$fToByteStringPositive
+"SPEC/HML.Types.PosInt $fEnumPositive @ Int" [ALWAYS] forall ($dEnum :: GHC.Enum.Enum
+                                                                          GHC.Types.Int)
+  Test.QuickCheck.Modifiers.$fEnumPositive @ GHC.Types.Int $dEnum
+  = HML.Types.PosInt.$fIntegralPositive_$s$fEnumPositive
+"SPEC/HML.Types.PosInt $fEqPositive @ Int" [ALWAYS] forall ($dEq :: GHC.Classes.Eq
+                                                                      GHC.Types.Int)
+  Test.QuickCheck.Modifiers.$fEqPositive @ GHC.Types.Int $dEq
+  = HML.Types.PosInt.$fRealPositive_$s$fEqPositive
+"SPEC/HML.Types.PosInt $fOrdPositive @ Int" [ALWAYS] forall ($dOrd :: GHC.Classes.Ord
+                                                                        GHC.Types.Int)
+  Test.QuickCheck.Modifiers.$fOrdPositive @ GHC.Types.Int $dOrd
+  = HML.Types.PosInt.$fRealPositive_$s$fOrdPositive
+"SPEC/HML.Types.PosInt $fOrdPositive_$cp1Ord @ Int" [ALWAYS] forall ($dOrd :: GHC.Classes.Ord
+                                                                                GHC.Types.Int)
+  Test.QuickCheck.Modifiers.$fOrdPositive_$cp1Ord @ GHC.Types.Int
+                                                  $dOrd
+  = HML.Types.PosInt.$fRealPositive_$s$fOrdPositive_$cp1Ord
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: none
+require own pkg trusted: False
+

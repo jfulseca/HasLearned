@@ -1,0 +1,30 @@
+module HML.FileIO.CSVReader
+(convertToBinary) where
+
+import Conduit ((.|), ConduitM, sinkFileBS, 
+                mapC, sourceFileBS, takeC)
+import Control.Monad.Catch (MonadThrow)
+import Control.Monad.Trans.Except (ExceptT)
+import Data.ByteString (ByteString, concat)
+import Data.CSV.Conduit (Row, defCSVSettings, intoCSV)
+import Data.Void (Void)
+import HML.FileIO.FileReader (FileReader)
+import HML.FileIO.MatrixHeader (MatrixHeader(..))
+import HML.Types.PosInt (getPosInt)
+import Prelude hiding (concat)
+
+convertToBinary :: FilePath
+                -> FilePath
+                -> MatrixHeader
+                -> Int
+                -> ConduitM ()
+                            Void
+                            FileReader
+                            ()
+convertToBinary inPath outPath header step = 
+  let nCols = getPosInt . cols $ header
+  in sourceFileBS inPath
+  .| takeC (step*nCols)
+  .| intoCSV defCSVSettings
+  .| mapC _
+  .| sinkFileBS outPath

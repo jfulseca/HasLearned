@@ -1,0 +1,795 @@
+
+==================== FINAL INTERFACE ====================
+2017-11-20 04:54:09.091122 UTC
+
+interface main@main:Main 8002
+  interface hash: c47722df3579fe1bd0ce6098bf2d2418
+  ABI hash: 73954c965bacb05de7924d9164ff7aeb
+  export-list hash: ce9208f6738bca26a5204716ef4ee8d2
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: d4e4b207ddf0b2b35e0abd8cd94de0f8
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  Main.main
+module dependencies:
+package dependencies: QuickCheck-2.9.2@QuickCheck-2.9.2-LvlomhGMxrFBkX1zwiWpQu
+                      ansi-terminal-0.6.3.1@ansi-terminal-0.6.3.1-3RTqikoQf47ajVD9m8zgB
+                      ansi-wl-pprint-0.6.7.3@ansi-wl-pprint-0.6.7.3-A79v826bgPr574HtaZPPqC
+                      array-0.5.1.1@array-0.5.1.1
+                      attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ
+                      base-4.9.1.0
+                      base16-bytestring-0.1.1.6@base16-bytestring-0.1.1.6-4E2p94lTx8gIceMhu8Kl9o
+                      base64-bytestring-1.0.0.1@base64-bytestring-1.0.0.1-4O9TExPPz6eI82Yj7L4SIj
+                      binary-0.8.3.0@binary-0.8.3.0
+                      bytestring-0.10.8.1@bytestring-0.10.8.1
+                      bytestring-conversion-0.3.1@bytestring-conversion-0.3.1-KSK6l7QmbIf1TbIBILuJUV
+                      case-insensitive-1.2.0.10@case-insensitive-1.2.0.10-1D5OUKQ7UrJ7IpOe0di4Un
+                      cereal-0.5.4.0@cereal-0.5.4.0-BsAGxfp8yAs3CiRo2E875e
+                      chunked-data-0.3.0@chunked-data-0.3.0-OOunTfArGE2y1nE8RKgW4
+                      conduit-1.2.12.1@conduit-1.2.12.1-CTYKTJmwFo81r4LrAKDD8i
+                      conduit-combinators-1.1.1@conduit-combinators-1.1.1-GtFbL9AxEDH5Bi4dHJqDcv
+                      conduit-extra-1.1.17@conduit-extra-1.1.17-LHyPtC0nGlzDcgVxOcd4h4
+                      containers-0.5.7.1@containers-0.5.7.1
+                      deepseq-1.4.2.0@deepseq-1.4.2.0 directory-1.3.0.0@directory-1.3.0.0
+                      double-conversion-2.0.2.0@double-conversion-2.0.2.0-Ls1AZoWRK0TKpzR8XpTsSD
+                      exceptions-0.8.3@exceptions-0.8.3-ADEDRATtUrMK1JW4zMQ9U
+                      filepath-1.4.1.1@filepath-1.4.1.1
+                      ghc-boot-th-8.0.2@ghc-boot-th-8.0.2 ghc-prim-0.5.0.0
+                      hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol
+                      haslearned-0.1.0.0@haslearned-0.1.0.0-1MYfuCwSlxlBXzMx3VqeuN
+                      hmatrix-0.18.0.0@hmatrix-0.18.0.0-LGKm3fIBRZO9Qs5hltonpj
+                      integer-gmp-1.0.0.1
+                      integer-logarithms-1.0.2@integer-logarithms-1.0.2-92lMiWV9mmYAwfMEYgfQ0D
+                      lifted-base-0.2.3.11@lifted-base-0.2.3.11-Ei0JSPdt7KOCD2HIA5jFqV
+                      mmorph-1.0.9@mmorph-1.0.9-5bASEvmIkr5CpdAYXwPsn0
+                      monad-control-1.0.2.2@monad-control-1.0.2.2-1Ci8dYJ8Tb7E3HTcTqOb8l
+                      mono-traversable-1.0.4.0@mono-traversable-1.0.4.0-4NjleFtgjZEBUffX1jBk6F
+                      mtl-2.2.1@mtl-2.2.1-BLKBelFsPB3BoFeSWSOYj6
+                      mwc-random-0.13.6.0@mwc-random-0.13.6.0-FYg9HqO0pqB8vcniiPVzVy
+                      optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-EqIYOWOFTvf23sT5QTYn9U
+                      pretty-1.1.3.3@pretty-1.1.3.3
+                      primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh
+                      process-1.4.3.0@process-1.4.3.0
+                      random-1.1@random-1.1-9tceXaeYIMZ4JrKq20Egog
+                      resourcet-1.1.9@resourcet-1.1.9-L2BUQrxWZMwDiwhcuyPuNi
+                      scientific-0.3.5.2@scientific-0.3.5.2-FM2NdrNTcdbCDq9wuNnhIA
+                      split-0.2.3.2@split-0.2.3.2-CJl40zTyCIV16Pr60nb7CT
+                      stm-2.4.4.1@stm-2.4.4.1-JQn4hNPyYjP5m9AcbI88Ve
+                      streaming-commons-0.1.17@streaming-commons-0.1.17-6xuIA5RXrs65yyeq3HWIWP
+                      template-haskell-2.11.1.0
+                      text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00
+                      tf-random-0.5@tf-random-0.5-CJZw1ZWS5MOJlR60HqKEZL
+                      time-1.6.0.1@time-1.6.0.1 transformers-0.5.2.0@transformers-0.5.2.0
+                      transformers-base-0.4.4@transformers-base-0.4.4-GKSs0LKukAL8ymq2naFmrH
+                      unix-2.7.2.1@unix-2.7.2.1
+                      unordered-containers-0.2.8.0@unordered-containers-0.2.8.0-Bp9XgxjuHxcI4tFehVMDGC
+                      vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ
+                      vector-algorithms-0.7.0.1@vector-algorithms-0.7.0.1-1qlx0Hst1Fo5WZd0lT7Iw1
+orphans: attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ:Data.Attoparsec.ByteString.Char8
+         base-4.9.1.0:GHC.Base base-4.9.1.0:GHC.Float
+         binary-0.8.3.0@binary-0.8.3.0:Data.Binary.Generic
+         bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Builder
+         hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol:Data.Hashable.Generic
+         haslearned-0.1.0.0@haslearned-0.1.0.0-1MYfuCwSlxlBXzMx3VqeuN:HML.Types.PosInt
+         hmatrix-0.18.0.0@hmatrix-0.18.0.0-LGKm3fIBRZO9Qs5hltonpj:Internal.CG
+         hmatrix-0.18.0.0@hmatrix-0.18.0.0-LGKm3fIBRZO9Qs5hltonpj:Internal.Element
+         hmatrix-0.18.0.0@hmatrix-0.18.0.0-LGKm3fIBRZO9Qs5hltonpj:Internal.Util
+         hmatrix-0.18.0.0@hmatrix-0.18.0.0-LGKm3fIBRZO9Qs5hltonpj:Internal.Vector
+         hmatrix-0.18.0.0@hmatrix-0.18.0.0-LGKm3fIBRZO9Qs5hltonpj:Numeric.Matrix
+         hmatrix-0.18.0.0@hmatrix-0.18.0.0-LGKm3fIBRZO9Qs5hltonpj:Numeric.Vector
+         stm-2.4.4.1@stm-2.4.4.1-JQn4hNPyYjP5m9AcbI88Ve:Control.Monad.STM
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Show
+         time-1.6.0.1@time-1.6.0.1:Data.Time.Calendar.Gregorian
+         time-1.6.0.1@time-1.6.0.1:Data.Time.Format.Parse
+         time-1.6.0.1@time-1.6.0.1:Data.Time.LocalTime.LocalTime
+         transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.Error
+         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Fusion.Bundle
+         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Unboxed
+family instance modules: attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ:Data.Attoparsec.Internal.Types
+                         base-4.9.1.0:Control.Applicative base-4.9.1.0:Data.Complex
+                         base-4.9.1.0:Data.Either base-4.9.1.0:Data.Functor.Compose
+                         base-4.9.1.0:Data.Functor.Const base-4.9.1.0:Data.Functor.Identity
+                         base-4.9.1.0:Data.Functor.Product base-4.9.1.0:Data.Functor.Sum
+                         base-4.9.1.0:Data.List.NonEmpty base-4.9.1.0:Data.Monoid
+                         base-4.9.1.0:Data.Semigroup base-4.9.1.0:Data.Type.Equality
+                         base-4.9.1.0:Data.Version base-4.9.1.0:Data.Void
+                         base-4.9.1.0:GHC.Exts base-4.9.1.0:GHC.Generics
+                         base-4.9.1.0:GHC.IO.Exception base-4.9.1.0:GHC.TypeLits
+                         conduit-1.2.12.1@conduit-1.2.12.1-CTYKTJmwFo81r4LrAKDD8i:Data.Conduit.Internal.Conduit
+                         conduit-1.2.12.1@conduit-1.2.12.1-CTYKTJmwFo81r4LrAKDD8i:Data.Conduit.Internal.Pipe
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntMap.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntSet.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Sequence
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Set.Base
+                         ghc-boot-th-8.0.2@ghc-boot-th-8.0.2:GHC.LanguageExtensions.Type
+                         hmatrix-0.18.0.0@hmatrix-0.18.0.0-LGKm3fIBRZO9Qs5hltonpj:Internal.Devel
+                         hmatrix-0.18.0.0@hmatrix-0.18.0.0-LGKm3fIBRZO9Qs5hltonpj:Internal.Matrix
+                         hmatrix-0.18.0.0@hmatrix-0.18.0.0-LGKm3fIBRZO9Qs5hltonpj:Internal.Modular
+                         hmatrix-0.18.0.0@hmatrix-0.18.0.0-LGKm3fIBRZO9Qs5hltonpj:Internal.Numeric
+                         monad-control-1.0.2.2@monad-control-1.0.2.2-1Ci8dYJ8Tb7E3HTcTqOb8l:Control.Monad.Trans.Control
+                         mono-traversable-1.0.4.0@mono-traversable-1.0.4.0-4NjleFtgjZEBUffX1jBk6F:Data.MonoTraversable
+                         mono-traversable-1.0.4.0@mono-traversable-1.0.4.0-4NjleFtgjZEBUffX1jBk6F:Data.NonNull
+                         mono-traversable-1.0.4.0@mono-traversable-1.0.4.0-4NjleFtgjZEBUffX1jBk6F:Data.Sequences
+                         mwc-random-0.13.6.0@mwc-random-0.13.6.0-FYg9HqO0pqB8vcniiPVzVy:System.Random.MWC
+                         pretty-1.1.3.3@pretty-1.1.3.3:Text.PrettyPrint.Annotated.HughesPJ
+                         pretty-1.1.3.3@pretty-1.1.3.3:Text.PrettyPrint.HughesPJ
+                         primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh:Control.Monad.Primitive
+                         primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh:Data.Primitive.Array
+                         resourcet-1.1.9@resourcet-1.1.9-L2BUQrxWZMwDiwhcuyPuNi:Control.Monad.Trans.Resource.Internal
+                         template-haskell-2.11.1.0:Language.Haskell.TH.Syntax
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
+                         unordered-containers-0.2.8.0@unordered-containers-0.2.8.0-Bp9XgxjuHxcI4tFehVMDGC:Data.HashMap.Base
+                         unordered-containers-0.2.8.0@unordered-containers-0.2.8.0-Bp9XgxjuHxcI4tFehVMDGC:Data.HashSet
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Primitive
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Storable
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Unboxed
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Unboxed.Base
+import  -/  base-4.9.1.0:Data.Either 20b09ef8d0a5b74fdec011c40c1587f5
+import  -/  base-4.9.1.0:Data.Functor 5ab1dc703df5b482e77efb697833ca3c
+import  -/  base-4.9.1.0:Data.Semigroup fc55c71ff629dcbd821309c310055959
+import  -/  base-4.9.1.0:GHC.Base c4231c43c07e46080a26bf94094c7aa1
+import  -/  base-4.9.1.0:GHC.List ab8c4e523e6c479c549d3bcd5fc4a439
+import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
+import  -/  base-4.9.1.0:System.IO e4a64a8e3dce8616da54f0ee7104f7db
+import  -/  ghc-prim-0.5.0.0:GHC.Types 89f8de4f08018c9177c98d979eae0e45
+import  -/  haslearned-0.1.0.0@haslearned-0.1.0.0-1MYfuCwSlxlBXzMx3VqeuN:HML.FileIO.AppIO 996f0663a9234630e6f09df1c28d64d3
+import  -/  haslearned-0.1.0.0@haslearned-0.1.0.0-1MYfuCwSlxlBXzMx3VqeuN:HML.FileIO.CSVReader 4446b4558a886826a5a0c28b18e22a0a
+import  -/  haslearned-0.1.0.0@haslearned-0.1.0.0-1MYfuCwSlxlBXzMx3VqeuN:HML.FileIO.MatrixHeader 55866bc7e98e7ba1f7fa5af73c65820d
+import  -/  haslearned-0.1.0.0@haslearned-0.1.0.0-1MYfuCwSlxlBXzMx3VqeuN:HML.Types.PosInt e76284e9d561a007ee931c212ba10a01
+import  -/  haslearned-0.1.0.0@haslearned-0.1.0.0-1MYfuCwSlxlBXzMx3VqeuN:HML.Types.TypeName 860c931b806fae13090ea4b89f4273e4
+import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-EqIYOWOFTvf23sT5QTYn9U:Options.Applicative 23f520fcf2cade55e41560c008c2a3d8
+import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-EqIYOWOFTvf23sT5QTYn9U:Options.Applicative.Builder 9af5be12ece5b5d5a516e8dfd0a31ae0
+import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-EqIYOWOFTvf23sT5QTYn9U:Options.Applicative.Extra b1f9bd035b3f0e3d7dcacd48ff90ce62
+import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-EqIYOWOFTvf23sT5QTYn9U:Options.Applicative.Types 51a5ed351e52971e6533467cf30252fe
+7bafe0a4f42dcaf01384701d2a782c3d
+  $tc'Conversion :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   11902209943097789083##
+                   3363929413313966100##
+                   Main.$trModule
+                   Main.$tc'Conversion1) -}
+c7bc57654b735d2fa1df4d6409125735
+  $tc'Conversion1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'Conversion"#) -}
+94f6c01e79c4ca8c56bceb0467958bf9
+  $tcConversion :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   9989081481179952262##
+                   5127095531235586276##
+                   Main.$trModule
+                   Main.$tcConversion1) -}
+feeda741600fca7d1c7988a908f04f35
+  $tcConversion1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Conversion"#) -}
+d6831ef04cb9301b090dfae6f7bb7ec7
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module Main.$trModule2 Main.$trModule1) -}
+847d9fc3b8e6f0b424199f36b4999bb2
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Main"#) -}
+24ef6042833e75ffd7aa98b83ecca98d
+  $trModule2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "main"#) -}
+b17453ccce831168441a86a14234980d
+  data Conversion
+    = Conversion {inFile :: GHC.Base.String,
+                  outFile :: GHC.Base.String,
+                  nRows :: GHC.Types.Int,
+                  nCols :: GHC.Types.Int}
+4c9ce1eaf8502ba2e1f23e8162d42b3f
+  inFile :: Main.Conversion -> GHC.Base.String
+  RecSel Left Main.Conversion
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(SLLL),1*U(1*U,A,A,A)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Main.Conversion) ->
+                 case ds of wild { Main.Conversion ds1 ds2 ds3 ds4 -> ds1 }) -}
+52cdbba58b7ca09d6aa6ea1bdf105b8d
+  main :: GHC.Types.IO ()
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
+19cdf0b21054cc3195f9058352185024
+  main1 ::
+    GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case System.Environment.getArgs1 s of ds { (#,#) ipv ipv1 ->
+                 case Options.Applicative.Extra.customExecParser2
+                        @ Main.Conversion
+                        (Options.Applicative.Extra.execParserPure
+                           @ Main.Conversion
+                           Options.Applicative.Builder.defaultPrefs
+                           Main.main5
+                           ipv1)
+                        ipv of ds1 { (#,#) ipv2 ipv3 ->
+                 case HML.Types.PosInt.extractPosInts
+                        @ Main.Conversion
+                        Main.main3
+                        ipv3 of wild {
+                   GHC.Base.Nothing
+                   -> GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main2
+                        GHC.Types.True
+                        ipv2
+                   GHC.Base.Just dims
+                   -> case (Control.Monad.Trans.Resource.runResourceT
+                              @ (Control.Monad.Trans.Except.ExceptT GHC.Base.String GHC.Types.IO)
+                              @ ()
+                              (HML.FileIO.AppIO.$s$fMonadBaseControlbExceptT @ [GHC.Types.Char])
+                              (Data.Conduit.Internal.Pipe.runPipe
+                                 @ (Control.Monad.Trans.Resource.Internal.ResourceT
+                                      (Control.Monad.Trans.Except.ExceptT
+                                         GHC.Base.String GHC.Types.IO))
+                                 @ ()
+                                 HML.FileIO.AppIO.$s$fMonadResourceT
+                                 (Data.Conduit.Internal.Pipe.injectLeftovers
+                                    @ (Control.Monad.Trans.Resource.Internal.ResourceT
+                                         (Control.Monad.Trans.Except.ExceptT
+                                            GHC.Base.String GHC.Types.IO))
+                                    @ ()
+                                    @ Data.Void.Void
+                                    @ ()
+                                    @ ()
+                                    @ Data.Void.Void
+                                    HML.FileIO.AppIO.$s$fMonadResourceT
+                                    ((HML.FileIO.CSVReader.csvToBinary
+                                        (case ipv3 of wild1 { Main.Conversion ds2 ds3 ds4 ds5 ->
+                                         ds2 })
+                                        (case ipv3 of wild1 { Main.Conversion ds2 ds3 ds4 ds5 ->
+                                         ds3 })
+                                        (HML.FileIO.MatrixHeader.MatrixHeader
+                                           HML.Types.TypeName.DBL
+                                           (GHC.List.$w!! @ HML.Types.PosInt.PosInt dims 0#)
+                                           (GHC.List.$w!! @ HML.Types.PosInt.PosInt dims 1#)))
+                                       `cast`
+                                     (Data.Conduit.Internal.Conduit.N:ConduitM[0]
+                                          <()>_N
+                                          <Data.Void.Void>_N
+                                          <Control.Monad.Trans.Resource.Internal.ResourceT
+                                             (Control.Monad.Trans.Except.ExceptT
+                                                GHC.Base.String GHC.Types.IO)>_N
+                                          <()>_R)
+                                       @ ()
+                                       (Data.Conduit.Internal.Pipe.Done
+                                          @ ()
+                                          @ ()
+                                          @ Data.Void.Void
+                                          @ ()
+                                          @ (Control.Monad.Trans.Resource.Internal.ResourceT
+                                               (Control.Monad.Trans.Except.ExceptT
+                                                  GHC.Base.String GHC.Types.IO))
+                                          @ ())))))
+                             `cast`
+                           (Trans
+                                (Control.Monad.Trans.Except.N:ExceptT[0]
+                                     <GHC.Base.String>_N <GHC.Types.IO>_R <()>_N)
+                                (GHC.Types.N:IO[0] <Data.Either.Either GHC.Base.String ()>_R))
+                             ipv2 of ds2 { (#,#) ipv4 ipv5 ->
+                      case ipv5 of wild1 {
+                        Data.Either.Left x
+                        -> GHC.IO.Handle.Text.hPutStr2
+                             GHC.IO.Handle.FD.stdout
+                             x
+                             GHC.Types.True
+                             ipv4
+                        Data.Either.Right y -> (# ipv4, y #) } } } } }) -}
+b8135d6a35d19dca8cdbc674037e96e8
+  main10 :: Options.Applicative.Types.Parser Main.Conversion
+  {- Unfolding: (Options.Applicative.Types.MultP
+                   @ Main.Conversion
+                   @ (Main.Conversion -> Main.Conversion)
+                   Main.main11
+                   (Options.Applicative.Extra.helper @ Main.Conversion)) -}
+a481581d34690181be0ed84ffc613328
+  main11 ::
+    Options.Applicative.Types.Parser
+      ((Main.Conversion -> Main.Conversion) -> Main.Conversion)
+  {- Unfolding: (Options.Applicative.Types.$fApplicativeParser_$cfmap
+                   @ Main.Conversion
+                   @ ((Main.Conversion -> Main.Conversion) -> Main.Conversion)
+                   (GHC.Base.<**>1 @ Main.Conversion @ Main.Conversion)
+                   Main.main12) -}
+dcc10aa0cb79563fa16ddb28f6cbcb7f
+  main12 :: Options.Applicative.Types.Parser Main.Conversion
+  {- Unfolding: (Options.Applicative.Types.MultP
+                   @ Main.Conversion
+                   @ GHC.Types.Int
+                   Main.main28
+                   Main.main13) -}
+05c775e8cf0b094b27da75011d3abe37
+  main13 :: Options.Applicative.Types.Parser GHC.Types.Int
+  {- Unfolding: (Options.Applicative.Types.AltP
+                   @ GHC.Types.Int
+                   Main.main14
+                   (Options.Applicative.Types.$fAlternativeParser_$cempty
+                      @ GHC.Types.Int)) -}
+1bed20c4a6132ced8bd2edf1dfe3b1ad
+  main14 :: Options.Applicative.Types.Parser GHC.Types.Int
+  {- Unfolding: (Options.Applicative.Types.OptP
+                   @ GHC.Types.Int
+                   Main.main15) -}
+aced4e1faa25f8cc6c64b95429114ae0
+  main15 :: Options.Applicative.Types.Option GHC.Types.Int
+  {- Unfolding: (Options.Applicative.Types.Option
+                   @ GHC.Types.Int
+                   Main.main20
+                   Main.main16) -}
+2ceaad2129fde22351390e55d8206198
+  main16 :: Options.Applicative.Types.OptProperties
+  {- Unfolding: (Options.Applicative.Types.OptProperties
+                   Options.Applicative.Types.Visible
+                   Main.main18
+                   Main.main17
+                   (GHC.Base.Nothing @ GHC.Base.String)) -}
+b1203fb8c73a806b4b2b9c40c60d743a
+  main17 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "COLUMNS"#) -}
+37ab053c004f3c176709827e482a2d3c
+  main18 ::
+    Options.Applicative.Help.Chunk.Chunk
+      Text.PrettyPrint.ANSI.Leijen.Doc
+  {- Unfolding: (Data.OldList.wordsFB
+                   @ (Options.Applicative.Help.Chunk.Chunk
+                        Text.PrettyPrint.ANSI.Leijen.Doc)
+                   Options.Applicative.Help.Chunk.paragraph1
+                   (GHC.Base.Nothing @ Text.PrettyPrint.ANSI.Leijen.Doc)
+                     `cast`
+                   (Sym (Options.Applicative.Help.Chunk.N:Chunk[0]) <Text.PrettyPrint.ANSI.Leijen.Doc>_N)
+                   Main.main19) -}
+9a32bd2bddedd60b928c7b200d74613d
+  main19 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "Number of columns"#) -}
+39fbb478b629e944439949a683b50454
+  main2 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString#
+                   "ERROR: both rows and columns must be positive integers"#) -}
+15f99e5809e63faf9e5c21ebf7618c25
+  main20 :: Options.Applicative.Types.OptReader GHC.Types.Int
+  {- Unfolding: (Options.Applicative.Types.OptReader
+                   @ GHC.Types.Int
+                   Main.main23
+                   Main.main21
+                   Options.Applicative.Builder.abortOption3) -}
+47cc33fd7a280568feea9d820dea0ba5
+  main21 :: Options.Applicative.Types.CReader GHC.Types.Int
+  {- Unfolding: (Options.Applicative.Types.CReader
+                   @ GHC.Types.Int
+                   Options.Applicative.Types.$fMonoidCompleter4
+                     `cast`
+                   (Trans
+                        (<GHC.Base.String>_R
+                         ->_R Sym (GHC.Types.N:IO[0] <[GHC.Base.String]>_R))
+                        (Sym (Options.Applicative.Types.N:Completer[0])))
+                   Main.main22
+                     `cast`
+                   (Trans
+                        (Sym (Control.Monad.Trans.Reader.N:ReaderT[0]
+                                  <*>_N
+                                  <GHC.Base.String>_R
+                                  <Control.Monad.Trans.Except.Except
+                                     Options.Applicative.Types.ParseError>_R
+                                  <GHC.Types.Int>_N))
+                        (Sym (Options.Applicative.Types.N:ReadM[0]) <GHC.Types.Int>_N))) -}
+be25cc31062f410e4d865ef04b8ccdb1
+  main22 ::
+    GHC.Base.String
+    -> Control.Monad.Trans.Except.Except
+         Options.Applicative.Types.ParseError GHC.Types.Int
+  {- Arity: 1,
+     Unfolding: (Options.Applicative.Builder.auto1
+                   @ GHC.Types.Int
+                   GHC.Read.$fReadInt) -}
+148b69a00aa7ecc0e51f00713739988a
+  main23 :: [Options.Applicative.Types.OptName]
+  {- Unfolding: (GHC.Types.:
+                   @ Options.Applicative.Types.OptName
+                   Main.main27
+                   Main.main24) -}
+996542da322398497f4c889ef3681105
+  main24 :: [Options.Applicative.Types.OptName]
+  {- Unfolding: (GHC.Types.:
+                   @ Options.Applicative.Types.OptName
+                   Main.main25
+                   (GHC.Types.[] @ Options.Applicative.Types.OptName)) -}
+bda796be5a43e7150a65e5a2afbdcc8d
+  main25 :: Options.Applicative.Types.OptName
+  {- Unfolding: (Options.Applicative.Types.OptLong Main.main26) -}
+e59602740fcfe495cfd57e6e13149043
+  main26 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "columns"#) -}
+a04e355a66a8f10962c5442593cd5e36
+  main27 :: Options.Applicative.Types.OptName
+  {- HasNoCafRefs,
+     Unfolding: (Options.Applicative.Types.OptShort 'c'#) -}
+c1cfa76e2d72126de245f0eb9f394401
+  main28 ::
+    Options.Applicative.Types.Parser (GHC.Types.Int -> Main.Conversion)
+  {- Unfolding: (Options.Applicative.Types.MultP
+                   @ (GHC.Types.Int -> Main.Conversion)
+                   @ GHC.Types.Int
+                   Main.main42
+                   Main.main29) -}
+acf11ec412edb782a5630101dd6e6fce
+  main29 :: Options.Applicative.Types.Parser GHC.Types.Int
+  {- Unfolding: (Options.Applicative.Types.AltP
+                   @ GHC.Types.Int
+                   Main.main30
+                   (Options.Applicative.Types.$fAlternativeParser_$cempty
+                      @ GHC.Types.Int)) -}
+5f11ff5dd66104071df7b2ac4f576f33
+  main3 :: [Main.Conversion -> GHC.Types.Int]
+  {- HasNoCafRefs,
+     Unfolding: (GHC.Types.:
+                   @ (Main.Conversion -> GHC.Types.Int)
+                   Main.nRows
+                   Main.main4) -}
+2f3f2cc02743f38a2193e7e5e44d9394
+  main30 :: Options.Applicative.Types.Parser GHC.Types.Int
+  {- Unfolding: (Options.Applicative.Types.OptP
+                   @ GHC.Types.Int
+                   Main.main31) -}
+783a9eb9767b862e4b4ddf3e57c0d30e
+  main31 :: Options.Applicative.Types.Option GHC.Types.Int
+  {- Unfolding: (Options.Applicative.Types.Option
+                   @ GHC.Types.Int
+                   Main.main36
+                   Main.main32) -}
+78307d4debac08c5e4d1a2d0e6a041a8
+  main32 :: Options.Applicative.Types.OptProperties
+  {- Unfolding: (Options.Applicative.Types.OptProperties
+                   Options.Applicative.Types.Visible
+                   Main.main34
+                   Main.main33
+                   (GHC.Base.Nothing @ GHC.Base.String)) -}
+9ea58ef6fefd4d8fe1268aab94591de6
+  main33 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "ROWS"#) -}
+94037bb704517b52fd1cee8a3c581e0f
+  main34 ::
+    Options.Applicative.Help.Chunk.Chunk
+      Text.PrettyPrint.ANSI.Leijen.Doc
+  {- Unfolding: (Data.OldList.wordsFB
+                   @ (Options.Applicative.Help.Chunk.Chunk
+                        Text.PrettyPrint.ANSI.Leijen.Doc)
+                   Options.Applicative.Help.Chunk.paragraph1
+                   (GHC.Base.Nothing @ Text.PrettyPrint.ANSI.Leijen.Doc)
+                     `cast`
+                   (Sym (Options.Applicative.Help.Chunk.N:Chunk[0]) <Text.PrettyPrint.ANSI.Leijen.Doc>_N)
+                   Main.main35) -}
+7e9a87f610b56cc8c515ca6d99156cda
+  main35 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "Number of rows"#) -}
+bb0712772fd9c94b36c6b2bca7a8ebc3
+  main36 :: Options.Applicative.Types.OptReader GHC.Types.Int
+  {- Unfolding: (Options.Applicative.Types.OptReader
+                   @ GHC.Types.Int
+                   Main.main37
+                   Main.main21
+                   Options.Applicative.Builder.abortOption3) -}
+cfc409d78ea82ab0d95b871b24ea3fec
+  main37 :: [Options.Applicative.Types.OptName]
+  {- Unfolding: (GHC.Types.:
+                   @ Options.Applicative.Types.OptName
+                   Main.main41
+                   Main.main38) -}
+363e02f4bc4a7fbb6d53b8a29e604778
+  main38 :: [Options.Applicative.Types.OptName]
+  {- Unfolding: (GHC.Types.:
+                   @ Options.Applicative.Types.OptName
+                   Main.main39
+                   (GHC.Types.[] @ Options.Applicative.Types.OptName)) -}
+71268dac923e1bd160b716d6831767a7
+  main39 :: Options.Applicative.Types.OptName
+  {- Unfolding: (Options.Applicative.Types.OptLong Main.main40) -}
+28226f25cf3220064cc6ce11d626eb63
+  main4 :: [Main.Conversion -> GHC.Types.Int]
+  {- HasNoCafRefs,
+     Unfolding: (GHC.Types.:
+                   @ (Main.Conversion -> GHC.Types.Int)
+                   Main.nCols
+                   (GHC.Types.[] @ (Main.Conversion -> GHC.Types.Int))) -}
+a2d942d14cb032359ba966164d0aac63
+  main40 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "rows"#) -}
+9f2a132be140ab8fa507f69669bb6b1d
+  main41 :: Options.Applicative.Types.OptName
+  {- HasNoCafRefs,
+     Unfolding: (Options.Applicative.Types.OptShort 'r'#) -}
+924a9f65a49a19e19f3f1931b466f5be
+  main42 ::
+    Options.Applicative.Types.Parser
+      (GHC.Types.Int -> GHC.Types.Int -> Main.Conversion)
+  {- Unfolding: (Options.Applicative.Types.MultP
+                   @ (GHC.Types.Int -> GHC.Types.Int -> Main.Conversion)
+                   @ GHC.Base.String
+                   Main.main57
+                   Main.main43) -}
+3018087dae54654c7990d0b8b7dc787e
+  main43 :: Options.Applicative.Types.Parser GHC.Base.String
+  {- Unfolding: (Options.Applicative.Types.AltP
+                   @ GHC.Base.String
+                   Main.main44
+                   (Options.Applicative.Types.$fAlternativeParser_$cempty
+                      @ GHC.Base.String)) -}
+579bd01a2bd16a16d6ab1066a72fa975
+  main44 :: Options.Applicative.Types.Parser GHC.Base.String
+  {- Unfolding: (Options.Applicative.Types.OptP
+                   @ GHC.Base.String
+                   Main.main45) -}
+41c735191680018201e713d9c7e72b52
+  main45 :: Options.Applicative.Types.Option GHC.Base.String
+  {- Unfolding: (Options.Applicative.Types.Option
+                   @ GHC.Base.String
+                   Main.main50
+                   Main.main46) -}
+adf9a51fde3f9b043191e21a45b04b9f
+  main46 :: Options.Applicative.Types.OptProperties
+  {- Unfolding: (Options.Applicative.Types.OptProperties
+                   Options.Applicative.Types.Visible
+                   Main.main48
+                   Main.main47
+                   (GHC.Base.Nothing @ GHC.Base.String)) -}
+11acc024584180e0d8b7313ef7c0d5da
+  main47 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "OUTPUT"#) -}
+4556e00ba297d797187e63b040b614a5
+  main48 ::
+    Options.Applicative.Help.Chunk.Chunk
+      Text.PrettyPrint.ANSI.Leijen.Doc
+  {- Unfolding: (Data.OldList.wordsFB
+                   @ (Options.Applicative.Help.Chunk.Chunk
+                        Text.PrettyPrint.ANSI.Leijen.Doc)
+                   Options.Applicative.Help.Chunk.paragraph1
+                   (GHC.Base.Nothing @ Text.PrettyPrint.ANSI.Leijen.Doc)
+                     `cast`
+                   (Sym (Options.Applicative.Help.Chunk.N:Chunk[0]) <Text.PrettyPrint.ANSI.Leijen.Doc>_N)
+                   Main.main49) -}
+3730bf4a7214fff67865327428afdf2b
+  main49 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString#
+                   "Output file (binary)"#) -}
+310beb38b1d3de7db734602574347448
+  main5 :: Options.Applicative.Types.ParserInfo Main.Conversion
+  {- Unfolding: (Options.Applicative.Types.ParserInfo
+                   @ Main.Conversion
+                   Main.main10
+                   GHC.Types.True
+                   Main.main8
+                   Main.main6
+                   (GHC.Base.Nothing @ Text.PrettyPrint.ANSI.Leijen.Doc)
+                     `cast`
+                   (Sym (Options.Applicative.Help.Chunk.N:Chunk[0]) <Text.PrettyPrint.ANSI.Leijen.Doc>_N)
+                   Options.Applicative.Builder.info1
+                   GHC.Types.True) -}
+25c8df56f41d40340aff697744280c51
+  main50 :: Options.Applicative.Types.OptReader GHC.Base.String
+  {- Unfolding: (Options.Applicative.Types.OptReader
+                   @ GHC.Base.String
+                   Main.main52
+                   Main.main51
+                   Options.Applicative.Builder.abortOption3) -}
+fc041a627dc08da3b5a7265809581494
+  main51 :: Options.Applicative.Types.CReader GHC.Base.String
+  {- HasNoCafRefs,
+     Unfolding: (Options.Applicative.Types.CReader
+                   @ GHC.Base.String
+                   Options.Applicative.Types.$fMonoidCompleter4
+                     `cast`
+                   (Trans
+                        (<GHC.Base.String>_R
+                         ->_R Sym (GHC.Types.N:IO[0] <[GHC.Base.String]>_R))
+                        (Sym (Options.Applicative.Types.N:Completer[0])))
+                   (Data.Either.Right
+                      @ Options.Applicative.Types.ParseError
+                      @ GHC.Base.String)
+                     `cast`
+                   (Trans
+                        (<GHC.Base.String>_R
+                         ->_R Trans
+                                  (Sym (Data.Functor.Identity.N:Identity[0]
+                                            <Data.Either.Either
+                                               Options.Applicative.Types.ParseError
+                                               GHC.Base.String>_R))
+                                  (Sym (Control.Monad.Trans.Except.N:ExceptT[0]
+                                            <Options.Applicative.Types.ParseError>_N
+                                            <Data.Functor.Identity.Identity>_R
+                                            <GHC.Base.String>_N)))
+                        (Trans
+                             (Sym (Control.Monad.Trans.Reader.N:ReaderT[0]
+                                       <*>_N
+                                       <GHC.Base.String>_R
+                                       <Control.Monad.Trans.Except.Except
+                                          Options.Applicative.Types.ParseError>_R
+                                       <GHC.Base.String>_N))
+                             (Sym (Options.Applicative.Types.N:ReadM[0]) <GHC.Base.String>_N)))) -}
+1fbccd88f6f30859a27c30bcf196e3d6
+  main52 :: [Options.Applicative.Types.OptName]
+  {- Unfolding: (GHC.Types.:
+                   @ Options.Applicative.Types.OptName
+                   Main.main56
+                   Main.main53) -}
+5ce9881fa5f541215be391e69e9b5dfe
+  main53 :: [Options.Applicative.Types.OptName]
+  {- Unfolding: (GHC.Types.:
+                   @ Options.Applicative.Types.OptName
+                   Main.main54
+                   (GHC.Types.[] @ Options.Applicative.Types.OptName)) -}
+c85f53b07849291d60e5467d9542d00d
+  main54 :: Options.Applicative.Types.OptName
+  {- Unfolding: (Options.Applicative.Types.OptLong Main.main55) -}
+91af2817e70f2e10ae7c82866febe698
+  main55 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "out-file"#) -}
+3c5c0e41cf03615c21b38001abd8cdea
+  main56 :: Options.Applicative.Types.OptName
+  {- HasNoCafRefs,
+     Unfolding: (Options.Applicative.Types.OptShort 'o'#) -}
+11a74ef943a6285fe1b8f37ece06b18f
+  main57 ::
+    Options.Applicative.Types.Parser
+      (GHC.Base.String
+       -> GHC.Types.Int -> GHC.Types.Int -> Main.Conversion)
+  {- Unfolding: (Options.Applicative.Types.$fApplicativeParser_$cfmap
+                   @ GHC.Base.String
+                   @ (GHC.Base.String
+                      -> GHC.Types.Int -> GHC.Types.Int -> Main.Conversion)
+                   Main.Conversion
+                   Main.main58) -}
+78679863784c1b39a2e7ba079d4108d5
+  main58 :: Options.Applicative.Types.Parser GHC.Base.String
+  {- Unfolding: (Options.Applicative.Types.AltP
+                   @ GHC.Base.String
+                   Main.main59
+                   (Options.Applicative.Types.$fAlternativeParser_$cempty
+                      @ GHC.Base.String)) -}
+7b984e1d9c65381bcf68eed0c50e81a3
+  main59 :: Options.Applicative.Types.Parser GHC.Base.String
+  {- Unfolding: (Options.Applicative.Types.OptP
+                   @ GHC.Base.String
+                   Main.main60) -}
+8523f4dec93ea93502b5fa05fb563993
+  main6 ::
+    Options.Applicative.Help.Chunk.Chunk
+      Text.PrettyPrint.ANSI.Leijen.Doc
+  {- Unfolding: (Data.OldList.wordsFB
+                   @ (Options.Applicative.Help.Chunk.Chunk
+                        Text.PrettyPrint.ANSI.Leijen.Doc)
+                   Options.Applicative.Help.Chunk.paragraph1
+                   (GHC.Base.Nothing @ Text.PrettyPrint.ANSI.Leijen.Doc)
+                     `cast`
+                   (Sym (Options.Applicative.Help.Chunk.N:Chunk[0]) <Text.PrettyPrint.ANSI.Leijen.Doc>_N)
+                   Main.main7) -}
+a6198ffeabf77cf0ff8020611ccbcf59
+  main60 :: Options.Applicative.Types.Option GHC.Base.String
+  {- Unfolding: (Options.Applicative.Types.Option
+                   @ GHC.Base.String
+                   Main.main65
+                   Main.main61) -}
+cbbcbd0396868444b6a267540faf043d
+  main61 :: Options.Applicative.Types.OptProperties
+  {- Unfolding: (Options.Applicative.Types.OptProperties
+                   Options.Applicative.Types.Visible
+                   Main.main63
+                   Main.main62
+                   (GHC.Base.Nothing @ GHC.Base.String)) -}
+8118d11b3e991ed08eef6b9138f30fc1
+  main62 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "INPUT"#) -}
+ccbf6b193b3d94a3f87faafd17ca593e
+  main63 ::
+    Options.Applicative.Help.Chunk.Chunk
+      Text.PrettyPrint.ANSI.Leijen.Doc
+  {- Unfolding: (Data.OldList.wordsFB
+                   @ (Options.Applicative.Help.Chunk.Chunk
+                        Text.PrettyPrint.ANSI.Leijen.Doc)
+                   Options.Applicative.Help.Chunk.paragraph1
+                   (GHC.Base.Nothing @ Text.PrettyPrint.ANSI.Leijen.Doc)
+                     `cast`
+                   (Sym (Options.Applicative.Help.Chunk.N:Chunk[0]) <Text.PrettyPrint.ANSI.Leijen.Doc>_N)
+                   Main.main64) -}
+ae7adf52e645b4e289557ec523ff3b25
+  main64 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "Input file (csv)"#) -}
+3fd7f75f3b435e4b90759ef0de9a3318
+  main65 :: Options.Applicative.Types.OptReader GHC.Base.String
+  {- Unfolding: (Options.Applicative.Types.OptReader
+                   @ GHC.Base.String
+                   Main.main66
+                   Main.main51
+                   Options.Applicative.Builder.abortOption3) -}
+ecc8bc2e78fc764247185bcfc15939b2
+  main66 :: [Options.Applicative.Types.OptName]
+  {- Unfolding: (GHC.Types.:
+                   @ Options.Applicative.Types.OptName
+                   Main.main70
+                   Main.main67) -}
+6427c0e61c259155fa7c9f97d0856ae3
+  main67 :: [Options.Applicative.Types.OptName]
+  {- Unfolding: (GHC.Types.:
+                   @ Options.Applicative.Types.OptName
+                   Main.main68
+                   (GHC.Types.[] @ Options.Applicative.Types.OptName)) -}
+13c66200f10ca645ff418209af38b789
+  main68 :: Options.Applicative.Types.OptName
+  {- Unfolding: (Options.Applicative.Types.OptLong Main.main69) -}
+8f9ec3ad2827008e2c359fa0f6c889e7
+  main69 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "in-file"#) -}
+f50c62b19306336d651bd299e55cbfec
+  main7 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "CSVToBinary"#) -}
+03b0c14f92a55b27e5438eb624e8af37
+  main70 :: Options.Applicative.Types.OptName
+  {- HasNoCafRefs,
+     Unfolding: (Options.Applicative.Types.OptShort 'i'#) -}
+a94b56ec1c82282df0456c8bc9b10848
+  main71 ::
+    GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+  {- Arity: 1,
+     Unfolding: (GHC.TopHandler.runMainIO1
+                   @ ()
+                   Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R))) -}
+9541207078332a1e14a28a63b7332f84
+  main8 ::
+    Options.Applicative.Help.Chunk.Chunk
+      Text.PrettyPrint.ANSI.Leijen.Doc
+  {- Unfolding: (Data.OldList.wordsFB
+                   @ (Options.Applicative.Help.Chunk.Chunk
+                        Text.PrettyPrint.ANSI.Leijen.Doc)
+                   Options.Applicative.Help.Chunk.paragraph1
+                   (GHC.Base.Nothing @ Text.PrettyPrint.ANSI.Leijen.Doc)
+                     `cast`
+                   (Sym (Options.Applicative.Help.Chunk.N:Chunk[0]) <Text.PrettyPrint.ANSI.Leijen.Doc>_N)
+                   Main.main9) -}
+83153cf9d5d73e7b159ff289529bb8a0
+  main9 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString#
+                   "Converts a csv file of numbers to a row order double matrix in a native format binary file"#) -}
+7a52e0a5ed8515be59f7ba1fc101d4fc
+  nCols :: Main.Conversion -> GHC.Types.Int
+  RecSel Left Main.Conversion
+  {- Arity: 1, HasNoCafRefs,
+     Strictness: <S(LLLS),1*U(A,A,A,1*U(U))>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Main.Conversion) ->
+                 case ds of wild { Main.Conversion ds1 ds2 ds3 ds4 -> ds4 }) -}
+cd52e2a9c7c506774b440f6e65783407
+  nRows :: Main.Conversion -> GHC.Types.Int
+  RecSel Left Main.Conversion
+  {- Arity: 1, HasNoCafRefs,
+     Strictness: <S(LLSL),1*U(A,A,1*U(U),A)>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Main.Conversion) ->
+                 case ds of wild { Main.Conversion ds1 ds2 ds3 ds4 -> ds3 }) -}
+e4ed3612f2688fa678be25b8cb591d21
+  outFile :: Main.Conversion -> GHC.Base.String
+  RecSel Left Main.Conversion
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(LSLL),1*U(A,1*U,A,A)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Main.Conversion) ->
+                 case ds of wild { Main.Conversion ds1 ds2 ds3 ds4 -> ds2 }) -}
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: none
+require own pkg trusted: False
+

@@ -1,0 +1,91 @@
+{-# LANGUAGE BangPatterns #-}
+{-# LANGUAGE FlexibleContexts #-}
+
+module HML.FileIO.CSVReader
+( csvToBinary
+, csvToMatrixDouble
+, doublesToBS
+, pat
+, readCSV
+) where
+import HML.Aux
+import Conduit ((.|), ConduitM, mapC, mapMC, sourceFileBS, takeWhileCE)
+import qualified Data.ByteString as BS
+import qualified Data.ByteString.Char8 as BSC
+import Data.ByteString.Conversion (fromByteString, toByteString')
+import qualified Data.Conduit.Binary as CB
+import Data.CSV.Conduit (defCSVSettings, intoCSV)
+import Data.Serialize.Put (runPut)
+import Data.Void (Void)
+import HML.FileIO.AppIO (AppIO, liftAppIO)
+import HML.FileIO.MatrixHeader (MatrixHeader(..))
+import HML.FileIO.MatrixSink (matrixDoubleSink)
+import HML.FileIO.MatrixSource (poolMatrixDouble)
+import HML.Types.Constants (binEndl)
+import HML.Types.DoubleToBinary (doubleToBinary)
+import Numeric.LinearAlgebra (Matrix)
+
+parseDoubles :: [BS.ByteString] -> Maybe [Double]
+parseDoubles = sequence . map fromByteString
+
+doublesToBS :: Maybe [Double] -> Maybe BS.ByteString
+doublesToBS mList = do
+  list <- mList
+  return $ foldMap (runPut . doubleToBinary) list
+
+parseBSDoubles :: [BS.ByteString] -> AppIO BS.ByteString
+parseBSDoubles b = do
+  let msg = "Failed parsing decimals from file"
+  let result = doublesToBS . parseDoubles $ b
+  maybe (liftAppIO . Left $ msg)
+        (liftAppIO . Right)
+        result
+
+noEndl :: Char -> Bool
+noEndl c = c /= '\n' && c /= '\r'
+
+splitOnEndl :: BS.ByteString -> [BS.ByteString]
+splitOnEndl bytes = if BS.length bytes < 1
+  then []
+  else let !(b,bs) = BSC.span noEndl bytes in
+    if BS.length bs < 1
+      then [b]
+      else b:(splitOnEndl . BS.tail $ bs)
+
+replaceEndl :: BS.ByteString -> BS.ByteString
+replaceEndl =
+ BS.intercalate (toByteString' ",") . splitOnEndl
+
+readCSV :: FilePath -> ConduitM ()
+                                [BS.ByteString]
+                                AppIO
+                                ()
+readCSV path = sourceFileBS path
+--       .| mapC replaceEndl
+--       .| takeWhileCE (/= binEndl)
+--       .| printConduit "after twce "
+       .| CB.lines
+       .| printConduit "after lines "
+       .| intoCSV defCSVSettings
+       .| printConduit "after intoCSV "
+
+csvToMatrixDouble :: MatrixHeader
+                  -> ConduitM [BS.ByteString]
+                              (Matrix Double)
+                              AppIO
+                              ()
+csvToMatrixDouble MatrixHeader { rows=r,  cols=c } =
+    mapMC parseBSDoubles
+ .| poolMatrixDouble r c
+
+csvToBinary :: FilePath
+            -> FilePath
+            -> MatrixHeader
+            -> ConduitM ()
+                        Void
+                        AppIO
+                        ()
+csvToBinary inPath outPath header = 
+    readCSV inPath
+ .| csvToMatrixDouble header
+ .| matrixDoubleSink header outPath

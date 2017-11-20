@@ -1,0 +1,397 @@
+
+==================== FINAL INTERFACE ====================
+2017-11-20 04:54:06.015056 UTC
+
+interface haslearned-0.1.0.0-1MYfuCwSlxlBXzMx3VqeuN:HML.Aux 8002
+  interface hash: 17ad68d0103e83be21d83ae9c127980f
+  ABI hash: db2817fb9f55bb999c86701baf3da082
+  export-list hash: b865416e77cf23e87cedb9d2cf5fcec5
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: 34c7c285d3dde1c1b5f3a3ce7b526bfd
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  HML.Aux.doubleSize
+  HML.Aux.errorContext
+  HML.Aux.printConduit
+  HML.Aux.printVar
+  HML.Aux.showIO
+  HML.Aux.sl
+module dependencies:
+package dependencies: array-0.5.1.1@array-0.5.1.1 base-4.9.1.0
+                      base16-bytestring-0.1.1.6@base16-bytestring-0.1.1.6-4E2p94lTx8gIceMhu8Kl9o
+                      base64-bytestring-1.0.0.1@base64-bytestring-1.0.0.1-4O9TExPPz6eI82Yj7L4SIj
+                      binary-0.8.3.0@binary-0.8.3.0
+                      bytestring-0.10.8.1@bytestring-0.10.8.1
+                      chunked-data-0.3.0@chunked-data-0.3.0-OOunTfArGE2y1nE8RKgW4
+                      conduit-1.2.12.1@conduit-1.2.12.1-CTYKTJmwFo81r4LrAKDD8i
+                      conduit-combinators-1.1.1@conduit-combinators-1.1.1-GtFbL9AxEDH5Bi4dHJqDcv
+                      conduit-extra-1.1.17@conduit-extra-1.1.17-LHyPtC0nGlzDcgVxOcd4h4
+                      containers-0.5.7.1@containers-0.5.7.1
+                      deepseq-1.4.2.0@deepseq-1.4.2.0 directory-1.3.0.0@directory-1.3.0.0
+                      exceptions-0.8.3@exceptions-0.8.3-ADEDRATtUrMK1JW4zMQ9U
+                      filepath-1.4.1.1@filepath-1.4.1.1
+                      ghc-boot-th-8.0.2@ghc-boot-th-8.0.2 ghc-prim-0.5.0.0
+                      hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol
+                      integer-gmp-1.0.0.1
+                      lifted-base-0.2.3.11@lifted-base-0.2.3.11-Ei0JSPdt7KOCD2HIA5jFqV
+                      mmorph-1.0.9@mmorph-1.0.9-5bASEvmIkr5CpdAYXwPsn0
+                      monad-control-1.0.2.2@monad-control-1.0.2.2-1Ci8dYJ8Tb7E3HTcTqOb8l
+                      mono-traversable-1.0.4.0@mono-traversable-1.0.4.0-4NjleFtgjZEBUffX1jBk6F
+                      mtl-2.2.1@mtl-2.2.1-BLKBelFsPB3BoFeSWSOYj6
+                      mwc-random-0.13.6.0@mwc-random-0.13.6.0-FYg9HqO0pqB8vcniiPVzVy
+                      primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh
+                      resourcet-1.1.9@resourcet-1.1.9-L2BUQrxWZMwDiwhcuyPuNi
+                      split-0.2.3.2@split-0.2.3.2-CJl40zTyCIV16Pr60nb7CT
+                      stm-2.4.4.1@stm-2.4.4.1-JQn4hNPyYjP5m9AcbI88Ve
+                      streaming-commons-0.1.17@streaming-commons-0.1.17-6xuIA5RXrs65yyeq3HWIWP
+                      template-haskell-2.11.1.0
+                      text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00
+                      time-1.6.0.1@time-1.6.0.1 transformers-0.5.2.0@transformers-0.5.2.0
+                      transformers-base-0.4.4@transformers-base-0.4.4-GKSs0LKukAL8ymq2naFmrH
+                      unix-2.7.2.1@unix-2.7.2.1
+                      unordered-containers-0.2.8.0@unordered-containers-0.2.8.0-Bp9XgxjuHxcI4tFehVMDGC
+                      vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ
+                      vector-algorithms-0.7.0.1@vector-algorithms-0.7.0.1-1qlx0Hst1Fo5WZd0lT7Iw1
+orphans: base-4.9.1.0:GHC.Base base-4.9.1.0:GHC.Float
+         binary-0.8.3.0@binary-0.8.3.0:Data.Binary.Generic
+         bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Builder
+         hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol:Data.Hashable.Generic
+         stm-2.4.4.1@stm-2.4.4.1-JQn4hNPyYjP5m9AcbI88Ve:Control.Monad.STM
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Show
+         time-1.6.0.1@time-1.6.0.1:Data.Time.Calendar.Gregorian
+         time-1.6.0.1@time-1.6.0.1:Data.Time.Format.Parse
+         time-1.6.0.1@time-1.6.0.1:Data.Time.LocalTime.LocalTime
+         transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.Error
+         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Fusion.Bundle
+         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Unboxed
+family instance modules: base-4.9.1.0:Control.Applicative
+                         base-4.9.1.0:Data.Complex base-4.9.1.0:Data.Either
+                         base-4.9.1.0:Data.Functor.Compose base-4.9.1.0:Data.Functor.Const
+                         base-4.9.1.0:Data.Functor.Identity
+                         base-4.9.1.0:Data.Functor.Product base-4.9.1.0:Data.Functor.Sum
+                         base-4.9.1.0:Data.List.NonEmpty base-4.9.1.0:Data.Monoid
+                         base-4.9.1.0:Data.Semigroup base-4.9.1.0:Data.Type.Equality
+                         base-4.9.1.0:Data.Version base-4.9.1.0:Data.Void
+                         base-4.9.1.0:GHC.Exts base-4.9.1.0:GHC.Generics
+                         base-4.9.1.0:GHC.IO.Exception base-4.9.1.0:GHC.TypeLits
+                         conduit-1.2.12.1@conduit-1.2.12.1-CTYKTJmwFo81r4LrAKDD8i:Data.Conduit.Internal.Conduit
+                         conduit-1.2.12.1@conduit-1.2.12.1-CTYKTJmwFo81r4LrAKDD8i:Data.Conduit.Internal.Pipe
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntMap.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntSet.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Sequence
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Set.Base
+                         ghc-boot-th-8.0.2@ghc-boot-th-8.0.2:GHC.LanguageExtensions.Type
+                         monad-control-1.0.2.2@monad-control-1.0.2.2-1Ci8dYJ8Tb7E3HTcTqOb8l:Control.Monad.Trans.Control
+                         mono-traversable-1.0.4.0@mono-traversable-1.0.4.0-4NjleFtgjZEBUffX1jBk6F:Data.MonoTraversable
+                         mono-traversable-1.0.4.0@mono-traversable-1.0.4.0-4NjleFtgjZEBUffX1jBk6F:Data.NonNull
+                         mono-traversable-1.0.4.0@mono-traversable-1.0.4.0-4NjleFtgjZEBUffX1jBk6F:Data.Sequences
+                         mwc-random-0.13.6.0@mwc-random-0.13.6.0-FYg9HqO0pqB8vcniiPVzVy:System.Random.MWC
+                         primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh:Control.Monad.Primitive
+                         primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh:Data.Primitive.Array
+                         resourcet-1.1.9@resourcet-1.1.9-L2BUQrxWZMwDiwhcuyPuNi:Control.Monad.Trans.Resource.Internal
+                         template-haskell-2.11.1.0:Language.Haskell.TH.Syntax
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
+                         unordered-containers-0.2.8.0@unordered-containers-0.2.8.0-Bp9XgxjuHxcI4tFehVMDGC:Data.HashMap.Base
+                         unordered-containers-0.2.8.0@unordered-containers-0.2.8.0-Bp9XgxjuHxcI4tFehVMDGC:Data.HashSet
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Primitive
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Storable
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Unboxed
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Unboxed.Base
+import  -/  base-4.9.1.0:Control.Monad.IO.Class 1a4384f66ee999caf5366398edb6ca7b
+import  -/  base-4.9.1.0:Data.Either 20b09ef8d0a5b74fdec011c40c1587f5
+import  -/  base-4.9.1.0:Data.Maybe d876c4ffe4b3c43755a781e8ad860d88
+import  -/  base-4.9.1.0:Debug.Trace a9edf3aec504f4423d8ba829ab373a25
+import  -/  base-4.9.1.0:Foreign.Storable 085c8d7f42ceec1dbb4e818f06339b9d
+import  -/  base-4.9.1.0:GHC.Base c4231c43c07e46080a26bf94094c7aa1
+import  -/  base-4.9.1.0:GHC.Show a027f5ac24879eaba752f44aa90fe511
+import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
+import  -/  base-4.9.1.0:System.IO e4a64a8e3dce8616da54f0ee7104f7db
+import  -/  conduit-1.2.12.1@conduit-1.2.12.1-CTYKTJmwFo81r4LrAKDD8i:Data.Conduit.Internal.Conduit cb2416e4318f4105196b90a1a4c4b9f2
+import  -/  conduit-combinators-1.1.1@conduit-combinators-1.1.1-GtFbL9AxEDH5Bi4dHJqDcv:Conduit 4b8c71dec647b12e304799221bd3ba2e
+import  -/  conduit-combinators-1.1.1@conduit-combinators-1.1.1-GtFbL9AxEDH5Bi4dHJqDcv:Data.Conduit.Combinators.Unqualified ad729553ca387c95a05a93841e33ba6e
+69edc7d73722f61110ba778523fe523e
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module
+                   HML.Aux.$trModule2
+                   HML.Aux.$trModule1) -}
+eae6984d7a91c94ba6ed71c958f8ab84
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "HML.Aux"#) -}
+4c923bac59872f54c600622ef8195733
+  $trModule2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS
+                   "haslearned-0.1.0.0-1MYfuCwSlxlBXzMx3VqeuN"#) -}
+0d8071b546228a48be5485d913ae365c
+  $wprintConduit ::
+    (Control.Monad.IO.Class.MonadIO m, GHC.Show.Show a) =>
+    GHC.Base.String
+    -> forall b.
+       (() -> Data.Conduit.Internal.Pipe.Pipe a a a () m b)
+       -> (# a -> Data.Conduit.Internal.Pipe.Pipe a a a () m b,
+             () -> Data.Conduit.Internal.Pipe.Pipe a a a () m b #)
+  {- Arity: 4,
+     Strictness: <L,U(U,C(U))><L,U(C(C1(C1(U))),A,A)><L,U><L,U>,
+     Inline: [0],
+     Unfolding: (\ @ (m :: * -> *)
+                   @ a
+                   (w :: Control.Monad.IO.Class.MonadIO m)
+                   (w1 :: GHC.Show.Show a)
+                   (w2 :: GHC.Base.String)
+                   @ b
+                   (w3 :: () -> Data.Conduit.Internal.Pipe.Pipe a a a () m b) ->
+                 let {
+                   $dMonad :: GHC.Base.Monad m
+                   = Control.Monad.IO.Class.$p1MonadIO @ m w
+                 } in
+                 let {
+                   lvl :: m (Data.Conduit.Internal.Pipe.Pipe a a a () m b)
+                   = let {
+                       lvl1 :: m () = GHC.Base.return @ m $dMonad @ () GHC.Tuple.()
+                     } in
+                     GHC.Base.return
+                       @ m
+                       $dMonad
+                       @ (Data.Conduit.Internal.Pipe.Pipe a a a () m b)
+                       (letrec {
+                          go1 :: a -> Data.Conduit.Internal.Pipe.Pipe a a a () m b
+                            {- Arity: 1, Strictness: <L,U>,
+                               Unfolding: InlineRule (1, True, False)
+                                          (\ (i1 :: a) ->
+                                           Data.Conduit.Internal.Pipe.HaveOutput
+                                             @ a
+                                             @ a
+                                             @ a
+                                             @ ()
+                                             @ m
+                                             @ b
+                                             go
+                                             (GHC.Base.return @ m $dMonad @ () GHC.Tuple.())
+                                             i1) -}
+                          = \ (i1 :: a) ->
+                            Data.Conduit.Internal.Pipe.HaveOutput
+                              @ a
+                              @ a
+                              @ a
+                              @ ()
+                              @ m
+                              @ b
+                              go
+                              lvl1
+                              i1
+                          go :: Data.Conduit.Internal.Pipe.Pipe a a a () m b
+                          = Data.Conduit.Internal.Pipe.NeedInput
+                              @ a
+                              @ a
+                              @ a
+                              @ ()
+                              @ m
+                              @ b
+                              go1
+                              w3
+                        } in
+                        go)
+                 } in
+                 let {
+                   lvl1 :: () -> m (Data.Conduit.Internal.Pipe.Pipe a a a () m b)
+                     {- Arity: 1 -}
+                   = \ (x1 :: ()) -> lvl
+                 } in
+                 let {
+                   w4 :: GHC.Base.Maybe a
+                         -> Data.Conduit.Internal.Pipe.Pipe a a a () m b
+                     {- Arity: 1, Strictness: <L,U> -}
+                   = \ (a1 :: GHC.Base.Maybe a) ->
+                     Data.Conduit.Internal.Pipe.PipeM
+                       @ a
+                       @ a
+                       @ a
+                       @ ()
+                       @ m
+                       @ b
+                       (GHC.Base.>>=
+                          @ m
+                          $dMonad
+                          @ ()
+                          @ (Data.Conduit.Internal.Pipe.Pipe a a a () m b)
+                          (Control.Monad.IO.Class.liftIO
+                             @ m
+                             w
+                             @ ()
+                             (\ (eta :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                              GHC.IO.Handle.Text.hPutStr2
+                                GHC.IO.Handle.FD.stdout
+                                (GHC.Base.++
+                                   @ GHC.Types.Char
+                                   w2
+                                   (GHC.CString.unpackAppendCString#
+                                      ": "#
+                                      (GHC.Show.$fShowMaybe_$cshow @ a w1 a1)))
+                                GHC.Types.True
+                                eta)
+                               `cast`
+                             (Sym (GHC.Types.N:IO[0] <()>_R)))
+                          lvl1)
+                 } in
+                 (# \ (i1 :: a) ->
+                    Data.Conduit.Internal.Pipe.Leftover
+                      @ a
+                      @ a
+                      @ a
+                      @ ()
+                      @ m
+                      @ b
+                      (w4 (GHC.Base.Just @ a i1))
+                      i1,
+                    let {
+                      x :: Data.Conduit.Internal.Pipe.Pipe a a a () m b
+                      = w4 (GHC.Base.Nothing @ a)
+                    } in
+                    \ (ds :: ()) -> x #)) -}
+dcea786ff13a820da75e08cbae7e466b
+  doubleSize :: GHC.Types.Int
+  {- Strictness: m,
+     Unfolding: InlineRule (0, True, True)
+                Foreign.Storable.$fStorableDouble5 -}
+aa0583d31fab01adf3a6bb6dafc1b67c
+  errorContext ::
+    GHC.Base.String
+    -> GHC.Base.Maybe GHC.Base.String
+    -> Data.Either.Either GHC.Base.String a
+    -> Data.Either.Either GHC.Base.String a
+  {- Arity: 2, Strictness: <L,U><L,1*U>,
+     Unfolding: (\ @ a
+                   (context :: GHC.Base.String)
+                   (suggestion :: GHC.Base.Maybe GHC.Base.String) ->
+                 let {
+                   sugg :: [GHC.Types.Char]
+                   = case suggestion of wild {
+                       GHC.Base.Nothing -> GHC.Types.[] @ GHC.Types.Char
+                       GHC.Base.Just x
+                       -> GHC.Base.++ @ GHC.Types.Char HML.Aux.errorContext1 x }
+                 } in
+                 \ (ds1 :: Data.Either.Either [GHC.Types.Char] a) ->
+                 case ds1 of wild {
+                   Data.Either.Left x
+                   -> Data.Either.Left
+                        @ [GHC.Types.Char]
+                        @ a
+                        (GHC.Base.++
+                           @ GHC.Types.Char
+                           context
+                           (GHC.CString.unpackAppendCString#
+                              ": "#
+                              (GHC.Base.++ @ GHC.Types.Char x sugg)))
+                   Data.Either.Right y -> wild }) -}
+a37158bf56bf6acb2ff00814c9acc250
+  errorContext1 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# " | "#) -}
+9f4449a0909fdde79b10cb17b013aec4
+  printConduit ::
+    (Control.Monad.IO.Class.MonadIO m, GHC.Show.Show a) =>
+    GHC.Base.String -> Data.Conduit.Internal.Conduit.ConduitM a a m ()
+  {- Arity: 4,
+     Strictness: <L,U(U,C(U))><L,U(C(C1(C1(U))),A,A)><L,U><L,U>m2,
+     Unfolding: InlineRule (0, True, True)
+                HML.Aux.printConduit1
+                  `cast`
+                (forall (m :: <* -> *>_N) (a :: <*>_N).
+                 <Control.Monad.IO.Class.MonadIO m>_R
+                 ->_R <GHC.Show.Show a>_R
+                 ->_R <GHC.Base.String>_R
+                 ->_R Sym (Data.Conduit.Internal.Conduit.N:ConduitM[0]
+                               <a>_N <a>_N <m>_N <()>_R)) -}
+eec65e5d286fd013c1d7d3c2a5d04d74
+  printConduit1 ::
+    (Control.Monad.IO.Class.MonadIO m, GHC.Show.Show a) =>
+    GHC.Base.String
+    -> forall b.
+       (() -> Data.Conduit.Internal.Pipe.Pipe a a a () m b)
+       -> Data.Conduit.Internal.Pipe.Pipe a a a () m b
+  {- Arity: 4,
+     Strictness: <L,U(U,C(U))><L,U(C(C1(C1(U))),A,A)><L,U><L,U>m2,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (4, True, False)
+                (\ @ (m :: * -> *)
+                   @ a
+                   (w :: Control.Monad.IO.Class.MonadIO m)
+                   (w1 :: GHC.Show.Show a)
+                   (w2 :: GHC.Base.String)
+                   @ b
+                   (w3 :: () -> Data.Conduit.Internal.Pipe.Pipe a a a () m b) ->
+                 case HML.Aux.$wprintConduit
+                        @ m
+                        @ a
+                        w
+                        w1
+                        w2
+                        @ b
+                        w3 of ww { (#,#) ww1 ww2 ->
+                 Data.Conduit.Internal.Pipe.NeedInput
+                   @ a
+                   @ a
+                   @ a
+                   @ ()
+                   @ m
+                   @ b
+                   ww1
+                   ww2 }) -}
+6b6c338ed8a2b9d53664165a0e839aa3
+  printVar :: GHC.Show.Show a => GHC.Base.String -> a -> a
+  {- Arity: 3, Strictness: <L,1*U(A,1*C1(U),A)><L,1*U><L,U>,
+     Unfolding: (\ @ a
+                   ($dShow :: GHC.Show.Show a)
+                   (str :: GHC.Base.String)
+                   (x :: a) ->
+                 Debug.Trace.trace
+                   @ a
+                   (GHC.Base.++
+                      @ GHC.Types.Char
+                      str
+                      (GHC.CString.unpackAppendCString#
+                         ": "#
+                         (GHC.Show.show @ a $dShow x)))
+                   x) -}
+dea383896134d91eb6dd06e177647768
+  showIO ::
+    Control.Monad.IO.Class.MonadIO m => GHC.Base.String -> m ()
+  {- Arity: 2, Strictness: <S(LC(S)),1*U(A,1*C1(U))><L,U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ @ (m :: * -> *)
+                   ($dMonadIO :: Control.Monad.IO.Class.MonadIO m)
+                   (eta :: GHC.Base.String) ->
+                 Control.Monad.IO.Class.liftIO
+                   @ m
+                   $dMonadIO
+                   @ ()
+                   (Debug.Trace.putTraceMsg1 eta)
+                     `cast`
+                   (Sym (GHC.Types.N:IO[0] <()>_R))) -}
+49441eac7c6e2ec03ae2e7c4036d4bf9
+  sl :: GHC.Show.Show a => a -> GHC.Base.String
+  {- Arity: 2, Strictness: <S(LC(S)L),1*U(A,1*C1(U),A)><L,U>,
+     Unfolding: (\ @ a ($dShow :: GHC.Show.Show a) (a1 :: a) ->
+                 GHC.Base.++
+                   @ GHC.Types.Char
+                   (GHC.Show.show @ a $dShow a1)
+                   HML.Aux.sl1) -}
+a9f80b160485b17bd1014a5e02845e60
+  sl1 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# " "#) -}
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: none
+require own pkg trusted: False
+

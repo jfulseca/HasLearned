@@ -1,0 +1,984 @@
+
+==================== FINAL INTERFACE ====================
+2017-11-20 04:54:03.044595 UTC
+
+interface haslearned-0.1.0.0-1MYfuCwSlxlBXzMx3VqeuN:HML.FileIO.MatrixHeader 8002
+  interface hash: 8f41cabfeb106dbe542b864b5675370a
+  ABI hash: 55866bc7e98e7ba1f7fa5af73c65820d
+  export-list hash: 9663010371bc593925810eed4c69845b
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: bc3ee18da6820b4b049eac41cafbc431
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  HML.FileIO.MatrixHeader.compatibleHeaders
+  HML.FileIO.MatrixHeader.stripSeparators
+  HML.FileIO.MatrixHeader.MatrixHeader{HML.FileIO.MatrixHeader.MatrixHeader cols dataType rows}
+module dependencies: HML.Types.Constants HML.Types.PosInt
+                     HML.Types.TypeName
+package dependencies: QuickCheck-2.9.2@QuickCheck-2.9.2-LvlomhGMxrFBkX1zwiWpQu
+                      array-0.5.1.1@array-0.5.1.1
+                      attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ
+                      base-4.9.1.0 binary-0.8.3.0@binary-0.8.3.0
+                      bytestring-0.10.8.1@bytestring-0.10.8.1
+                      bytestring-conversion-0.3.1@bytestring-conversion-0.3.1-KSK6l7QmbIf1TbIBILuJUV
+                      case-insensitive-1.2.0.10@case-insensitive-1.2.0.10-1D5OUKQ7UrJ7IpOe0di4Un
+                      containers-0.5.7.1@containers-0.5.7.1
+                      deepseq-1.4.2.0@deepseq-1.4.2.0
+                      double-conversion-2.0.2.0@double-conversion-2.0.2.0-Ls1AZoWRK0TKpzR8XpTsSD
+                      ghc-boot-th-8.0.2@ghc-boot-th-8.0.2 ghc-prim-0.5.0.0
+                      hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol
+                      integer-gmp-1.0.0.1
+                      integer-logarithms-1.0.2@integer-logarithms-1.0.2-92lMiWV9mmYAwfMEYgfQ0D
+                      pretty-1.1.3.3@pretty-1.1.3.3
+                      primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh
+                      random-1.1@random-1.1-9tceXaeYIMZ4JrKq20Egog
+                      scientific-0.3.5.2@scientific-0.3.5.2-FM2NdrNTcdbCDq9wuNnhIA
+                      template-haskell-2.11.1.0
+                      text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00
+                      tf-random-0.5@tf-random-0.5-CJZw1ZWS5MOJlR60HqKEZL
+                      time-1.6.0.1@time-1.6.0.1 transformers-0.5.2.0@transformers-0.5.2.0
+orphans: attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ:Data.Attoparsec.ByteString.Char8
+         base-4.9.1.0:GHC.Base base-4.9.1.0:GHC.Float
+         binary-0.8.3.0@binary-0.8.3.0:Data.Binary.Generic
+         bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Builder
+         hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol:Data.Hashable.Generic
+         haslearned-0.1.0.0-1MYfuCwSlxlBXzMx3VqeuN:HML.Types.PosInt
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Show
+         time-1.6.0.1@time-1.6.0.1:Data.Time.Calendar.Gregorian
+         time-1.6.0.1@time-1.6.0.1:Data.Time.Format.Parse
+         time-1.6.0.1@time-1.6.0.1:Data.Time.LocalTime.LocalTime
+         transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.Error
+family instance modules: attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ:Data.Attoparsec.Internal.Types
+                         base-4.9.1.0:Control.Applicative base-4.9.1.0:Data.Complex
+                         base-4.9.1.0:Data.Either base-4.9.1.0:Data.Functor.Compose
+                         base-4.9.1.0:Data.Functor.Const base-4.9.1.0:Data.Functor.Identity
+                         base-4.9.1.0:Data.Functor.Product base-4.9.1.0:Data.Functor.Sum
+                         base-4.9.1.0:Data.List.NonEmpty base-4.9.1.0:Data.Monoid
+                         base-4.9.1.0:Data.Semigroup base-4.9.1.0:Data.Type.Equality
+                         base-4.9.1.0:Data.Version base-4.9.1.0:Data.Void
+                         base-4.9.1.0:GHC.Exts base-4.9.1.0:GHC.Generics
+                         base-4.9.1.0:GHC.IO.Exception base-4.9.1.0:GHC.TypeLits
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntMap.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntSet.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Sequence
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Set.Base
+                         ghc-boot-th-8.0.2@ghc-boot-th-8.0.2:GHC.LanguageExtensions.Type
+                         pretty-1.1.3.3@pretty-1.1.3.3:Text.PrettyPrint.Annotated.HughesPJ
+                         pretty-1.1.3.3@pretty-1.1.3.3:Text.PrettyPrint.HughesPJ
+                         primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh:Control.Monad.Primitive
+                         primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh:Data.Primitive.Array
+                         template-haskell-2.11.1.0:Language.Haskell.TH.Syntax
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
+import  -/  attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ:Data.Attoparsec.ByteString 95552c58dcce0357c7f3698b92a0ce9b
+import  -/  attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ:Data.Attoparsec.ByteString.Char8 435773ef0b92061bddf7a2c20f1a009b
+import  -/  attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ:Data.Attoparsec.ByteString.Internal eadd217906370ab7c792393e893ec0ea
+import  -/  base-4.9.1.0:Data.Either 20b09ef8d0a5b74fdec011c40c1587f5
+import  -/  base-4.9.1.0:Data.Monoid 51cc9cd8c130d49ba96b7c2c2406022b
+import  -/  base-4.9.1.0:GHC.Base c4231c43c07e46080a26bf94094c7aa1
+import  -/  base-4.9.1.0:GHC.Real 82e4e59051a13dba1da63e1e970a69e6
+import  -/  base-4.9.1.0:GHC.Show a027f5ac24879eaba752f44aa90fe511
+import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
+import  -/  bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString 43e99fdac51908da414a28958688da64
+import  -/  bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Internal 89cda42ec946d9d6577dd41ab95d523e
+import  -/  bytestring-conversion-0.3.1@bytestring-conversion-0.3.1-KSK6l7QmbIf1TbIBILuJUV:Data.ByteString.Conversion ff5b7c2f893209b9038238a8e75ea663
+import  -/  bytestring-conversion-0.3.1@bytestring-conversion-0.3.1-KSK6l7QmbIf1TbIBILuJUV:Data.ByteString.Conversion.From 6e6788790b799ba6a2f4a1563369b1f4
+import  -/  bytestring-conversion-0.3.1@bytestring-conversion-0.3.1-KSK6l7QmbIf1TbIBILuJUV:Data.ByteString.Conversion.To 780591d36b5ca20d40e5412d5c0fdf88
+import  -/  ghc-prim-0.5.0.0:GHC.Classes 0bdf3d057a415ec1b84a7b1994efbe47
+import  -/  HML.Types.Constants eea9f8132a6546f4e492c01a83dc9c00
+  exports: 878d4cbaaafe0710ed0f06c4eb6b07e8
+  separator 0490423fbf54a372c78ae6c93cd9b65d
+import  -/  HML.Types.PosInt e76284e9d561a007ee931c212ba10a01
+  exports: cb9dc14fda9b216a29a6ff1f144bd6c0
+  PosInt 5108cb4455de278e3ba122e1d7edf8ea
+import  -/  HML.Types.TypeName 860c931b806fae13090ea4b89f4273e4
+  exports: 2254311b48ddd492ba327dab8c37167b
+  TypeName 8c964b2970838d3c5f8f9e319a29e500
+b2ea802841815117022cbfe9bdee05b2
+  $fEqMatrixHeader ::
+    GHC.Classes.Eq HML.FileIO.MatrixHeader.MatrixHeader
+  DFunId
+  {- HasNoCafRefs, Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ HML.FileIO.MatrixHeader.MatrixHeader
+                  HML.FileIO.MatrixHeader.$fEqMatrixHeader_$c==
+                  HML.FileIO.MatrixHeader.$fEqMatrixHeader_$c/= -}
+b2ea802841815117022cbfe9bdee05b2
+  $fEqMatrixHeader_$c/= ::
+    HML.FileIO.MatrixHeader.MatrixHeader
+    -> HML.FileIO.MatrixHeader.MatrixHeader -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs,
+     Strictness: <S(SLL),1*U(1*U,1*U(U),1*U(U))><S(SLL),1*U(1*U,1*U(U),1*U(U))>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (a :: HML.FileIO.MatrixHeader.MatrixHeader)
+                   (b :: HML.FileIO.MatrixHeader.MatrixHeader) ->
+                 case HML.FileIO.MatrixHeader.$fEqMatrixHeader_$c== a b of wild {
+                   GHC.Types.False -> GHC.Types.True
+                   GHC.Types.True -> GHC.Types.False }) -}
+b2ea802841815117022cbfe9bdee05b2
+  $fEqMatrixHeader_$c== ::
+    HML.FileIO.MatrixHeader.MatrixHeader
+    -> HML.FileIO.MatrixHeader.MatrixHeader -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs,
+     Strictness: <S(SLL),1*U(1*U,1*U(U),1*U(U))><S(SLL),1*U(1*U,1*U(U),1*U(U))>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: HML.FileIO.MatrixHeader.MatrixHeader)
+                   (w1 :: HML.FileIO.MatrixHeader.MatrixHeader) ->
+                 case w of ww { HML.FileIO.MatrixHeader.MatrixHeader ww1 ww2 ww3 ->
+                 case w1 of ww4 { HML.FileIO.MatrixHeader.MatrixHeader ww5 ww6 ww7 ->
+                 HML.FileIO.MatrixHeader.$w$c== ww1 ww2 ww3 ww5 ww6 ww7 } }) -}
+b2ea802841815117022cbfe9bdee05b2
+  $fFromByteStringMatrixHeader ::
+    Data.ByteString.Conversion.From.FromByteString
+      HML.FileIO.MatrixHeader.MatrixHeader
+  DFunId
+  {- Arity: 5,
+     Strictness: <S(SLSSSS),1*U(U,U,U,U,U,U)><S(S),1*U(U)><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
+     Inline: INLINE (sat-args=0),
+     Unfolding: InlineRule (0, False, True)
+                HML.FileIO.MatrixHeader.parseMatrixHeader
+                  `cast`
+                (Sym (Data.ByteString.Conversion.From.N:FromByteString[0]) <HML.FileIO.MatrixHeader.MatrixHeader>_N) -}
+b2ea802841815117022cbfe9bdee05b2
+  $fFromByteStringMatrixHeader1 ::
+    Data.Attoparsec.Internal.Types.State
+      Data.ByteString.Internal.ByteString
+    -> Data.Attoparsec.Internal.Types.Pos
+    -> Data.Attoparsec.Internal.Types.More
+    -> Data.Attoparsec.Internal.Types.Failure
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         r
+    -> Data.Attoparsec.Internal.Types.Success
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         HML.FileIO.MatrixHeader.MatrixHeader
+         r
+    -> Data.Attoparsec.Internal.Types.IResult
+         Data.ByteString.Internal.ByteString r
+  {- Arity: 5,
+     Strictness: <S(SLSSSS),1*U(U,U,U,U,U,U)><S(S),1*U(U)><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (5, True, False)
+                (\ @ r
+                   (w :: Data.Attoparsec.Internal.Types.State
+                           Data.ByteString.Internal.ByteString)
+                   (w1 :: Data.Attoparsec.Internal.Types.Pos)
+                   (w2 :: Data.Attoparsec.Internal.Types.More)
+                   (w3 :: Data.Attoparsec.Internal.Types.Failure
+                            Data.ByteString.Internal.ByteString
+                            (Data.Attoparsec.Internal.Types.State
+                               Data.ByteString.Internal.ByteString)
+                            r)
+                   (w4 :: Data.Attoparsec.Internal.Types.Success
+                            Data.ByteString.Internal.ByteString
+                            (Data.Attoparsec.Internal.Types.State
+                               Data.ByteString.Internal.ByteString)
+                            HML.FileIO.MatrixHeader.MatrixHeader
+                            r) ->
+                 case w `cast`
+                      (Sub (Data.Attoparsec.Internal.Types.D:R:StateByteString[0])) of ww { Data.Attoparsec.ByteString.Buffer.Buf ww1 ww2 ww3 ww4 ww5 ww6 ->
+                 case w1
+                        `cast`
+                      (Data.Attoparsec.Internal.Types.N:Pos[0]) of ww7 { GHC.Types.I# ww8 ->
+                 HML.FileIO.MatrixHeader.$wparseMatrixHeader
+                   @ r
+                   ww1
+                   ww2
+                   ww3
+                   ww4
+                   ww5
+                   ww6
+                   ww8
+                   w2
+                   w3
+                   w4 } }) -}
+b2ea802841815117022cbfe9bdee05b2
+  $fShowMatrixHeader ::
+    GHC.Show.Show HML.FileIO.MatrixHeader.MatrixHeader
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ HML.FileIO.MatrixHeader.MatrixHeader
+                  HML.FileIO.MatrixHeader.$fShowMatrixHeader_$cshowsPrec
+                  HML.FileIO.MatrixHeader.$fShowMatrixHeader_$cshow
+                  HML.FileIO.MatrixHeader.$fShowMatrixHeader_$cshowList -}
+b2ea802841815117022cbfe9bdee05b2
+  $fShowMatrixHeader1 ::
+    HML.FileIO.MatrixHeader.MatrixHeader -> GHC.Show.ShowS
+  {- Arity: 1,
+     Unfolding: (\ (w :: HML.FileIO.MatrixHeader.MatrixHeader) ->
+                 case w of ww { HML.FileIO.MatrixHeader.MatrixHeader ww1 ww2 ww3 ->
+                 HML.FileIO.MatrixHeader.$w$cshowsPrec 0# ww1 ww2 ww3 }) -}
+852b07b1453b850d928b99765452f596
+  $fShowMatrixHeader2 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "MatrixHeader {"#) -}
+89e49abaca7cd2905ee980b3c21c7d9d
+  $fShowMatrixHeader3 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "dataType = "#) -}
+6c3616bbeb5a7f84519135df488c6e4f
+  $fShowMatrixHeader4 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "}"#) -}
+ebee1c970a2dfa3dc3793d43901f1b11
+  $fShowMatrixHeader5 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "cols = "#) -}
+8588fd71947f3a67ac6fe3e72d565037
+  $fShowMatrixHeader6 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "rows = "#) -}
+842769f8077a2252a732dc0860d5f072
+  $fShowMatrixHeader7 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# ", "#) -}
+b2ea802841815117022cbfe9bdee05b2
+  $fShowMatrixHeader_$cshow ::
+    HML.FileIO.MatrixHeader.MatrixHeader -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U(U,U,U)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (x :: HML.FileIO.MatrixHeader.MatrixHeader) ->
+                 HML.FileIO.MatrixHeader.$fShowMatrixHeader_$cshowsPrec
+                   GHC.Show.shows22
+                   x
+                   (GHC.Types.[] @ GHC.Types.Char)) -}
+b2ea802841815117022cbfe9bdee05b2
+  $fShowMatrixHeader_$cshowList ::
+    [HML.FileIO.MatrixHeader.MatrixHeader] -> GHC.Show.ShowS
+  {- Arity: 2,
+     Unfolding: (GHC.Show.showList__
+                   @ HML.FileIO.MatrixHeader.MatrixHeader
+                   HML.FileIO.MatrixHeader.$fShowMatrixHeader1) -}
+b2ea802841815117022cbfe9bdee05b2
+  $fShowMatrixHeader_$cshowsPrec ::
+    GHC.Types.Int
+    -> HML.FileIO.MatrixHeader.MatrixHeader -> GHC.Show.ShowS
+  {- Arity: 2, Strictness: <S(S),1*U(U)><S,1*U(U,U,U)>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: GHC.Types.Int)
+                   (w1 :: HML.FileIO.MatrixHeader.MatrixHeader) ->
+                 case w of ww { GHC.Types.I# ww1 ->
+                 case w1 of ww2 { HML.FileIO.MatrixHeader.MatrixHeader ww3 ww4 ww5 ->
+                 HML.FileIO.MatrixHeader.$w$cshowsPrec ww1 ww3 ww4 ww5 } }) -}
+b2ea802841815117022cbfe9bdee05b2
+  $fToByteStringMatrixHeader ::
+    Data.ByteString.Conversion.To.ToByteString
+      HML.FileIO.MatrixHeader.MatrixHeader
+  DFunId
+  {- Arity: 2, Strictness: <L,U(U,U(U),U(U))><L,U>,
+     Inline: INLINE (sat-args=0),
+     Unfolding: InlineRule (0, False, True)
+                HML.FileIO.MatrixHeader.$fToByteStringMatrixHeader_$cbuilder
+                  `cast`
+                (Sym (Data.ByteString.Conversion.To.N:ToByteString[0]
+                          <HML.FileIO.MatrixHeader.MatrixHeader>_N)) -}
+b2ea802841815117022cbfe9bdee05b2
+  $fToByteStringMatrixHeader1 ::
+    HML.FileIO.MatrixHeader.MatrixHeader
+    -> forall r.
+       Data.ByteString.Builder.Internal.BuildStep r
+       -> Data.ByteString.Builder.Internal.BuildStep r
+  {- Arity: 2, Strictness: <L,U(U,U(U),U(U))><L,U>,
+     Unfolding: (\ (header :: HML.FileIO.MatrixHeader.MatrixHeader)
+                   @ r
+                   (eta :: Data.ByteString.Builder.Internal.BuildStep r) ->
+                 HML.FileIO.MatrixHeader.$fToByteStringMatrixHeader_sep
+                   `cast`
+                 (Data.ByteString.Builder.Internal.N:Builder[0])
+                   @ r
+                   (let {
+                      eta1 :: Data.ByteString.Builder.Internal.BuildStep r
+                      = HML.FileIO.MatrixHeader.$fToByteStringMatrixHeader5
+                          `cast`
+                        (Data.ByteString.Builder.Internal.N:Builder[0])
+                          @ r
+                          (let {
+                             eta2 :: Data.ByteString.Builder.Internal.BuildStep r
+                             = HML.FileIO.MatrixHeader.$fToByteStringMatrixHeader2
+                                 `cast`
+                               (Data.ByteString.Builder.Internal.N:Builder[0])
+                                 @ r
+                                 (let {
+                                    eta3 :: Data.ByteString.Builder.Internal.BuildStep r
+                                    = HML.FileIO.MatrixHeader.$fToByteStringMatrixHeader_sep
+                                        `cast`
+                                      (Data.ByteString.Builder.Internal.N:Builder[0])
+                                        @ r
+                                        eta
+                                  } in
+                                  let {
+                                    lvl5 :: Data.ByteString.Builder.Internal.BufferRange
+                                            -> GHC.Prim.State# GHC.Prim.RealWorld
+                                            -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+                                                  Data.ByteString.Builder.Internal.BuildSignal r #)
+                                      {- Arity: 2 -}
+                                    = \ (ds :: Data.ByteString.Builder.Internal.BufferRange)
+                                        (eta4 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                                      case ds of wild3 { Data.ByteString.Builder.Internal.BufferRange dt3 dt4 ->
+                                      case header of wild { HML.FileIO.MatrixHeader.MatrixHeader ds1 ds2 ds3 ->
+                                      case ds3
+                                             `cast`
+                                           (Test.QuickCheck.Modifiers.N:Positive[0]
+                                                <GHC.Types.Int>_R) of wild1 { GHC.Types.I# x# ->
+                                      case {__pkg_ccall bytestring-0.10.8.1@bytestring-0.10.8.1 _hs_bytestring_long_long_int_dec GHC.Prim.Int#
+                                                                                                                                 -> GHC.Prim.Addr#
+                                                                                                                                 -> GHC.Prim.State#
+                                                                                                                                      GHC.Prim.RealWorld
+                                                                                                                                 -> (# GHC.Prim.State#
+                                                                                                                                         GHC.Prim.RealWorld,
+                                                                                                                                       GHC.Prim.Addr# #)}
+                                             x#
+                                             dt3
+                                             eta4 of wild2 { (#,#) ds6 ds7 ->
+                                      (eta3 (Data.ByteString.Builder.Internal.BufferRange ds7 dt4))
+                                        `cast`
+                                      (GHC.Types.N:IO[0]
+                                           <Data.ByteString.Builder.Internal.BuildSignal r>_R)
+                                        ds6 } } } }
+                                  } in
+                                  (\ (eta4 :: Data.ByteString.Builder.Internal.BufferRange)
+                                     (eta5 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                                   case eta4 of wild { Data.ByteString.Builder.Internal.BufferRange dt dt1 ->
+                                   case GHC.Prim.tagToEnum#
+                                          @ GHC.Types.Bool
+                                          (GHC.Prim.<# (GHC.Prim.minusAddr# dt1 dt) 20#) of wild2 {
+                                     GHC.Types.False
+                                     -> case header of wild1 { HML.FileIO.MatrixHeader.MatrixHeader ds ds1 ds2 ->
+                                        case ds2
+                                               `cast`
+                                             (Test.QuickCheck.Modifiers.N:Positive[0]
+                                                  <GHC.Types.Int>_R) of wild3 { GHC.Types.I# x# ->
+                                        case {__pkg_ccall bytestring-0.10.8.1@bytestring-0.10.8.1 _hs_bytestring_long_long_int_dec GHC.Prim.Int#
+                                                                                                                                   -> GHC.Prim.Addr#
+                                                                                                                                   -> GHC.Prim.State#
+                                                                                                                                        GHC.Prim.RealWorld
+                                                                                                                                   -> (# GHC.Prim.State#
+                                                                                                                                           GHC.Prim.RealWorld,
+                                                                                                                                         GHC.Prim.Addr# #)}
+                                               x#
+                                               dt
+                                               eta5 of wild4 { (#,#) ds6 ds7 ->
+                                        (eta3
+                                           (Data.ByteString.Builder.Internal.BufferRange ds7 dt1))
+                                          `cast`
+                                        (GHC.Types.N:IO[0]
+                                             <Data.ByteString.Builder.Internal.BuildSignal r>_R)
+                                          ds6 } } }
+                                     GHC.Types.True
+                                     -> (# eta5,
+                                           Data.ByteString.Builder.Internal.BufferFull
+                                             @ r
+                                             20#
+                                             dt
+                                             lvl5
+                                               `cast`
+                                             (<Data.ByteString.Builder.Internal.BufferRange>_R
+                                              ->_R Sym (GHC.Types.N:IO[0]
+                                                            <Data.ByteString.Builder.Internal.BuildSignal
+                                                               r>_R)) #) } })
+                                    `cast`
+                                  (<Data.ByteString.Builder.Internal.BufferRange>_R
+                                   ->_R Sym (GHC.Types.N:IO[0]
+                                                 <Data.ByteString.Builder.Internal.BuildSignal
+                                                    r>_R)))
+                           } in
+                           let {
+                             lvl5 :: Data.ByteString.Builder.Internal.BufferRange
+                                     -> GHC.Prim.State# GHC.Prim.RealWorld
+                                     -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+                                           Data.ByteString.Builder.Internal.BuildSignal r #)
+                               {- Arity: 2 -}
+                             = \ (ds :: Data.ByteString.Builder.Internal.BufferRange)
+                                 (eta3 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                               case ds of wild3 { Data.ByteString.Builder.Internal.BufferRange dt3 dt4 ->
+                               case header of wild { HML.FileIO.MatrixHeader.MatrixHeader ds1 ds2 ds3 ->
+                               case ds2
+                                      `cast`
+                                    (Test.QuickCheck.Modifiers.N:Positive[0]
+                                         <GHC.Types.Int>_R) of wild1 { GHC.Types.I# x# ->
+                               case {__pkg_ccall bytestring-0.10.8.1@bytestring-0.10.8.1 _hs_bytestring_long_long_int_dec GHC.Prim.Int#
+                                                                                                                          -> GHC.Prim.Addr#
+                                                                                                                          -> GHC.Prim.State#
+                                                                                                                               GHC.Prim.RealWorld
+                                                                                                                          -> (# GHC.Prim.State#
+                                                                                                                                  GHC.Prim.RealWorld,
+                                                                                                                                GHC.Prim.Addr# #)}
+                                      x#
+                                      dt3
+                                      eta3 of wild2 { (#,#) ds6 ds7 ->
+                               (eta2 (Data.ByteString.Builder.Internal.BufferRange ds7 dt4))
+                                 `cast`
+                               (GHC.Types.N:IO[0]
+                                    <Data.ByteString.Builder.Internal.BuildSignal r>_R)
+                                 ds6 } } } }
+                           } in
+                           (\ (eta3 :: Data.ByteString.Builder.Internal.BufferRange)
+                              (eta4 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                            case eta3 of wild { Data.ByteString.Builder.Internal.BufferRange dt dt1 ->
+                            case GHC.Prim.tagToEnum#
+                                   @ GHC.Types.Bool
+                                   (GHC.Prim.<# (GHC.Prim.minusAddr# dt1 dt) 20#) of wild2 {
+                              GHC.Types.False
+                              -> case header of wild1 { HML.FileIO.MatrixHeader.MatrixHeader ds ds1 ds2 ->
+                                 case ds1
+                                        `cast`
+                                      (Test.QuickCheck.Modifiers.N:Positive[0]
+                                           <GHC.Types.Int>_R) of wild3 { GHC.Types.I# x# ->
+                                 case {__pkg_ccall bytestring-0.10.8.1@bytestring-0.10.8.1 _hs_bytestring_long_long_int_dec GHC.Prim.Int#
+                                                                                                                            -> GHC.Prim.Addr#
+                                                                                                                            -> GHC.Prim.State#
+                                                                                                                                 GHC.Prim.RealWorld
+                                                                                                                            -> (# GHC.Prim.State#
+                                                                                                                                    GHC.Prim.RealWorld,
+                                                                                                                                  GHC.Prim.Addr# #)}
+                                        x#
+                                        dt
+                                        eta4 of wild4 { (#,#) ds6 ds7 ->
+                                 (eta2 (Data.ByteString.Builder.Internal.BufferRange ds7 dt1))
+                                   `cast`
+                                 (GHC.Types.N:IO[0]
+                                      <Data.ByteString.Builder.Internal.BuildSignal r>_R)
+                                   ds6 } } }
+                              GHC.Types.True
+                              -> (# eta4,
+                                    Data.ByteString.Builder.Internal.BufferFull
+                                      @ r
+                                      20#
+                                      dt
+                                      lvl5
+                                        `cast`
+                                      (<Data.ByteString.Builder.Internal.BufferRange>_R
+                                       ->_R Sym (GHC.Types.N:IO[0]
+                                                     <Data.ByteString.Builder.Internal.BuildSignal
+                                                        r>_R)) #) } })
+                             `cast`
+                           (<Data.ByteString.Builder.Internal.BufferRange>_R
+                            ->_R Sym (GHC.Types.N:IO[0]
+                                          <Data.ByteString.Builder.Internal.BuildSignal r>_R)))
+                    } in
+                    (\ (eta2 :: Data.ByteString.Builder.Internal.BufferRange)
+                       (eta3 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                     case header of wild { HML.FileIO.MatrixHeader.MatrixHeader ds ds1 ds2 ->
+                     case ds of wild1 {
+                       HML.Types.TypeName.INT
+                       -> Data.ByteString.Conversion.To.$fToByteStringText2
+                            HML.Types.TypeName.$fToByteStringTypeName4
+                            @ r
+                            eta1
+                            eta2
+                            eta3
+                       HML.Types.TypeName.DBL
+                       -> Data.ByteString.Conversion.To.$fToByteStringText2
+                            HML.Types.TypeName.$fToByteStringTypeName2
+                            @ r
+                            eta1
+                            eta2
+                            eta3 } })
+                      `cast`
+                    (<Data.ByteString.Builder.Internal.BufferRange>_R
+                     ->_R Sym (GHC.Types.N:IO[0]
+                                   <Data.ByteString.Builder.Internal.BuildSignal r>_R)))) -}
+d1ec93705d956adc41c79e62a3017e0b
+  $fToByteStringMatrixHeader2 ::
+    Data.ByteString.Builder.Internal.Builder
+  {- Unfolding: (Data.ByteString.Conversion.To.$fToByteStringChar_$cbuilder1
+                   HML.FileIO.MatrixHeader.$fToByteStringMatrixHeader3) -}
+927a6cadc35f5210e921d1929e8dcfdd
+  $fToByteStringMatrixHeader3 :: Data.Text.Internal.Text
+  {- Unfolding: (Data.Text.Show.singleton_
+                   HML.FileIO.MatrixHeader.$fToByteStringMatrixHeader4) -}
+6c2f41b70c09adbef01700e072a03215
+  $fToByteStringMatrixHeader4 :: GHC.Types.Char
+  {- HasNoCafRefs, Unfolding: (GHC.Types.C# 'c'#) -}
+9e8e1cb29e260cd4e34de296a58f51a6
+  $fToByteStringMatrixHeader5 ::
+    Data.ByteString.Builder.Internal.Builder
+  {- Unfolding: (Data.ByteString.Conversion.To.$fToByteStringChar_$cbuilder1
+                   HML.FileIO.MatrixHeader.$fToByteStringMatrixHeader6) -}
+47973fa38b99de82de4f1b2399ee6291
+  $fToByteStringMatrixHeader6 :: Data.Text.Internal.Text
+  {- Unfolding: (Data.Text.Show.singleton_
+                   HML.FileIO.MatrixHeader.$fToByteStringMatrixHeader7) -}
+c5af95539e92e7c3d0773a39d98d5fec
+  $fToByteStringMatrixHeader7 :: GHC.Types.Char
+  {- HasNoCafRefs, Unfolding: (GHC.Types.C# 'r'#) -}
+22bf0fde2e9948d527ad1245e06ff68a
+  $fToByteStringMatrixHeader8 :: Data.Text.Internal.Text
+  {- Unfolding: (Data.Text.Show.singleton_
+                   HML.Types.Constants.separator) -}
+b2ea802841815117022cbfe9bdee05b2
+  $fToByteStringMatrixHeader_$cbuilder ::
+    HML.FileIO.MatrixHeader.MatrixHeader
+    -> Data.ByteString.Builder.Internal.Builder
+  {- Arity: 2, Strictness: <L,U(U,U(U),U(U))><L,U>,
+     Unfolding: InlineRule (0, True, True)
+                HML.FileIO.MatrixHeader.$fToByteStringMatrixHeader1
+                  `cast`
+                (<HML.FileIO.MatrixHeader.MatrixHeader>_R
+                 ->_R Sym (Data.ByteString.Builder.Internal.N:Builder[0])) -}
+30508d170bf3be3fd176fb883bcb8c16
+  $fToByteStringMatrixHeader_sep ::
+    Data.ByteString.Builder.Internal.Builder
+  {- Unfolding: (Data.ByteString.Conversion.To.$fToByteStringChar_$cbuilder1
+                   HML.FileIO.MatrixHeader.$fToByteStringMatrixHeader8) -}
+6e5f19f44cfc9f44cdcfa446c8918a42
+  $tc'MatrixHeader :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   10194999473258890622##
+                   1338163201229918699##
+                   HML.FileIO.MatrixHeader.$trModule
+                   HML.FileIO.MatrixHeader.$tc'MatrixHeader1) -}
+43918abcbb9c91fe44b8cf463aa6387e
+  $tc'MatrixHeader1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'MatrixHeader"#) -}
+998ceb50677f411bcc85dab060b1effe
+  $tcMatrixHeader :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   2142935258455960544##
+                   749843401773326667##
+                   HML.FileIO.MatrixHeader.$trModule
+                   HML.FileIO.MatrixHeader.$tcMatrixHeader1) -}
+1d2cc16359d08456a150de2ea94c2a36
+  $tcMatrixHeader1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "MatrixHeader"#) -}
+c211741e480a09a03a2827536f927ec8
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module
+                   HML.FileIO.MatrixHeader.$trModule2
+                   HML.FileIO.MatrixHeader.$trModule1) -}
+46ce4471c4081694733c5b1a072aa0c9
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "HML.FileIO.MatrixHeader"#) -}
+505d309a9b957bc3acca4d2cc782b1cd
+  $trModule2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS
+                   "haslearned-0.1.0.0-1MYfuCwSlxlBXzMx3VqeuN"#) -}
+27ec159ea3a5fd50239a7ff0409b80b6
+  $w$c== ::
+    HML.Types.TypeName.TypeName
+    -> HML.Types.PosInt.PosInt
+    -> HML.Types.PosInt.PosInt
+    -> HML.Types.TypeName.TypeName
+    -> HML.Types.PosInt.PosInt
+    -> HML.Types.PosInt.PosInt
+    -> GHC.Types.Bool
+  {- Arity: 6, HasNoCafRefs,
+     Strictness: <S,1*U><L,1*U(U)><L,1*U(U)><S,1*U><L,1*U(U)><L,1*U(U)>,
+     Inline: [0],
+     Unfolding: (\ (ww :: HML.Types.TypeName.TypeName)
+                   (ww1 :: HML.Types.PosInt.PosInt)
+                   (ww2 :: HML.Types.PosInt.PosInt)
+                   (ww3 :: HML.Types.TypeName.TypeName)
+                   (ww4 :: HML.Types.PosInt.PosInt)
+                   (ww5 :: HML.Types.PosInt.PosInt) ->
+                 case ww of wild {
+                   HML.Types.TypeName.INT
+                   -> case ww3 of wild1 {
+                        HML.Types.TypeName.INT
+                        -> case ww1
+                                  `cast`
+                                (Test.QuickCheck.Modifiers.N:Positive[0]
+                                     <GHC.Types.Int>_R) of wild2 { GHC.Types.I# x ->
+                           case ww4
+                                  `cast`
+                                (Test.QuickCheck.Modifiers.N:Positive[0]
+                                     <GHC.Types.Int>_R) of wild3 { GHC.Types.I# y ->
+                           case GHC.Prim.tagToEnum#
+                                  @ GHC.Types.Bool
+                                  (GHC.Prim.==# x y) of wild4 {
+                             GHC.Types.False -> GHC.Types.False
+                             GHC.Types.True
+                             -> GHC.Classes.eqInt
+                                  ww2
+                                    `cast`
+                                  (Test.QuickCheck.Modifiers.N:Positive[0] <GHC.Types.Int>_R)
+                                  ww5
+                                    `cast`
+                                  (Test.QuickCheck.Modifiers.N:Positive[0] <GHC.Types.Int>_R) } } }
+                        HML.Types.TypeName.DBL -> GHC.Types.False }
+                   HML.Types.TypeName.DBL
+                   -> case ww3 of wild1 {
+                        HML.Types.TypeName.INT -> GHC.Types.False
+                        HML.Types.TypeName.DBL
+                        -> case ww1
+                                  `cast`
+                                (Test.QuickCheck.Modifiers.N:Positive[0]
+                                     <GHC.Types.Int>_R) of wild2 { GHC.Types.I# x ->
+                           case ww4
+                                  `cast`
+                                (Test.QuickCheck.Modifiers.N:Positive[0]
+                                     <GHC.Types.Int>_R) of wild3 { GHC.Types.I# y ->
+                           case GHC.Prim.tagToEnum#
+                                  @ GHC.Types.Bool
+                                  (GHC.Prim.==# x y) of wild4 {
+                             GHC.Types.False -> GHC.Types.False
+                             GHC.Types.True
+                             -> GHC.Classes.eqInt
+                                  ww2
+                                    `cast`
+                                  (Test.QuickCheck.Modifiers.N:Positive[0] <GHC.Types.Int>_R)
+                                  ww5
+                                    `cast`
+                                  (Test.QuickCheck.Modifiers.N:Positive[0]
+                                       <GHC.Types.Int>_R) } } } } }) -}
+f3ce6b24af9e9e00aefc33bd600c88ea
+  $w$cshowsPrec ::
+    GHC.Prim.Int#
+    -> HML.Types.TypeName.TypeName
+    -> HML.Types.PosInt.PosInt
+    -> HML.Types.PosInt.PosInt
+    -> GHC.Show.ShowS
+  {- Arity: 4, Strictness: <S,U><L,U><L,U><L,U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.Int#)
+                   (ww1 :: HML.Types.TypeName.TypeName)
+                   (ww2 :: HML.Types.PosInt.PosInt)
+                   (ww3 :: HML.Types.PosInt.PosInt) ->
+                 let {
+                   f :: GHC.Base.String -> GHC.Base.String
+                   = Test.QuickCheck.Modifiers.$w$cshowsPrec6
+                       @ GHC.Types.Int
+                       GHC.Show.$fShowInt
+                       0#
+                       ww2
+                 } in
+                 let {
+                   f1 :: GHC.Base.String -> GHC.Base.String
+                   = Test.QuickCheck.Modifiers.$w$cshowsPrec6
+                       @ GHC.Types.Int
+                       GHC.Show.$fShowInt
+                       0#
+                       ww3
+                 } in
+                 let {
+                   g :: GHC.Base.String -> GHC.Base.String
+                     {- Arity: 1, Strictness: <L,1*U> -}
+                   = \ (x :: GHC.Base.String) ->
+                     GHC.Base.++
+                       @ GHC.Types.Char
+                       HML.FileIO.MatrixHeader.$fShowMatrixHeader7
+                       (GHC.Base.++
+                          @ GHC.Types.Char
+                          HML.FileIO.MatrixHeader.$fShowMatrixHeader6
+                          (f (GHC.Base.++
+                                @ GHC.Types.Char
+                                HML.FileIO.MatrixHeader.$fShowMatrixHeader7
+                                (GHC.Base.++
+                                   @ GHC.Types.Char
+                                   HML.FileIO.MatrixHeader.$fShowMatrixHeader5
+                                   (f1
+                                      (GHC.Base.++
+                                         @ GHC.Types.Char
+                                         HML.FileIO.MatrixHeader.$fShowMatrixHeader4
+                                         x))))))
+                 } in
+                 let {
+                   g1 :: GHC.Base.String -> GHC.Base.String
+                     {- Arity: 1, Strictness: <L,1*U> -}
+                   = \ (x :: GHC.Base.String) ->
+                     GHC.Base.++
+                       @ GHC.Types.Char
+                       HML.FileIO.MatrixHeader.$fShowMatrixHeader3
+                       (case ww1 of wild {
+                          HML.Types.TypeName.INT
+                          -> GHC.Base.++
+                               @ GHC.Types.Char
+                               HML.Types.TypeName.$fShowTypeName3
+                               (g x)
+                          HML.Types.TypeName.DBL
+                          -> GHC.Base.++
+                               @ GHC.Types.Char
+                               HML.Types.TypeName.$fShowTypeName2
+                               (g x) })
+                 } in
+                 case GHC.Prim.tagToEnum#
+                        @ GHC.Types.Bool
+                        (GHC.Prim.>=# ww 11#) of wild {
+                   GHC.Types.False
+                   -> \ (x :: GHC.Base.String) ->
+                      GHC.Base.++
+                        @ GHC.Types.Char
+                        HML.FileIO.MatrixHeader.$fShowMatrixHeader2
+                        (g1 x)
+                   GHC.Types.True
+                   -> \ (x :: GHC.Base.String) ->
+                      GHC.Types.:
+                        @ GHC.Types.Char
+                        GHC.Show.shows7
+                        (GHC.Base.++
+                           @ GHC.Types.Char
+                           HML.FileIO.MatrixHeader.$fShowMatrixHeader2
+                           (g1 (GHC.Types.: @ GHC.Types.Char GHC.Show.shows4 x))) }) -}
+0685f1923b1f1bfa3ab13fe7a1e28792
+  $wcompatibleHeaders ::
+    HML.Types.TypeName.TypeName
+    -> HML.Types.PosInt.PosInt
+    -> HML.Types.PosInt.PosInt
+    -> HML.Types.TypeName.TypeName
+    -> HML.Types.PosInt.PosInt
+    -> HML.Types.PosInt.PosInt
+    -> GHC.Types.Bool
+  {- Arity: 6,
+     Strictness: <S,1*U><L,1*U(U)><L,1*U(U)><S,1*U><L,1*U(U)><L,1*U(U)>,
+     Inline: [0],
+     Unfolding: (\ (ww :: HML.Types.TypeName.TypeName)
+                   (ww1 :: HML.Types.PosInt.PosInt)
+                   (ww2 :: HML.Types.PosInt.PosInt)
+                   (ww3 :: HML.Types.TypeName.TypeName)
+                   (ww4 :: HML.Types.PosInt.PosInt)
+                   (ww5 :: HML.Types.PosInt.PosInt) ->
+                 let {
+                   $j :: GHC.Prim.Void# -> GHC.Types.Bool
+                     {- Arity: 1, Strictness: <L,A> -}
+                   = \ (w :: GHC.Prim.Void#)[OneShot] ->
+                     case ww2
+                            `cast`
+                          (Test.QuickCheck.Modifiers.N:Positive[0]
+                               <GHC.Types.Int>_R) of wild { GHC.Types.I# x ->
+                     case ww5
+                            `cast`
+                          (Test.QuickCheck.Modifiers.N:Positive[0]
+                               <GHC.Types.Int>_R) of wild1 { GHC.Types.I# y ->
+                     case GHC.Prim.tagToEnum#
+                            @ GHC.Types.Bool
+                            (GHC.Prim.==# x y) of wild2 {
+                       GHC.Types.False -> GHC.Types.False
+                       GHC.Types.True
+                       -> case ww4
+                                 `cast`
+                               (Test.QuickCheck.Modifiers.N:Positive[0]
+                                    <GHC.Types.Int>_R) of ww6 { GHC.Types.I# ww7 ->
+                          case ww1
+                                 `cast`
+                               (Test.QuickCheck.Modifiers.N:Positive[0]
+                                    <GHC.Types.Int>_R) of ww8 { GHC.Types.I# ww9 ->
+                          case HML.Types.PosInt.$w$cdivMod
+                                 ww7
+                                 ww9 of ww10 { (#,#) ww11 ww12 ->
+                          case ww12
+                                 `cast`
+                               (Test.QuickCheck.Modifiers.N:Positive[0]
+                                    <GHC.Types.Int>_R) of wild3 { GHC.Types.I# x1 ->
+                          case x1 of wild4 {
+                            DEFAULT -> GHC.Types.False 0# -> GHC.Types.True } } } } } } } }
+                 } in
+                 case ww of wild {
+                   HML.Types.TypeName.INT
+                   -> case ww3 of wild1 {
+                        HML.Types.TypeName.INT -> $j GHC.Prim.void#
+                        HML.Types.TypeName.DBL -> GHC.Types.False }
+                   HML.Types.TypeName.DBL
+                   -> case ww3 of wild1 {
+                        HML.Types.TypeName.INT -> GHC.Types.False
+                        HML.Types.TypeName.DBL -> $j GHC.Prim.void# } }) -}
+b2ea802841815117022cbfe9bdee05b2
+  $wparseMatrixHeader ::
+    GHC.Prim.Addr#
+    -> GHC.ForeignPtr.ForeignPtrContents
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> Data.Attoparsec.Internal.Types.More
+    -> Data.Attoparsec.Internal.Types.Failure
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         r
+    -> Data.Attoparsec.Internal.Types.Success
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         HML.FileIO.MatrixHeader.MatrixHeader
+         r
+    -> Data.Attoparsec.Internal.Types.IResult
+         Data.ByteString.Internal.ByteString r
+  {- Arity: 10,
+     Strictness: <S,U><L,U><S,U><S,U><S,U><S,U><S,U><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
+     Inline: [0] -}
+d7c377db63844b5189d7040117b5ae42
+  $wstrip ::
+    GHC.Prim.Addr#
+    -> GHC.ForeignPtr.ForeignPtrContents
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> Data.Attoparsec.Internal.Types.More
+    -> Data.Attoparsec.Internal.Types.Failure
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         r
+    -> Data.Attoparsec.Internal.Types.Success
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         HML.FileIO.MatrixHeader.MatrixHeader
+         r
+    -> Data.Attoparsec.Internal.Types.IResult
+         Data.ByteString.Internal.ByteString r
+  {- Arity: 10,
+     Strictness: <L,U><L,U><L,U><S,U><L,U><L,U><S,U><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
+     Inline: [0] -}
+b2ea802841815117022cbfe9bdee05b2
+  data MatrixHeader
+    = MatrixHeader {dataType :: HML.Types.TypeName.TypeName,
+                    rows :: HML.Types.PosInt.PosInt,
+                    cols :: HML.Types.PosInt.PosInt}
+cd6dc4d4f8ebaed77924c4f5a05d8aa3
+  cols ::
+    HML.FileIO.MatrixHeader.MatrixHeader -> HML.Types.PosInt.PosInt
+  RecSel Left HML.FileIO.MatrixHeader.MatrixHeader
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(LLS),1*U(A,A,1*U(U))>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: HML.FileIO.MatrixHeader.MatrixHeader) ->
+                 case ds of wild { HML.FileIO.MatrixHeader.MatrixHeader ds1 ds2 ds3 ->
+                 ds3 }) -}
+558d969fb30f9eb44da6c4bac70c6070
+  compatibleHeaders ::
+    HML.FileIO.MatrixHeader.MatrixHeader
+    -> HML.FileIO.MatrixHeader.MatrixHeader -> GHC.Types.Bool
+  {- Arity: 2,
+     Strictness: <S(SLL),1*U(1*U,1*U(U),1*U(U))><S(SLL),1*U(1*U,1*U(U),1*U(U))>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: HML.FileIO.MatrixHeader.MatrixHeader)
+                   (w1 :: HML.FileIO.MatrixHeader.MatrixHeader) ->
+                 case w of ww { HML.FileIO.MatrixHeader.MatrixHeader ww1 ww2 ww3 ->
+                 case w1 of ww4 { HML.FileIO.MatrixHeader.MatrixHeader ww5 ww6 ww7 ->
+                 HML.FileIO.MatrixHeader.$wcompatibleHeaders
+                   ww1
+                   ww2
+                   ww3
+                   ww5
+                   ww6
+                   ww7 } }) -}
+6f0e2169ab96270f94c4a2b82a116f75
+  dataType ::
+    HML.FileIO.MatrixHeader.MatrixHeader -> HML.Types.TypeName.TypeName
+  RecSel Left HML.FileIO.MatrixHeader.MatrixHeader
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(SLL),1*U(1*U,A,A)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: HML.FileIO.MatrixHeader.MatrixHeader) ->
+                 case ds of wild { HML.FileIO.MatrixHeader.MatrixHeader ds1 ds2 ds3 ->
+                 ds1 }) -}
+b2ea802841815117022cbfe9bdee05b2
+  parseMatrixHeader ::
+    Data.Attoparsec.ByteString.Internal.Parser
+      HML.FileIO.MatrixHeader.MatrixHeader
+  {- Arity: 5,
+     Strictness: <S(SLSSSS),1*U(U,U,U,U,U,U)><S(S),1*U(U)><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
+     Unfolding: InlineRule (0, True, True)
+                HML.FileIO.MatrixHeader.$fFromByteStringMatrixHeader1
+                  `cast`
+                (Sym (Data.Attoparsec.Internal.Types.N:Parser[0]
+                          <Data.ByteString.Internal.ByteString>_N
+                          <HML.FileIO.MatrixHeader.MatrixHeader>_R)) -}
+0a7622fee23ef943c3170e1f3235fa5a
+  rows ::
+    HML.FileIO.MatrixHeader.MatrixHeader -> HML.Types.PosInt.PosInt
+  RecSel Left HML.FileIO.MatrixHeader.MatrixHeader
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(LSL),1*U(A,1*U(U),A)>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: HML.FileIO.MatrixHeader.MatrixHeader) ->
+                 case ds of wild { HML.FileIO.MatrixHeader.MatrixHeader ds1 ds2 ds3 ->
+                 ds2 }) -}
+02540f54ef93e9643f777a31af802230
+  stripSeparators ::
+    Data.ByteString.Internal.ByteString
+    -> Data.Either.Either
+         GHC.Base.String HML.FileIO.MatrixHeader.MatrixHeader
+  {- Arity: 1,
+     Unfolding: (Data.Attoparsec.ByteString.Internal.parseOnly
+                   @ HML.FileIO.MatrixHeader.MatrixHeader
+                   HML.FileIO.MatrixHeader.stripSeparators1
+                     `cast`
+                   (Sym (Data.Attoparsec.Internal.Types.N:Parser[0]
+                             <Data.ByteString.Internal.ByteString>_N
+                             <HML.FileIO.MatrixHeader.MatrixHeader>_R))) -}
+cf52c9cd8056dd8de45d440948e97db6
+  stripSeparators1 ::
+    Data.Attoparsec.Internal.Types.State
+      Data.ByteString.Internal.ByteString
+    -> Data.Attoparsec.Internal.Types.Pos
+    -> Data.Attoparsec.Internal.Types.More
+    -> Data.Attoparsec.Internal.Types.Failure
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         r
+    -> Data.Attoparsec.Internal.Types.Success
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         HML.FileIO.MatrixHeader.MatrixHeader
+         r
+    -> Data.Attoparsec.Internal.Types.IResult
+         Data.ByteString.Internal.ByteString r
+  {- Arity: 5,
+     Strictness: <S(LLLSLL),1*U(U,U,U,U,U,U)><S(S),1*U(U)><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (5, True, False)
+                (\ @ r
+                   (w :: Data.Attoparsec.Internal.Types.State
+                           Data.ByteString.Internal.ByteString)
+                   (w1 :: Data.Attoparsec.Internal.Types.Pos)
+                   (w2 :: Data.Attoparsec.Internal.Types.More)
+                   (w3 :: Data.Attoparsec.Internal.Types.Failure
+                            Data.ByteString.Internal.ByteString
+                            (Data.Attoparsec.Internal.Types.State
+                               Data.ByteString.Internal.ByteString)
+                            r)
+                   (w4 :: Data.Attoparsec.Internal.Types.Success
+                            Data.ByteString.Internal.ByteString
+                            (Data.Attoparsec.Internal.Types.State
+                               Data.ByteString.Internal.ByteString)
+                            HML.FileIO.MatrixHeader.MatrixHeader
+                            r) ->
+                 case w `cast`
+                      (Sub (Data.Attoparsec.Internal.Types.D:R:StateByteString[0])) of ww { Data.Attoparsec.ByteString.Buffer.Buf ww1 ww2 ww3 ww4 ww5 ww6 ->
+                 case w1
+                        `cast`
+                      (Data.Attoparsec.Internal.Types.N:Pos[0]) of ww7 { GHC.Types.I# ww8 ->
+                 HML.FileIO.MatrixHeader.$wstrip
+                   @ r
+                   ww1
+                   ww2
+                   ww3
+                   ww4
+                   ww5
+                   ww6
+                   ww8
+                   w2
+                   w3
+                   w4 } }) -}
+instance GHC.Classes.Eq [HML.FileIO.MatrixHeader.MatrixHeader]
+  = HML.FileIO.MatrixHeader.$fEqMatrixHeader
+instance Data.ByteString.Conversion.From.FromByteString [HML.FileIO.MatrixHeader.MatrixHeader]
+  = HML.FileIO.MatrixHeader.$fFromByteStringMatrixHeader
+instance GHC.Show.Show [HML.FileIO.MatrixHeader.MatrixHeader]
+  = HML.FileIO.MatrixHeader.$fShowMatrixHeader
+instance Data.ByteString.Conversion.To.ToByteString [HML.FileIO.MatrixHeader.MatrixHeader]
+  = HML.FileIO.MatrixHeader.$fToByteStringMatrixHeader
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: none
+require own pkg trusted: False
+

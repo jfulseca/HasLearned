@@ -1,0 +1,53 @@
+import Data.Semigroup ((<>))
+import HML.FileIO.CSVReader
+import HML.FileIO.MatrixHeader (MatrixHeader(..))
+import HML.Types.PosInt (posInt)
+import Options.Applicative
+
+data Conversion = Conversion { inFile :: String
+                             , outFile :: String
+                             , rows :: Int
+                             , columns :: Int }
+
+conversion :: Parser Conversion
+conversion = Conversion
+  <$> strOption (long "in-file"
+              <> short 'i'
+              <> metavar "INPUT"
+              <> help "Input file (csv)")
+  <*> strOption (long "out-file"
+              <> short 'o'
+              <> metavar "OUTPUT"
+              <> help "Output file (binary)")
+  <*> strOption (long "rows"
+              <> short 'r'
+              <> metavar "ROWS"
+              <> help "Number of rows")
+  <*> strOption (long "columns"
+              <> short 'c'
+              <> metavar "COLUMNS"
+              <> help "Number of columns")
+
+description :: String
+description = "Converts a csv file of numbers "
+           ++ "to a row order double matrix "
+           ++ "in a native format binary file"
+
+title :: String
+title = "CSVToBinary"
+
+convert :: Conversion -> IO ()
+convert args = runExceptT . runConduitRes $
+  csvToBinary (inFile args)
+              (outFile args)
+              header
+  where header = MatrixHeader
+                   DN
+                   maybe 0 id (posInt . rows $ args)
+                   maybe 0 id (posInt . columns $ args)
+main :: IO ()
+main = convert =<< execParser opts
+  where opts = info (conversion <**> helper)
+                    (fullDesc
+                  <> progDesc description
+                  <> header title)

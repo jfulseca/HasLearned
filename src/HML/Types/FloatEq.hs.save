@@ -1,0 +1,45 @@
+module HML.Types.FloatEq
+( FloatEq(..)
+) where
+
+import Numeric.LinearAlgebra (
+import Numeric.LinearAlgebra
+
+class FloatEq a where
+  (~=) :: a -> a -> Bool
+  (~/) :: a -> a -> Bool
+  x ~= y = not (x ~/ y)
+  x ~/ y = not (x ~= y)
+
+instance FloatEq Int where
+  (~=) = (==)
+
+instance (FloatEq a) => FloatEq (Maybe a) where
+  Nothing ~= Nothing = True
+  (Just x) ~= (Just y) = x ~= y
+  _ ~= _ = False
+
+roundDown :: Double -> Double
+roundDown = (fromIntegral :: Int -> Double) . floor
+
+fmod :: Double -> Double -> Double
+fmod _ 0 = error "fmod with second argument 0 is undefined"
+fmod x y = x - n * y
+  where n = roundDown $ x / y
+
+compareDouble :: Double -> Double -> Double -> Bool
+compareDouble precision d1 d2 = 
+  abs ((d2 - d1) / d1) < precision
+
+doubleEq :: Double -> Double -> Bool
+doubleEq 0 d = abs d < 5e-11
+doubleEq d1 d2 = compareDouble 5e-11 d1 d2
+
+instance FloatEq Double where
+  (~=) = doubleEq
+
+mmap :: (Element a, Element b)
+     => (a -> b)
+     -> Matrix a
+     -> Matrix b
+mmap f m = fromLists $ map (map f)) (toLists m)

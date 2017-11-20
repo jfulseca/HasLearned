@@ -1,0 +1,529 @@
+
+==================== FINAL INTERFACE ====================
+2017-11-20 04:54:01.725252 UTC
+
+interface haslearned-0.1.0.0-1MYfuCwSlxlBXzMx3VqeuN:HML.Types.TypeName 8002
+  interface hash: f698accb07399b583be2d1518e0f7828
+  ABI hash: 860c931b806fae13090ea4b89f4273e4
+  export-list hash: 2254311b48ddd492ba327dab8c37167b
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: 64d3448ca5c45cdda3ac8e9871ab3d45
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  HML.Types.TypeName.TypeName{HML.Types.TypeName.DBL HML.Types.TypeName.INT}
+module dependencies:
+package dependencies: QuickCheck-2.9.2@QuickCheck-2.9.2-LvlomhGMxrFBkX1zwiWpQu
+                      array-0.5.1.1@array-0.5.1.1
+                      attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ
+                      base-4.9.1.0 binary-0.8.3.0@binary-0.8.3.0
+                      bytestring-0.10.8.1@bytestring-0.10.8.1
+                      bytestring-conversion-0.3.1@bytestring-conversion-0.3.1-KSK6l7QmbIf1TbIBILuJUV
+                      case-insensitive-1.2.0.10@case-insensitive-1.2.0.10-1D5OUKQ7UrJ7IpOe0di4Un
+                      containers-0.5.7.1@containers-0.5.7.1
+                      deepseq-1.4.2.0@deepseq-1.4.2.0
+                      double-conversion-2.0.2.0@double-conversion-2.0.2.0-Ls1AZoWRK0TKpzR8XpTsSD
+                      ghc-boot-th-8.0.2@ghc-boot-th-8.0.2 ghc-prim-0.5.0.0
+                      hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol
+                      integer-gmp-1.0.0.1
+                      integer-logarithms-1.0.2@integer-logarithms-1.0.2-92lMiWV9mmYAwfMEYgfQ0D
+                      pretty-1.1.3.3@pretty-1.1.3.3
+                      primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh
+                      random-1.1@random-1.1-9tceXaeYIMZ4JrKq20Egog
+                      scientific-0.3.5.2@scientific-0.3.5.2-FM2NdrNTcdbCDq9wuNnhIA
+                      template-haskell-2.11.1.0
+                      text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00
+                      tf-random-0.5@tf-random-0.5-CJZw1ZWS5MOJlR60HqKEZL
+                      time-1.6.0.1@time-1.6.0.1 transformers-0.5.2.0@transformers-0.5.2.0
+orphans: attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ:Data.Attoparsec.ByteString.Char8
+         base-4.9.1.0:GHC.Base base-4.9.1.0:GHC.Float
+         binary-0.8.3.0@binary-0.8.3.0:Data.Binary.Generic
+         bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Builder
+         hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol:Data.Hashable.Generic
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Show
+         time-1.6.0.1@time-1.6.0.1:Data.Time.Calendar.Gregorian
+         time-1.6.0.1@time-1.6.0.1:Data.Time.Format.Parse
+         time-1.6.0.1@time-1.6.0.1:Data.Time.LocalTime.LocalTime
+         transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.Error
+family instance modules: attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ:Data.Attoparsec.Internal.Types
+                         base-4.9.1.0:Control.Applicative base-4.9.1.0:Data.Complex
+                         base-4.9.1.0:Data.Either base-4.9.1.0:Data.Functor.Compose
+                         base-4.9.1.0:Data.Functor.Const base-4.9.1.0:Data.Functor.Identity
+                         base-4.9.1.0:Data.Functor.Product base-4.9.1.0:Data.Functor.Sum
+                         base-4.9.1.0:Data.List.NonEmpty base-4.9.1.0:Data.Monoid
+                         base-4.9.1.0:Data.Semigroup base-4.9.1.0:Data.Type.Equality
+                         base-4.9.1.0:Data.Version base-4.9.1.0:Data.Void
+                         base-4.9.1.0:GHC.Exts base-4.9.1.0:GHC.Generics
+                         base-4.9.1.0:GHC.IO.Exception base-4.9.1.0:GHC.TypeLits
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntMap.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntSet.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Sequence
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Set.Base
+                         ghc-boot-th-8.0.2@ghc-boot-th-8.0.2:GHC.LanguageExtensions.Type
+                         pretty-1.1.3.3@pretty-1.1.3.3:Text.PrettyPrint.Annotated.HughesPJ
+                         pretty-1.1.3.3@pretty-1.1.3.3:Text.PrettyPrint.HughesPJ
+                         primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh:Control.Monad.Primitive
+                         primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh:Data.Primitive.Array
+                         template-haskell-2.11.1.0:Language.Haskell.TH.Syntax
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
+import  -/  QuickCheck-2.9.2@QuickCheck-2.9.2-LvlomhGMxrFBkX1zwiWpQu:Test.QuickCheck 7a1791e2e66f06ce3b95a443f0d4b1ed
+import  -/  QuickCheck-2.9.2@QuickCheck-2.9.2-LvlomhGMxrFBkX1zwiWpQu:Test.QuickCheck.Arbitrary 3eced3806649dec5bc33bd64f5171465
+import  -/  QuickCheck-2.9.2@QuickCheck-2.9.2-LvlomhGMxrFBkX1zwiWpQu:Test.QuickCheck.Gen a986eabe5e103a4dc2686a9ffb4cae41
+import  -/  attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ:Data.Attoparsec.ByteString 95552c58dcce0357c7f3698b92a0ce9b
+import  -/  attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ:Data.Attoparsec.ByteString.Char8 435773ef0b92061bddf7a2c20f1a009b
+import  -/  attoparsec-0.13.1.0@attoparsec-0.13.1.0-3ql4hcH9pGfBAlE21oqFTQ:Data.Attoparsec.ByteString.Internal eadd217906370ab7c792393e893ec0ea
+import  -/  base-4.9.1.0:Control.Applicative 32430a90492e727f4bd80db71c28600c
+import  -/  base-4.9.1.0:GHC.Base c4231c43c07e46080a26bf94094c7aa1
+import  -/  base-4.9.1.0:GHC.Show a027f5ac24879eaba752f44aa90fe511
+import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
+import  -/  bytestring-conversion-0.3.1@bytestring-conversion-0.3.1-KSK6l7QmbIf1TbIBILuJUV:Data.ByteString.Conversion ff5b7c2f893209b9038238a8e75ea663
+import  -/  bytestring-conversion-0.3.1@bytestring-conversion-0.3.1-KSK6l7QmbIf1TbIBILuJUV:Data.ByteString.Conversion.From 6e6788790b799ba6a2f4a1563369b1f4
+import  -/  bytestring-conversion-0.3.1@bytestring-conversion-0.3.1-KSK6l7QmbIf1TbIBILuJUV:Data.ByteString.Conversion.To 780591d36b5ca20d40e5412d5c0fdf88
+import  -/  ghc-prim-0.5.0.0:GHC.Classes 0bdf3d057a415ec1b84a7b1994efbe47
+8c964b2970838d3c5f8f9e319a29e500
+  $fArbitraryTypeName ::
+    Test.QuickCheck.Arbitrary.Arbitrary HML.Types.TypeName.TypeName
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ HML.Types.TypeName.TypeName
+                  HML.Types.TypeName.$fArbitraryTypeName_$carbitrary
+                  HML.Types.TypeName.$fArbitraryTypeName_$s$dmshrink -}
+8c964b2970838d3c5f8f9e319a29e500
+  $fArbitraryTypeName1 :: [HML.Types.TypeName.TypeName]
+  {- HasNoCafRefs,
+     Unfolding: (GHC.Types.:
+                   @ HML.Types.TypeName.TypeName
+                   HML.Types.TypeName.INT
+                   HML.Types.TypeName.$fArbitraryTypeName2) -}
+8c964b2970838d3c5f8f9e319a29e500
+  $fArbitraryTypeName2 :: [HML.Types.TypeName.TypeName]
+  {- HasNoCafRefs,
+     Unfolding: (GHC.Types.:
+                   @ HML.Types.TypeName.TypeName
+                   HML.Types.TypeName.DBL
+                   (GHC.Types.[] @ HML.Types.TypeName.TypeName)) -}
+8c964b2970838d3c5f8f9e319a29e500
+  $fArbitraryTypeName_$carbitrary ::
+    Test.QuickCheck.Gen.Gen HML.Types.TypeName.TypeName
+  {- Unfolding: (Test.QuickCheck.Gen.elements
+                   @ HML.Types.TypeName.TypeName
+                   HML.Types.TypeName.$fArbitraryTypeName1) -}
+8c964b2970838d3c5f8f9e319a29e500
+  $fArbitraryTypeName_$s$dmshrink ::
+    HML.Types.TypeName.TypeName -> [HML.Types.TypeName.TypeName]
+  {- Arity: 1, HasNoCafRefs, Strictness: <L,A>,
+     Unfolding: InlineRule (-1, True, True)
+                (\ (ds1 :: HML.Types.TypeName.TypeName) ->
+                 GHC.Types.[] @ HML.Types.TypeName.TypeName) -}
+8c964b2970838d3c5f8f9e319a29e500
+  $fEqTypeName :: GHC.Classes.Eq HML.Types.TypeName.TypeName
+  DFunId
+  {- HasNoCafRefs, Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ HML.Types.TypeName.TypeName
+                  HML.Types.TypeName.$fEqTypeName_$c==
+                  HML.Types.TypeName.$fEqTypeName_$c/= -}
+8c964b2970838d3c5f8f9e319a29e500
+  $fEqTypeName_$c/= ::
+    HML.Types.TypeName.TypeName
+    -> HML.Types.TypeName.TypeName -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (a :: HML.Types.TypeName.TypeName)
+                   (b :: HML.Types.TypeName.TypeName) ->
+                 case a of wild {
+                   HML.Types.TypeName.INT
+                   -> case b of wild1 {
+                        HML.Types.TypeName.INT -> GHC.Types.False
+                        HML.Types.TypeName.DBL -> GHC.Types.True }
+                   HML.Types.TypeName.DBL
+                   -> case b of wild1 {
+                        HML.Types.TypeName.INT -> GHC.Types.True
+                        HML.Types.TypeName.DBL -> GHC.Types.False } }) -}
+8c964b2970838d3c5f8f9e319a29e500
+  $fEqTypeName_$c== ::
+    HML.Types.TypeName.TypeName
+    -> HML.Types.TypeName.TypeName -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (ds :: HML.Types.TypeName.TypeName)
+                   (ds1 :: HML.Types.TypeName.TypeName) ->
+                 case ds of wild {
+                   HML.Types.TypeName.INT
+                   -> case ds1 of wild1 {
+                        HML.Types.TypeName.INT -> GHC.Types.True
+                        HML.Types.TypeName.DBL -> GHC.Types.False }
+                   HML.Types.TypeName.DBL
+                   -> case ds1 of wild1 {
+                        HML.Types.TypeName.INT -> GHC.Types.False
+                        HML.Types.TypeName.DBL -> GHC.Types.True } }) -}
+8c964b2970838d3c5f8f9e319a29e500
+  $fFromByteStringTypeName ::
+    Data.ByteString.Conversion.From.FromByteString
+      HML.Types.TypeName.TypeName
+  DFunId
+  {- Arity: 5,
+     Strictness: <S(LLLSLL),1*U(U,U,U,U,U,U)><S(S),1*U(U)><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
+     Inline: INLINE (sat-args=0),
+     Unfolding: InlineRule (0, False, True)
+                HML.Types.TypeName.$fFromByteStringTypeName_$cparser
+                  `cast`
+                (Sym (Data.ByteString.Conversion.From.N:FromByteString[0]) <HML.Types.TypeName.TypeName>_N) -}
+8c964b2970838d3c5f8f9e319a29e500
+  $fFromByteStringTypeName1 ::
+    Data.Attoparsec.Internal.Types.State
+      Data.ByteString.Internal.ByteString
+    -> Data.Attoparsec.Internal.Types.Pos
+    -> Data.Attoparsec.Internal.Types.More
+    -> Data.Attoparsec.Internal.Types.Failure
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         r
+    -> Data.Attoparsec.Internal.Types.Success
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         HML.Types.TypeName.TypeName
+         r
+    -> Data.Attoparsec.Internal.Types.IResult
+         Data.ByteString.Internal.ByteString r
+  {- Arity: 5,
+     Strictness: <S(LLLSLL),1*U(U,U,U,U,U,U)><S(S),1*U(U)><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (5, True, False)
+                (\ @ r
+                   (w :: Data.Attoparsec.Internal.Types.State
+                           Data.ByteString.Internal.ByteString)
+                   (w1 :: Data.Attoparsec.Internal.Types.Pos)
+                   (w2 :: Data.Attoparsec.Internal.Types.More)
+                   (w3 :: Data.Attoparsec.Internal.Types.Failure
+                            Data.ByteString.Internal.ByteString
+                            (Data.Attoparsec.Internal.Types.State
+                               Data.ByteString.Internal.ByteString)
+                            r)
+                   (w4 :: Data.Attoparsec.Internal.Types.Success
+                            Data.ByteString.Internal.ByteString
+                            (Data.Attoparsec.Internal.Types.State
+                               Data.ByteString.Internal.ByteString)
+                            HML.Types.TypeName.TypeName
+                            r) ->
+                 case w `cast`
+                      (Sub (Data.Attoparsec.Internal.Types.D:R:StateByteString[0])) of ww { Data.Attoparsec.ByteString.Buffer.Buf ww1 ww2 ww3 ww4 ww5 ww6 ->
+                 case w1
+                        `cast`
+                      (Data.Attoparsec.Internal.Types.N:Pos[0]) of ww7 { GHC.Types.I# ww8 ->
+                 HML.Types.TypeName.$w$cparser
+                   @ r
+                   ww1
+                   ww2
+                   ww3
+                   ww4
+                   ww5
+                   ww6
+                   ww8
+                   w2
+                   w3
+                   w4 } }) -}
+8c964b2970838d3c5f8f9e319a29e500
+  $fFromByteStringTypeName_$cparser ::
+    Data.Attoparsec.ByteString.Internal.Parser
+      HML.Types.TypeName.TypeName
+  {- Arity: 5,
+     Strictness: <S(LLLSLL),1*U(U,U,U,U,U,U)><S(S),1*U(U)><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
+     Unfolding: InlineRule (0, True, True)
+                HML.Types.TypeName.$fFromByteStringTypeName1
+                  `cast`
+                (Sym (Data.Attoparsec.Internal.Types.N:Parser[0]
+                          <Data.ByteString.Internal.ByteString>_N
+                          <HML.Types.TypeName.TypeName>_R)) -}
+8c964b2970838d3c5f8f9e319a29e500
+  $fShowTypeName :: GHC.Show.Show HML.Types.TypeName.TypeName
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ HML.Types.TypeName.TypeName
+                  HML.Types.TypeName.$fShowTypeName_$cshowsPrec
+                  HML.Types.TypeName.$fShowTypeName_$cshow
+                  HML.Types.TypeName.$fShowTypeName_$cshowList -}
+8c964b2970838d3c5f8f9e319a29e500
+  $fShowTypeName1 :: HML.Types.TypeName.TypeName -> GHC.Show.ShowS
+  {- Arity: 2, Strictness: <S,1*U><L,1*U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (ds :: HML.Types.TypeName.TypeName) (eta :: GHC.Base.String) ->
+                 case ds of wild {
+                   HML.Types.TypeName.INT
+                   -> GHC.Base.augment
+                        @ GHC.Types.Char
+                        (\ @ b
+                           (c :: GHC.Types.Char -> b -> b)[OneShot]
+                           (n :: b)[OneShot] ->
+                         GHC.Base.foldr
+                           @ GHC.Types.Char
+                           @ b
+                           c
+                           n
+                           HML.Types.TypeName.$fShowTypeName3)
+                        eta
+                   HML.Types.TypeName.DBL
+                   -> GHC.Base.augment
+                        @ GHC.Types.Char
+                        (\ @ b
+                           (c :: GHC.Types.Char -> b -> b)[OneShot]
+                           (n :: b)[OneShot] ->
+                         GHC.Base.foldr
+                           @ GHC.Types.Char
+                           @ b
+                           c
+                           n
+                           HML.Types.TypeName.$fShowTypeName2)
+                        eta }) -}
+d06b1675df05af435f54b46bc189bb38
+  $fShowTypeName2 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "DBL"#) -}
+ee9db63107a649f64c06b9a412b51aa8
+  $fShowTypeName3 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "INT"#) -}
+8c964b2970838d3c5f8f9e319a29e500
+  $fShowTypeName_$cshow ::
+    HML.Types.TypeName.TypeName -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (x :: HML.Types.TypeName.TypeName) ->
+                 case x of wild {
+                   HML.Types.TypeName.INT -> HML.Types.TypeName.$fShowTypeName3
+                   HML.Types.TypeName.DBL -> HML.Types.TypeName.$fShowTypeName2 }) -}
+8c964b2970838d3c5f8f9e319a29e500
+  $fShowTypeName_$cshowList ::
+    [HML.Types.TypeName.TypeName] -> GHC.Show.ShowS
+  {- Arity: 2,
+     Unfolding: (GHC.Show.showList__
+                   @ HML.Types.TypeName.TypeName
+                   HML.Types.TypeName.$fShowTypeName1) -}
+8c964b2970838d3c5f8f9e319a29e500
+  $fShowTypeName_$cshowsPrec ::
+    GHC.Types.Int -> HML.Types.TypeName.TypeName -> GHC.Show.ShowS
+  {- Arity: 3, Strictness: <L,A><S,1*U><L,1*U>,
+     Unfolding: InlineRule (3, True, False)
+                (\ (ds :: GHC.Types.Int)
+                   (ds1 :: HML.Types.TypeName.TypeName)
+                   (eta :: GHC.Base.String) ->
+                 case ds1 of wild {
+                   HML.Types.TypeName.INT
+                   -> GHC.Base.augment
+                        @ GHC.Types.Char
+                        (\ @ b
+                           (c :: GHC.Types.Char -> b -> b)[OneShot]
+                           (n :: b)[OneShot] ->
+                         GHC.Base.foldr
+                           @ GHC.Types.Char
+                           @ b
+                           c
+                           n
+                           HML.Types.TypeName.$fShowTypeName3)
+                        eta
+                   HML.Types.TypeName.DBL
+                   -> GHC.Base.augment
+                        @ GHC.Types.Char
+                        (\ @ b
+                           (c :: GHC.Types.Char -> b -> b)[OneShot]
+                           (n :: b)[OneShot] ->
+                         GHC.Base.foldr
+                           @ GHC.Types.Char
+                           @ b
+                           c
+                           n
+                           HML.Types.TypeName.$fShowTypeName2)
+                        eta }) -}
+8c964b2970838d3c5f8f9e319a29e500
+  $fToByteStringTypeName ::
+    Data.ByteString.Conversion.To.ToByteString
+      HML.Types.TypeName.TypeName
+  DFunId
+  {- Arity: 4, Strictness: <S,1*U><L,C(C1(U(U,U)))><L,U(U,U)><S,U>,
+     Inline: INLINE (sat-args=0),
+     Unfolding: InlineRule (0, False, True)
+                HML.Types.TypeName.$fToByteStringTypeName_$cbuilder
+                  `cast`
+                (Sym (Data.ByteString.Conversion.To.N:ToByteString[0]
+                          <HML.Types.TypeName.TypeName>_N)) -}
+8c964b2970838d3c5f8f9e319a29e500
+  $fToByteStringTypeName1 ::
+    HML.Types.TypeName.TypeName
+    -> forall r.
+       Data.ByteString.Builder.Internal.BuildStep r
+       -> Data.ByteString.Builder.Internal.BufferRange
+       -> GHC.Prim.State# GHC.Prim.RealWorld
+       -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+             Data.ByteString.Builder.Internal.BuildSignal r #)
+  {- Arity: 4, Strictness: <S,1*U><L,C(C1(U(U,U)))><L,U(U,U)><S,U>,
+     Unfolding: InlineRule (4, True, False)
+                (\ (ds :: HML.Types.TypeName.TypeName)
+                   @ r
+                   (eta :: Data.ByteString.Builder.Internal.BuildStep r)
+                   (eta1 :: Data.ByteString.Builder.Internal.BufferRange)
+                   (eta2 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case ds of wild {
+                   HML.Types.TypeName.INT
+                   -> Data.ByteString.Conversion.To.$fToByteStringText2
+                        HML.Types.TypeName.$fToByteStringTypeName4
+                        @ r
+                        eta
+                        eta1
+                        eta2
+                   HML.Types.TypeName.DBL
+                   -> Data.ByteString.Conversion.To.$fToByteStringText2
+                        HML.Types.TypeName.$fToByteStringTypeName2
+                        @ r
+                        eta
+                        eta1
+                        eta2 }) -}
+cc0cdef99a9445b2a29fc373abbfd019
+  $fToByteStringTypeName2 :: Data.ByteString.Lazy.Internal.ByteString
+  {- Unfolding: (case GHC.CString.unpackFoldrCString#
+                        @ [GHC.Types.Char]
+                        "DBL"#
+                        HML.Types.TypeName.$fToByteStringTypeName3
+                        (GHC.Types.[] @ GHC.Types.Char) of dt { DEFAULT ->
+                 Data.Text.Lazy.Encoding.encodeUtf8
+                   (Data.ByteString.Conversion.To.$fToByteString[]_outer dt) }) -}
+8088325d098d249b7a484bcb7420f699
+  $fToByteStringTypeName3 ::
+    GHC.Types.Char -> [GHC.Types.Char] -> [GHC.Types.Char]
+  {- Arity: 2, HasNoCafRefs,
+     Unfolding: (\ (x :: GHC.Types.Char)
+                   (ys :: [GHC.Types.Char])[OneShot] ->
+                 GHC.Types.: @ GHC.Types.Char (Data.Text.Internal.safe x) ys) -}
+a8eceabb59301cabf84ced5d6d575fb2
+  $fToByteStringTypeName4 :: Data.ByteString.Lazy.Internal.ByteString
+  {- Unfolding: (case GHC.CString.unpackFoldrCString#
+                        @ [GHC.Types.Char]
+                        "INT"#
+                        HML.Types.TypeName.$fToByteStringTypeName3
+                        (GHC.Types.[] @ GHC.Types.Char) of dt { DEFAULT ->
+                 Data.Text.Lazy.Encoding.encodeUtf8
+                   (Data.ByteString.Conversion.To.$fToByteString[]_outer dt) }) -}
+8c964b2970838d3c5f8f9e319a29e500
+  $fToByteStringTypeName_$cbuilder ::
+    HML.Types.TypeName.TypeName
+    -> Data.ByteString.Builder.Internal.Builder
+  {- Arity: 4, Strictness: <S,1*U><L,C(C1(U(U,U)))><L,U(U,U)><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                HML.Types.TypeName.$fToByteStringTypeName1
+                  `cast`
+                (<HML.Types.TypeName.TypeName>_R
+                 ->_R Trans
+                          (forall (r :: <*>_N).
+                           <Data.ByteString.Builder.Internal.BuildStep r>_R
+                           ->_R <Data.ByteString.Builder.Internal.BufferRange>_R
+                           ->_R Sym (GHC.Types.N:IO[0]
+                                         <Data.ByteString.Builder.Internal.BuildSignal r>_R))
+                          (Sym (Data.ByteString.Builder.Internal.N:Builder[0]))) -}
+2fbea7a3d3e51f1fc6750ba6d1ff5fad
+  $tc'DBL :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   13508530361986014124##
+                   2894603423377891541##
+                   HML.Types.TypeName.$trModule
+                   HML.Types.TypeName.$tc'DBL1) -}
+77b328c96646146f65fbbf3b2db44f7c
+  $tc'DBL1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'DBL"#) -}
+d173b7fcec2f65fda3f1c447a88fc5b0
+  $tc'INT :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   8120973572141309115##
+                   14234981723415853543##
+                   HML.Types.TypeName.$trModule
+                   HML.Types.TypeName.$tc'INT1) -}
+1bb7a38ef34c1d8208e28fd13199d88b
+  $tc'INT1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'INT"#) -}
+64b2f7f6c8507d0e093541255979a6cf
+  $tcTypeName :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   5168876765037857789##
+                   6982682753629911357##
+                   HML.Types.TypeName.$trModule
+                   HML.Types.TypeName.$tcTypeName1) -}
+327b6e53e0a4a1427b217f02dbbb15de
+  $tcTypeName1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "TypeName"#) -}
+700b741502cd1316c83fe3cc6eaa9259
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module
+                   HML.Types.TypeName.$trModule2
+                   HML.Types.TypeName.$trModule1) -}
+c7d2ed59e1ce5a689640f19d56c78cdd
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "HML.Types.TypeName"#) -}
+1d93603d80fdb25a50a786308a3c1508
+  $trModule2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS
+                   "haslearned-0.1.0.0-1MYfuCwSlxlBXzMx3VqeuN"#) -}
+8c964b2970838d3c5f8f9e319a29e500
+  $w$cparser ::
+    GHC.Prim.Addr#
+    -> GHC.ForeignPtr.ForeignPtrContents
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> Data.Attoparsec.Internal.Types.More
+    -> Data.Attoparsec.Internal.Types.Failure
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         r
+    -> Data.Attoparsec.Internal.Types.Success
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         HML.Types.TypeName.TypeName
+         r
+    -> Data.Attoparsec.Internal.Types.IResult
+         Data.ByteString.Internal.ByteString r
+  {- Arity: 10,
+     Strictness: <L,U><L,U><L,U><S,U><L,U><L,U><S,U><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
+     Inline: [0] -}
+8c964b2970838d3c5f8f9e319a29e500
+  data TypeName = INT | DBL
+instance Test.QuickCheck.Arbitrary.Arbitrary [HML.Types.TypeName.TypeName]
+  = HML.Types.TypeName.$fArbitraryTypeName
+instance GHC.Classes.Eq [HML.Types.TypeName.TypeName]
+  = HML.Types.TypeName.$fEqTypeName
+instance Data.ByteString.Conversion.From.FromByteString [HML.Types.TypeName.TypeName]
+  = HML.Types.TypeName.$fFromByteStringTypeName
+instance GHC.Show.Show [HML.Types.TypeName.TypeName]
+  = HML.Types.TypeName.$fShowTypeName
+instance Data.ByteString.Conversion.To.ToByteString [HML.Types.TypeName.TypeName]
+  = HML.Types.TypeName.$fToByteStringTypeName
+"SPEC/HML.Types.TypeName $dmshrink @ TypeName" [ALWAYS] forall ($dArbitrary :: Test.QuickCheck.Arbitrary.Arbitrary
+                                                                                 HML.Types.TypeName.TypeName)
+  Test.QuickCheck.Arbitrary.$dmshrink @ HML.Types.TypeName.TypeName
+                                      $dArbitrary
+  = HML.Types.TypeName.$fArbitraryTypeName_$s$dmshrink
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: none
+require own pkg trusted: False
+

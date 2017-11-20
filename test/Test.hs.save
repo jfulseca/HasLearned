@@ -1,0 +1,12 @@
+module Main where
+
+import HML.Types.Test.PosInt (posIntTest)
+import Test.Tasty
+
+typeProps :: TestTree
+typeProps = testGroup "Types"
+  [ posIntTest
+  xy]
+
+main :: IO ()
+main = putStrLn "" >> defaultMain typeProps
