@@ -1,0 +1,5 @@
+set -euo pipefail
+
+stack clean
+
+set +euo pipefail

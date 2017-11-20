@@ -4,3 +4,4 @@ dist/
 /**/*.save*
 *.csv
 *.dat
+*.tix
