@@ -8,4 +8,4 @@ errorContext :: String
 errorContext context suggestion =
   let sugg = maybe "" (++ " - ") suggestion
   in either (\s -> Left $ context ++ " : " ++ s ++ sugg)
-  (Right . id)
+            (Right . id)

@@ -1,8 +1,7 @@
 {-# LANGUAGE NamedFieldPuns #-}
 
 module HML.FileIO.MatrixSource
-( ByteStringToMatrix(..)
-, confirmMatrixHeader
+( confirmMatrixHeader
 , matrixDoubleSource
 , poolMatrix
 , poolMatrixDouble
@@ -63,11 +62,9 @@ poolMatrixDouble nRows nCols =
       c = getPosInt nCols
       context = "Parsing matrix"
       suggestion = Just "Does the data have the right shape?"
-      transformer = ByteStringToMatrix
-        { context
-        , suggestion
-        , transform = runGet (toMatrixDouble r c)
-        }
+      transformer bytes = do
+        let result = runGet (toMatrixDouble r c) bytes
+        liftAppIO $ errorContext context suggestion result
   in poolMatrix (r * c * doubleSize) transformer
 
 type MatrixConduit a = ConduitM ByteString
@@ -75,24 +72,14 @@ type MatrixConduit a = ConduitM ByteString
                                 AppIO
                                 ()
 
-
-data ByteStringToMatrix a = ByteStringToMatrix
-  { context :: String
-  , suggestion :: Maybe String
-  , transform :: ByteString -> Either String (Matrix a)
-  }
-
 poolMatrix :: (Element a, Storable a)
            => Int
-           -> ByteStringToMatrix a
+           -> (ByteString -> AppIO (Matrix a))
            -> MatrixConduit a
-poolMatrix chunkSize ByteStringToMatrix{context, suggestion, transform }  = loop where
+poolMatrix chunkSize transformer = loop where
   loop = do
     takeCE chunkSize .| mapMC transformer
     isEmpty <- nullC
     if isEmpty
       then return ()
       else loop
-  transformer bytes = do
-    let result = transform bytes
-    liftAppIO $ errorContext context suggestion result
