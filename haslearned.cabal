@@ -79,7 +79,6 @@ test-suite haslearned-test
                      , random
                      , split
                      , tasty
-                     , tasty-discover
                      , tasty-quickcheck
                      , tasty-th
                      , text

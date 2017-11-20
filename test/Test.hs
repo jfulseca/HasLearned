@@ -24,7 +24,7 @@ fileIOProps = testGroup "FileIO"
   , matrixSourceTest
   ]
 
-hlTest :: TestTreea
+hlTest :: TestTree
 hlTest = testGroup "HasLearned"
   [ typeProps
   , fileIOProps
