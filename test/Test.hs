@@ -5,6 +5,7 @@ import HML.FileIO.Test.MatrixHeader (matrixHeaderTest)
 import HML.FileIO.Test.MatrixSink (matrixSinkTest)
 import HML.FileIO.Test.MatrixSource (matrixSourceTest)
 import HML.Types.Test.DoubleToBinary (doubleToBinaryTest)
+import HML.Types.Test.FloatEq (floatEqTest)
 import HML.Types.Test.PosInt (posIntTest)
 import HML.Types.Test.TypeName (typeNameTest)
 import Test.Tasty
@@ -12,6 +13,7 @@ import Test.Tasty
 typeProps :: TestTree
 typeProps = testGroup "Types"
   [ doubleToBinaryTest
+  , floatEqTest
   , posIntTest
   , typeNameTest
   ]

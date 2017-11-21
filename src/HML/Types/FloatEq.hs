@@ -4,7 +4,6 @@ module HML.Types.FloatEq
 ( FloatEq(..)
 ) where
 
-import Data.Either (rights)
 import Numeric.LinearAlgebra (Element)
 import Numeric.LinearAlgebra.Data (Matrix, cols, toLists)
 
@@ -45,5 +44,6 @@ instance (Element a, FloatEq a) => FloatEq (Matrix a) where
           && (toList m1 ~= toList m2)
 
 instance (FloatEq b) => FloatEq (Either a b) where
-  e1 ~= e2 = let rs = rights [e1, e2] in
-    (length rs == 0) || (head rs ~= last rs)
+  (Left _) ~= (Left _) = True
+  (Right res1) ~= (Right res2) = res1 ~= res2
+  _ ~= _ = False

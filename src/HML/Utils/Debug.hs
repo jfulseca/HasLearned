@@ -1,5 +1,6 @@
 module HML.Utils.Debug
-( printConduit
+( db
+, printConduit
 , printVar
 , showIO
 , sl
@@ -25,3 +26,6 @@ printConduit str = do
 
 printVar :: (Show a) => String -> a -> a
 printVar str x = trace (str ++ ": " ++ (show x)) x
+
+db :: a -> String -> a
+db = flip trace
