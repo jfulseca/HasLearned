@@ -1,8 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 module HML.FileIO.Test.MatrixHeader
-( dummyHeader
-, matrixHeaderTest
-) where
+( matrixHeaderTest ) where
 
 import Data.ByteString.Conversion (toByteString')
 import HML.FileIO.MatrixHeader
@@ -11,10 +9,6 @@ import Test.QuickCheck.Modifiers (Positive(..))
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck (testProperty)
 import Test.Tasty.TH
-
-dummyHeader :: MatrixHeader
-dummyHeader = MatrixHeader INT n n where
-  n = Positive 1
 
 prop_parse_equal :: TypeName -> Positive Int -> Positive Int -> Bool
 prop_parse_equal name nRows nCols =

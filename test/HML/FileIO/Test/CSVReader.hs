@@ -3,28 +3,23 @@
 module HML.FileIO.Test.CSVReader
 ( csvReaderTest ) where
 
-import Conduit ((.|), ConduitM, sinkList)
+import Conduit ((.|), sinkList)
 import Control.Monad.IO.Class (liftIO)
 import Data.Either (isRight)
 import Data.List.Split (chunksOf)
-import Data.Void (Void)
 import HML.FileIO.CSVReader
-import HML.FileIO.AppIO (AppIO, runAppIO)
 import HML.FileIO.MatrixHeader (MatrixHeader(..))
 import HML.FileIO.MatrixSource (matrixDoubleSource)
+import HML.TestUtils (testRun)
 import HML.Types.FloatEq (FloatEq(..))
 import HML.Types.TypeName (TypeName(..))
 import qualified Numeric.LinearAlgebra as NL
 import Prelude hiding (appendFile, writeFile)
 import System.Directory (removeFile)
-import Test.QuickCheck.Monadic (PropertyM, assert, monadicIO, run)
+import Test.QuickCheck.Monadic (assert, monadicIO)
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck hiding ((><))
 import Test.Tasty.TH
-
-testRun :: ConduitM () Void AppIO a
-        -> PropertyM IO (Either String a)
-testRun = run . runAppIO
 
 matrixConcat :: (NL.Element a)
              => [NL.Matrix a]

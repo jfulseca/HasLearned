@@ -1,33 +1,25 @@
 {-# LANGUAGE TemplateHaskell #-}
 
 module HML.FileIO.Test.MatrixSource
-( dummyMatrix
-, matrixSourceTest
-) where
+( matrixSourceTest ) where
 
-import Conduit ((.|), ConduitM, sinkList, yield)
+import Conduit ((.|), sinkList, yield)
 import Data.ByteString (ByteString)
 import Data.ByteString.Conversion (toByteString')
 import Data.Either (isLeft, isRight)
 import Data.Monoid ((<>))
 import Data.Serialize.Put (runPut)
-import Data.Void (Void)
-import HML.FileIO.AppIO (AppIO, runAppIO)
 import HML.FileIO.MatrixHeader (MatrixHeader(..))
 import HML.FileIO.MatrixSource
-import HML.FileIO.Test.MatrixHeader (dummyHeader)
+import HML.TestUtils (dummyHeader, dummyList, dummyMatrix, testRun)
 import HML.Types.DoubleToBinary (doubleToBinary)
 import HML.Types.PosInt (PosInt)
 import HML.Types.TypeName (TypeName(..))
-import Numeric.LinearAlgebra.Data ((><), Matrix)
+import Numeric.LinearAlgebra.Data (Matrix)
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck hiding ((><))
 import Test.Tasty.TH
-import Test.QuickCheck.Monadic (PropertyM, assert, monadicIO, pre, run)
-
-testRun :: ConduitM () Void AppIO a
-        -> PropertyM IO (Either String a)
-testRun = run . runAppIO
+import Test.QuickCheck.Monadic (PropertyM, assert, monadicIO, pre)
 
 testHeader :: MatrixHeader
            -> ByteString
@@ -92,12 +84,6 @@ prop_rejects_wrong_header name1 name2 n1 n2 n3 n4 =
 encodeDoubles :: [Double] -> ByteString
 encodeDoubles =
   foldMap $ \d -> runPut (doubleToBinary d)
-
-dummyList :: (Num a) => Int -> Int -> [a]
-dummyList r c = map fromIntegral [ r*i + j | i <- [1..r], j <- [1..c] ]
-
-dummyMatrix :: Int -> Int -> Matrix Double
-dummyMatrix r c = r >< c $ dummyList r c
 
 prop_read_double_matrix :: Positive Int
                       -> Positive Int 

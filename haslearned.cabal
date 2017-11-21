@@ -64,6 +64,7 @@ test-suite haslearned-test
                      , HML.FileIO.Test.MatrixHeader
                      , HML.FileIO.Test.MatrixSink
                      , HML.FileIO.Test.MatrixSource
+                     , HML.TestUtils
                      , HML.Types.Test.DoubleToBinary
                      , HML.Types.Test.FloatEq
                      , HML.Types.Test.PosInt

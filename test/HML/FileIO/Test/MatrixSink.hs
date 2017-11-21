@@ -3,22 +3,16 @@
 module HML.FileIO.Test.MatrixSink
 ( matrixSinkTest ) where
 
-import Conduit ((.|), ConduitM, yield, yieldMany)
+import Conduit ((.|), yield, yieldMany)
 import Data.Either (isRight)
-import Data.Void (Void)
-import HML.FileIO.AppIO (AppIO, runAppIO)
 import HML.FileIO.MatrixHeader (MatrixHeader(..))
 import HML.FileIO.MatrixSink
-import HML.FileIO.Test.MatrixSource (dummyMatrix)
+import HML.TestUtils (dummyMatrix, testRun)
 import HML.Types.TypeName (TypeName(..))
-import Test.QuickCheck.Monadic (PropertyM, assert, monadicIO, run)
+import Test.QuickCheck.Monadic (assert, monadicIO)
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck hiding ((><))
 import Test.Tasty.TH
-
-testRun :: ConduitM () Void AppIO a
-        -> PropertyM IO (Either String a)
-testRun = run . runAppIO
 
 prop_write_3x3_matrix :: Property
 prop_write_3x3_matrix = monadicIO $ do
