@@ -13,19 +13,19 @@ extra-source-files:  ChangeLog.md
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     HML.FileIO.AppIO
-                     , HML.FileIO.CSVReader
-                     , HML.FileIO.MatrixHeader
-                     , HML.FileIO.MatrixSink
-                     , HML.FileIO.MatrixSource
-                     , HML.Types.DoubleToBinary
-                     , HML.Types.FloatEq
-                     , HML.Types.TypeName
-                     , HML.Types.PosInt
-                     , HML.Utils.Constants
-                     , HML.Utils.Debug
-                     , HML.Utils.SafeEncoding
-  other-modules:       HML.Types.Errors
+  exposed-modules:     School.FileIO.AppIO
+                     , School.FileIO.CSVReader
+                     , School.FileIO.MatrixHeader
+                     , School.FileIO.MatrixSink
+                     , School.FileIO.MatrixSource
+                     , School.Types.DoubleToBinary
+                     , School.Types.FloatEq
+                     , School.Types.TypeName
+                     , School.Types.PosInt
+                     , School.Utils.Constants
+                     , School.Utils.Debug
+                     , School.Utils.SafeEncoding
+  other-modules:       School.Types.Errors
   build-depends:       QuickCheck
                      , attoparsec
                      , base >=4.9
@@ -48,7 +48,7 @@ executable CSVToBinary
   hs-source-dirs:      app/tools
   build-depends:       base >=4.9
                      , conduit-combinators
-                     , haslearned
+                     , school
                      , optparse-applicative
                      , transformers
   default-language:    Haskell2010
@@ -60,15 +60,15 @@ test-suite school-test
   hs-source-dirs:      test
   default-language:    Haskell2010
   ghc-options:         -Wall
-  other-modules:       HML.FileIO.Test.CSVReader
-                     , HML.FileIO.Test.MatrixHeader
-                     , HML.FileIO.Test.MatrixSink
-                     , HML.FileIO.Test.MatrixSource
-                     , HML.TestUtils
-                     , HML.Types.Test.DoubleToBinary
-                     , HML.Types.Test.FloatEq
-                     , HML.Types.Test.PosInt
-                     , HML.Types.Test.TypeName
+  other-modules:       School.FileIO.Test.CSVReader
+                     , School.FileIO.Test.MatrixHeader
+                     , School.FileIO.Test.MatrixSink
+                     , School.FileIO.Test.MatrixSource
+                     , School.TestUtils
+                     , School.Types.Test.DoubleToBinary
+                     , School.Types.Test.FloatEq
+                     , School.Types.Test.PosInt
+                     , School.Types.Test.TypeName
   build-depends:       QuickCheck
                      , base >= 4.9
                      , bytestring
@@ -76,7 +76,7 @@ test-suite school-test
                      , cereal
                      , conduit-combinators
                      , directory
-                     , haslearned
+                     , school
                      , hmatrix
                      , random
                      , split
@@ -96,4 +96,4 @@ benchmark csv-benchmark
                      , criterion
                      , directory
                      , filepath
-                     , haslearned
+                     , school

@@ -1,5 +1,12 @@
 set -euo pipefail
 
+# Recompile everything if not configured
+# for coverage
+for f in .stack-work/dist/*/Cabal*/hpc/school*/*.mix; do
+  [ -e $f ] || echo Recompiling for coverage && stack clean
+  break
+done
+
 stack test --coverage
 
 set +euo pipefail
