@@ -1,4 +1,4 @@
-# Revision history for hml
+# Revision history for School
 
 ## 0.1.0.0  -- YYYY-mm-dd
 

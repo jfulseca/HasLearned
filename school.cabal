@@ -1,0 +1,99 @@
+name:                school
+version:             0.1.0.0
+-- synopsis:            
+-- description:         
+license:             MIT
+license-file:        LICENSE
+author:              Jorgen Fulsebakke
+maintainer:          jorgen.fulsebakke@gmail.com
+-- copyright:           
+-- category:            
+build-type:          Simple
+extra-source-files:  ChangeLog.md
+cabal-version:       >=1.10
+
+library
+  exposed-modules:     HML.FileIO.AppIO
+                     , HML.FileIO.CSVReader
+                     , HML.FileIO.MatrixHeader
+                     , HML.FileIO.MatrixSink
+                     , HML.FileIO.MatrixSource
+                     , HML.Types.DoubleToBinary
+                     , HML.Types.FloatEq
+                     , HML.Types.TypeName
+                     , HML.Types.PosInt
+                     , HML.Utils.Constants
+                     , HML.Utils.Debug
+                     , HML.Utils.SafeEncoding
+  other-modules:       HML.Types.Errors
+  build-depends:       QuickCheck
+                     , attoparsec
+                     , base >=4.9
+                     , bytestring
+                     , bytestring-conversion
+                     , cereal
+                     , conduit-combinators
+                     , conduit-extra
+                     , filepath
+                     , hmatrix
+                     , mtl
+                     , text
+                     , transformers
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+  ghc-options:         -Wall
+  
+executable CSVToBinary
+  main-is:             CSVToBinary.hs
+  hs-source-dirs:      app/tools
+  build-depends:       base >=4.9
+                     , conduit-combinators
+                     , haslearned
+                     , optparse-applicative
+                     , transformers
+  default-language:    Haskell2010
+  ghc-options:         -Wall
+
+test-suite school-test
+  type:                exitcode-stdio-1.0
+  main-is:             Test.hs
+  hs-source-dirs:      test
+  default-language:    Haskell2010
+  ghc-options:         -Wall
+  other-modules:       HML.FileIO.Test.CSVReader
+                     , HML.FileIO.Test.MatrixHeader
+                     , HML.FileIO.Test.MatrixSink
+                     , HML.FileIO.Test.MatrixSource
+                     , HML.TestUtils
+                     , HML.Types.Test.DoubleToBinary
+                     , HML.Types.Test.FloatEq
+                     , HML.Types.Test.PosInt
+                     , HML.Types.Test.TypeName
+  build-depends:       QuickCheck
+                     , base >= 4.9
+                     , bytestring
+                     , bytestring-conversion
+                     , cereal
+                     , conduit-combinators
+                     , directory
+                     , haslearned
+                     , hmatrix
+                     , random
+                     , split
+                     , tasty
+                     , tasty-quickcheck
+                     , tasty-th
+                     , transformers
+
+benchmark csv-benchmark
+  type:                exitcode-stdio-1.0
+  main-is:             CSVToBinary.hs
+  hs-source-dirs:      app/benchmark
+  default-language:    Haskell2010
+  ghc-options:         -Wall
+  build-depends:       QuickCheck
+                     , base >= 4.9
+                     , criterion
+                     , directory
+                     , filepath
+                     , haslearned

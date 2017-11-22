@@ -1,10 +1,10 @@
 import Data.Either (either)
 import Data.Semigroup ((<>))
-import HML.FileIO.AppIO (runAppIO)
-import HML.FileIO.CSVReader
-import HML.FileIO.MatrixHeader (MatrixHeader(..))
-import HML.Types.PosInt (extractPosInts)
-import HML.Types.TypeName (TypeName(..))
+import School.FileIO.AppIO (runAppIO)
+import School.FileIO.CSVReader
+import School.FileIO.MatrixHeader (MatrixHeader(..))
+import School.Types.PosInt (extractPosInts)
+import School.Types.TypeName (TypeName(..))
 import Options.Applicative
 
 data Conversion = Conversion { inFile :: String

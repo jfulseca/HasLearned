@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module HML.
+module School.
 ( ) where
 
 import Test.Tasty (TestTree)
