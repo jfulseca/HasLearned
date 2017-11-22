@@ -8,6 +8,7 @@ import School.Types.Test.DoubleConversion (doubleToBinaryTest)
 import School.Types.Test.FloatEq (floatEqTest)
 import School.Types.Test.PosInt (posIntTest)
 import School.Types.Test.TypeName (typeNameTest)
+import School.Unit.Test.Affine (affineTest)
 import Test.Tasty
 
 typeProps :: TestTree
@@ -26,11 +27,17 @@ fileIOProps = testGroup "FileIO"
   , matrixSourceTest
   ]
 
-hlTest :: TestTree
-hlTest = testGroup "HasLearned"
+unitProps :: TestTree
+unitProps = testGroup "Unit"
+  [ affineTest
+  ]
+
+schoolTest :: TestTree
+schoolTest = testGroup "School"
   [ typeProps
   , fileIOProps
+  , unitProps
   ]
 
 main :: IO ()
-main = putStrLn "" >> defaultMain hlTest
+main = putStrLn "" >> defaultMain schoolTest
