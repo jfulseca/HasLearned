@@ -16,7 +16,7 @@ import Foreign.Storable (Storable)
 import School.FileIO.AppIO (AppIO, Confirmer, appIOFail,
                          confirmAtom, liftAppIO)
 import School.FileIO.MatrixHeader (MatrixHeader(..), compatibleHeaders)
-import School.Types.DoubleToBinary (doubleFromBinary)
+import School.Types.DoubleConversion (getDouble)
 import School.Types.Errors (errorContext)
 import School.Types.PosInt (PosInt, getPosInt)
 import School.Types.TypeName (TypeName(..))
@@ -51,7 +51,7 @@ confirmMatrixHeader header = do
 toMatrixDouble :: Int -> Int -> Get (Matrix Double)
 toMatrixDouble nRows nCols = do
   let nElements = nRows * nCols
-  list <- replicateM (nElements) doubleFromBinary
+  list <- replicateM (nElements) getDouble
   return $ (nRows >< nCols) list
 
 poolMatrixDouble :: PosInt

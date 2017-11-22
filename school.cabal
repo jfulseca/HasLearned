@@ -18,7 +18,7 @@ library
                      , School.FileIO.MatrixHeader
                      , School.FileIO.MatrixSink
                      , School.FileIO.MatrixSource
-                     , School.Types.DoubleToBinary
+                     , School.Types.DoubleConversion
                      , School.Types.FloatEq
                      , School.Types.TypeName
                      , School.Types.PosInt
@@ -65,7 +65,7 @@ test-suite school-test
                      , School.FileIO.Test.MatrixSink
                      , School.FileIO.Test.MatrixSource
                      , School.TestUtils
-                     , School.Types.Test.DoubleToBinary
+                     , School.Types.Test.DoubleConversion
                      , School.Types.Test.FloatEq
                      , School.Types.Test.PosInt
                      , School.Types.Test.TypeName

@@ -8,11 +8,10 @@ import Data.ByteString (ByteString)
 import Data.ByteString.Conversion (toByteString')
 import Data.Either (isLeft, isRight)
 import Data.Monoid ((<>))
-import Data.Serialize.Put (runPut)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.FileIO.MatrixSource
 import School.TestUtils (dummyHeader, dummyList, dummyMatrix, testRun)
-import School.Types.DoubleToBinary (doubleToBinary)
+import School.Types.DoubleConversion (toBinary)
 import School.Types.PosInt (PosInt)
 import School.Types.TypeName (TypeName(..))
 import Numeric.LinearAlgebra.Data (Matrix)
@@ -82,8 +81,7 @@ prop_rejects_wrong_header name1 name2 n1 n2 n3 n4 =
     assert $ isLeft result
 
 encodeDoubles :: [Double] -> ByteString
-encodeDoubles =
-  foldMap $ \d -> runPut (doubleToBinary d)
+encodeDoubles = foldMap toBinary
 
 prop_read_double_matrix :: Positive Int
                       -> Positive Int 

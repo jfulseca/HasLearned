@@ -8,7 +8,7 @@ import Data.Serialize.Put (runPut)
 import Data.Void (Void)
 import School.FileIO.AppIO (AppIO)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
-import School.Types.DoubleToBinary (doubleToBinary)
+import School.Types.DoubleConversion (putDouble)
 import Numeric.LinearAlgebra.Data (Matrix, toLists)
 
 matrixDoubleSink :: MatrixHeader
@@ -25,4 +25,4 @@ matrixDoubleSink header path =
 
 fromMatrixDouble :: Matrix Double -> ByteString
 fromMatrixDouble matrix = runPut $
-  mapM_ doubleToBinary (concat . toLists $ matrix)
+  mapM_ putDouble (concat . toLists $ matrix)
