@@ -26,6 +26,7 @@ library
                      , School.Types.PingPong
                      , School.Types.PosInt
                      , School.Unit.Affine
+                     , School.Unit.RecLin
                      , School.Unit.Unit
                      , School.Unit.UnitActivation
                      , School.Unit.UnitForward
