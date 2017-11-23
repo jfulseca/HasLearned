@@ -7,4 +7,4 @@ data UnitParams a =
    AffineParams { affineWeights :: Matrix a
                 , affineBias :: Vector a
                 }
- | EmptyParams
+ | EmptyParams deriving (Show)

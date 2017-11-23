@@ -5,4 +5,4 @@ import Numeric.LinearAlgebra (Matrix)
 
 data UnitActivation a =
     BatchActivation (Matrix a)
- |  ApplyFail String
+ |  ApplyFail String deriving (Show)

@@ -18,13 +18,17 @@ library
                      , School.FileIO.MatrixHeader
                      , School.FileIO.MatrixSink
                      , School.FileIO.MatrixSource
+                     , School.Train.AppTrain
+                     , School.Train.TrainState
                      , School.Types.DoubleConversion
                      , School.Types.FloatEq
                      , School.Types.TypeName
+                     , School.Types.PingPong
                      , School.Types.PosInt
                      , School.Unit.Affine
                      , School.Unit.Unit
                      , School.Unit.UnitActivation
+                     , School.Unit.UnitForward
                      , School.Unit.UnitParams
                      , School.Unit.UnitGradient
                      , School.Utils.Constants

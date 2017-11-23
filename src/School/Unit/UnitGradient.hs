@@ -5,4 +5,4 @@ import Numeric.LinearAlgebra (Matrix)
 
 data UnitGradient a =
    BatchGradient (Matrix a)
- | GradientFail String
+ | GradientFail String deriving (Show)
