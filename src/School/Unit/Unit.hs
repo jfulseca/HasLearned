@@ -1,13 +1,18 @@
 module School.Unit.Unit
-( Unit(..)
-, UnitOutput ) where
+( Unit(..) ) where
 
-import School.Unit.Constituents (Constituents)
-import Numeric.LinearAlgebra (Matrix)
-
-type UnitOutput a = Matrix a
+import School.Unit.UnitActivation (UnitActivation(..))
+import School.Unit.UnitGradient (UnitGradient(..))
+import School.Unit.UnitParams (UnitParams(..))
 
 data Unit a = Unit
-  { deriv :: Constituents a -> UnitOutput a -> Constituents a
-  , op :: Constituents a -> UnitOutput a
+  { apply :: UnitParams a
+          -> UnitActivation a
+          -> UnitActivation a
+  , deriv :: UnitParams a
+          -> UnitGradient a
+          -> UnitActivation a
+          -> ( UnitGradient a
+             , UnitParams a
+             )
   }

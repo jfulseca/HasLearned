@@ -3,26 +3,50 @@
 module School.Unit.Affine
 ( affine ) where
 
-import Numeric.LinearAlgebra ((<>), R, size, tr')
-import School.Unit.Constituents (Constituents(..))
-import School.Unit.Unit (Unit(..), UnitOutput)
-import School.Utils.LinearAlgebra ((+>), oneVector)
+import Numeric.LinearAlgebra ((<>), R, tr')
+import School.Unit.Unit (Unit(..))
+import School.Unit.UnitActivation (UnitActivation(..))
+import School.Unit.UnitParams (UnitParams(..))
+import School.Unit.UnitGradient (UnitGradient(..))
+import School.Utils.LinearAlgebra ((+>), sumCols)
 
 affine :: Unit Double
 affine = Unit
-  { deriv = affineDeriv
-  , op = affineOp
+  { apply = affineApply
+  , deriv = affineDeriv
   }
 
-affineOp :: Constituents R -> UnitOutput R
-affineOp AffineConstituents { biasVector, inputMatrix, weightMatrix } =
-  (inputMatrix <> tr' weightMatrix) +> biasVector
+affineApply :: UnitParams R
+            -> UnitActivation R
+            -> UnitActivation R
+affineApply AffineParams { affineBias, affineWeights }
+            (BatchActivation inMatrix) =
+  BatchActivation $ (inMatrix <> tr' affineWeights) +> affineBias
+affineApply _ (ApplyFail msg) = ApplyFail msg
+affineApply _ _ = ApplyFail "Failure when applying affine unit"
 
-affineDeriv :: Constituents R ->
-               UnitOutput R ->
-               Constituents R
-affineDeriv AffineConstituents { biasVector, inputMatrix, weightMatrix } grad =
-  AffineConstituents { biasVector=biasVector', inputMatrix=inputMatrix', weightMatrix=weightMatrix' }
-  where biasVector' = oneVector (size biasVector)
-        inputMatrix' = grad <> weightMatrix
-        weightMatrix' = tr' grad <> inputMatrix
+failure :: String
+        -> ( UnitGradient R
+           , UnitParams R
+           )
+failure msg = (GradientFail msg, EmptyParams)
+
+affineDeriv :: UnitParams R
+            -> UnitGradient R
+            -> UnitActivation R
+            -> ( UnitGradient R
+               , UnitParams R
+               )
+affineDeriv AffineParams { affineWeights }
+            (BatchGradient inJac)
+            (BatchActivation input) =
+  (outJac, paramDerivs) where
+    outJac = BatchGradient $ inJac <> affineWeights
+    bias = sumCols inJac
+    weights = tr' inJac <> input
+    paramDerivs = AffineParams { affineBias = bias
+                               , affineWeights = weights
+                               }
+affineDeriv _ (GradientFail msg) _ = failure msg
+affineDeriv _ _ (ApplyFail msg) = failure msg
+affineDeriv _ _ _ = failure "Failure when differentiating affine unit"

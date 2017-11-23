@@ -23,8 +23,10 @@ library
                      , School.Types.TypeName
                      , School.Types.PosInt
                      , School.Unit.Affine
-                     , School.Unit.Constituents
                      , School.Unit.Unit
+                     , School.Unit.UnitActivation
+                     , School.Unit.UnitParams
+                     , School.Unit.UnitGradient
                      , School.Utils.Constants
                      , School.Utils.Debug
                      , School.Utils.LinearAlgebra
@@ -32,7 +34,7 @@ library
   other-modules:       School.Types.Errors
   build-depends:       QuickCheck
                      , attoparsec
-                     , base >=4.9
+                     , base >= 4.9
                      , bytestring
                      , bytestring-conversion
                      , cereal

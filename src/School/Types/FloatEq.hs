@@ -2,10 +2,12 @@
 
 module School.Types.FloatEq
 ( FloatEq(..)
+, compareDouble
 ) where
 
 import Numeric.LinearAlgebra (Element)
-import Numeric.LinearAlgebra.Data (Matrix, cols, toLists)
+import Numeric.LinearAlgebra.Data (Matrix, Vector, cols, toList, toLists)
+import School.Unit.UnitActivation (UnitActivation(..))
 
 class FloatEq a where
   (~=) :: a -> a -> Bool
@@ -36,14 +38,21 @@ instance (FloatEq a) => FloatEq [a] where
   l ~= m = (length l == length m)
         && and (zipWith (~=) l m)
 
-toList :: (Element a) => Matrix a -> [a]
-toList = concat . toLists
+mToList :: (Element a) => Matrix a -> [a]
+mToList = concat . toLists
 
 instance (Element a, FloatEq a) => FloatEq (Matrix a) where
   m1 ~= m2 = (cols m1 == cols m2)
-          && (toList m1 ~= toList m2)
+          && (mToList m1 ~= mToList m2)
+
+instance (Element a, FloatEq a) => FloatEq (Vector a) where
+  v1 ~= v2 = toList v1 ~= toList v2
 
 instance (FloatEq b) => FloatEq (Either a b) where
   (Left _) ~= (Left _) = True
   (Right res1) ~= (Right res2) = res1 ~= res2
+  _ ~= _ = False
+
+instance (Element a, FloatEq a) => FloatEq (UnitActivation a) where
+  (BatchActivation m1) ~= (BatchActivation m2) = m1 ~= m2
   _ ~= _ = False
