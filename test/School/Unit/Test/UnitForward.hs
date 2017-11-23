@@ -5,20 +5,23 @@ module School.Unit.Test.UnitForward
 
 import Conduit ((.|), ConduitM, runConduit, sinkList, yield)
 import Control.Monad.Except (runExcept)
+import Control.Monad.IO.Class (liftIO)
 import Control.Monad.State.Lazy (runStateT)
 import Data.Either (isLeft)
 import Numeric.LinearAlgebra (R)
 import Data.Void (Void)
+import School.TestUtils (randomAffineParams, randomMatrix)
 import School.Train.AppTrain (AppTrain)
 import School.Train.TrainState (TrainState(..))
 import School.Types.PingPong (toPingPong)
 import School.Unit.Affine (affine)
-import School.Unit.UnitActivation (UnitActivation(..))
+import School.Unit.UnitActivation (UnitActivation(..), isApplyFail)
 import School.Unit.UnitForward
 import School.Unit.UnitParams (UnitParams(..))
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck
 import Test.Tasty.TH
+import Test.QuickCheck.Monadic (assert, monadicIO)
 
 runTest :: ConduitM ()
                     Void
@@ -39,9 +42,22 @@ prop_affine_input_fail = let
   paramList = toPingPong [EmptyParams]
   initState = TrainState { paramList }
   result = runTest network initState
---  result =
---    runExcept $ runStateT (runConduit network) initState
   in isLeft result
+
+prop_affine_param_fail ::  Positive Int -> Positive Int -> Property
+prop_affine_param_fail (Positive fSize) (Positive oSize) = monadicIO $ do
+  let forward = unitForward affine
+  actMat <- liftIO $ randomMatrix oSize fSize
+  let acts = [BatchActivation actMat]
+  let network =  yield acts
+              .| forward
+              .| sinkList
+  let paramList = toPingPong [EmptyParams]
+  let initState = TrainState { paramList }
+  let result = runTest network initState
+  either (const . assert $ False)
+         (\(stack, _) -> assert $ isApplyFail . head . head $ stack)
+         result
 
 unitForwardTest :: TestTree
 unitForwardTest = $(testGroupGenerator)

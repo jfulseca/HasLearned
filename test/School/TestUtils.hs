@@ -1,7 +1,10 @@
+{-# LANGUAGE NamedFieldPuns #-}
+
 module School.TestUtils
 ( dummyHeader
 , dummyList
 , dummyMatrix
+, randomAffineParams
 , randomMatrix
 , randomVector
 , testRun
@@ -12,6 +15,7 @@ import Data.Void (Void)
 import School.FileIO.AppIO (AppIO, runAppIO)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.TypeName (TypeName(INT))
+import School.Unit.UnitParams (UnitParams(..))
 import System.Random (getStdRandom, random)
 import Test.QuickCheck.Modifiers (Positive(..))
 import Test.QuickCheck.Monadic (PropertyM, run)
@@ -41,3 +45,13 @@ randomVector :: Int -> IO (Vector R)
 randomVector n = do
   inputList <- sequence . (replicate n) $ getStdRandom random :: IO [Double]
   return $ n |> inputList
+
+randomAffineParams :: Int
+                   -> Int
+                   -> IO (UnitParams R)
+randomAffineParams fSize oSize = do
+  affineBias <- randomVector oSize
+  affineWeights <- randomMatrix oSize fSize
+  return AffineParams { affineBias
+                      , affineWeights
+                      }

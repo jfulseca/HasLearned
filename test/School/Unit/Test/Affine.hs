@@ -6,7 +6,7 @@ module School.Unit.Test.Affine
 import Control.Monad.IO.Class (liftIO)
 import Numeric.LinearAlgebra ((><), (|>), IndexOf, Matrix, R, Vector, accum,
                               fromRows, ident, size, sumElements)
-import School.TestUtils (randomMatrix, randomVector)
+import School.TestUtils (randomAffineParams, randomMatrix)
 import School.Types.FloatEq ((~=))
 import School.Unit.Affine
 import School.Unit.Unit (Unit(..))
@@ -37,12 +37,9 @@ randomSetup :: Int
             -> Int
             -> IO (UnitParams R, UnitActivation R)
 randomSetup bSize fSize oSize = do
-  affineBias <- randomVector oSize
   input <- randomMatrix bSize fSize
-  affineWeights <- randomMatrix oSize fSize
-  return ( AffineParams { affineBias
-                        , affineWeights
-                        }
+  affineParams <- randomAffineParams fSize oSize
+  return ( affineParams
          , BatchActivation input
          )
 
