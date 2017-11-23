@@ -7,6 +7,6 @@ for f in .stack-work/dist/*/Cabal*/hpc/school*/*.mix; do
   break
 done
 
-stack test --coverage
+stack test --coverage --test-arguments="$@"
 
 set +euo pipefail
