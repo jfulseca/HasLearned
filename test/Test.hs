@@ -9,6 +9,7 @@ import School.Types.Test.FloatEq (floatEqTest)
 import School.Types.Test.PosInt (posIntTest)
 import School.Types.Test.TypeName (typeNameTest)
 import School.Unit.Test.Affine (affineTest)
+import School.Unit.Test.RecLin (recLinTest)
 import School.Unit.Test.UnitForward (unitForwardTest)
 import Test.Tasty
 
@@ -31,6 +32,7 @@ fileIOProps = testGroup "FileIO"
 unitProps :: TestTree
 unitProps = testGroup "Unit"
   [ affineTest
+  , recLinTest
   , unitForwardTest
   ]
 

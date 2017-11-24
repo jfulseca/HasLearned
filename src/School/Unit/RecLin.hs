@@ -1,7 +1,7 @@
 module School.Unit.RecLin
 ( recLin ) where
 
-import Numeric.LinearAlgebra ((<>), R, cmap, step)
+import Numeric.LinearAlgebra (R, cmap, cond)
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitGradient (UnitGradient(..))
@@ -29,7 +29,7 @@ recLinDeriv EmptyParams
             (BatchGradient inGrad)
             (BatchActivation input)
   = (BatchGradient grad, EmptyParams)
-    where grad = inGrad <> (step input)
+    where grad = cond input 0 0 0 inGrad
 recLinDeriv EmptyParams f@(GradientFail _) _ = (f, EmptyParams)
 recLinDeriv EmptyParams _ (ApplyFail msg) = (GradientFail msg, EmptyParams)
 recLinDeriv _ _ _ = (GradientFail "Failure when differentiating RecLin unit" , EmptyParams)

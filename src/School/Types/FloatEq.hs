@@ -24,11 +24,11 @@ instance (FloatEq a) => FloatEq (Maybe a) where
   _ ~= _ = False
 
 compareDouble :: Double -> Double -> Double -> Bool
-compareDouble precision d1 d2 = 
-  abs ((d2 - d1) / d1) < precision
+compareDouble prec d1 d2 = if abs d1 < prec
+  then abs d2 < prec
+  else abs ((d2 - d1) / d1) < prec
 
 doubleEq :: Double -> Double -> Bool
-doubleEq 0 d = abs d < 5e-11
 doubleEq d1 d2 = compareDouble 5e-11 d1 d2
 
 instance FloatEq Double where

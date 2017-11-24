@@ -5,8 +5,9 @@ module School.Unit.Test.Affine
 
 import Control.Monad.IO.Class (liftIO)
 import Numeric.LinearAlgebra ((><), (|>), IndexOf, Matrix, R, Vector, accum,
-                              fromRows, ident, size, sumElements)
-import School.TestUtils (randomAffineParams, randomMatrix)
+                              fromRows, ident, size)
+import School.TestUtils (CostFunc, diffInput, jTest, matIndexes,
+                         randomAffineParams, randomMatrix)
 import School.Types.FloatEq ((~=))
 import School.Unit.Affine
 import School.Unit.Unit (Unit(..))
@@ -71,29 +72,6 @@ type AlterParams a = Double
                   -> UnitParams R
                   -> UnitParams R
  
-type AlterInput = Double
-               -> IndexOf Matrix
-               -> UnitActivation R
-               -> UnitActivation R
-
-type CostFunc = UnitActivation R -> Double
-
-jTest :: CostFunc
-jTest (BatchActivation m) = sumElements m
-jTest _ = 0
-
-diffInput :: UnitParams R
-          -> UnitActivation R
-          -> CostFunc
-          -> IndexOf Matrix
-          -> Double
-diffInput params input cost idx =
-  (jAdd - jSub) / (2*eps) where
-    outAdd = apply affine params (alterInput eps idx input)
-    outSub = apply affine params (alterInput (-eps) idx input)
-    jAdd = cost outAdd
-    jSub = cost outSub
-
 diffBias :: UnitParams R
           -> UnitActivation R
           -> CostFunc
@@ -118,11 +96,6 @@ diffWeights params input cost idx =
     jAdd = cost outAdd
     jSub = cost outSub
 
-alterInput :: AlterInput
-alterInput change idx (BatchActivation m) =
-  BatchActivation $ accum m (+) [(idx, change)]
-alterInput _ _ _ = ApplyFail "alterInput error"
-
 alterBias :: AlterParams Vector
 alterBias change idx AffineParams{ affineBias, affineWeights } =
   let newBias = accum affineBias (+) [(idx, change)]
@@ -135,9 +108,6 @@ alterWeights change idx AffineParams{ affineBias, affineWeights } =
   in AffineParams { affineBias, affineWeights = newWeights }
 alterWeights _ _ _ = EmptyParams
 
-matIndexes :: Int -> Int -> [IndexOf Matrix]
-matIndexes r c = [ (j, k) | j <- [0..r-1], k <- [0..c-1] ] 
-
 vecIndexes :: Int -> [IndexOf Vector]
 vecIndexes n = [0..n-1]
 
@@ -145,7 +115,7 @@ prop_numerical_gradient :: (Positive Int) -> (Positive Int) -> Positive Int -> P
 prop_numerical_gradient (Positive bSize) (Positive fSize) (Positive oSize) = (mapSize (const 10)) . monadicIO $ do
   (params, input) <- liftIO $ randomSetup bSize fSize oSize
   let idxs = matIndexes bSize fSize
-  let num = map (\idx -> diffInput params input jTest idx)
+  let num = map (\idx -> diffInput affine params input eps idx)
                 idxs
   let numGrad = (bSize >< fSize) num
   let inGrad = BatchGradient $ oneMatrix bSize oSize
