@@ -42,7 +42,7 @@ prop_affine_input_fail = let
           .| forward
           .| sinkList
   paramList = toPingPong [EmptyParams]
-  initState = TrainState { paramList }
+  initState = TrainState { paramDerivs = [], paramList }
   result = runTest network initState
   in isLeft result
 
@@ -55,7 +55,7 @@ prop_affine_param_fail (Positive fSize) (Positive oSize) = monadicIO $ do
               .| forward
               .| sinkList
   let paramList = toPingPong [EmptyParams]
-  let initState = TrainState { paramList }
+  let initState = TrainState { paramDerivs = [], paramList }
   let result = runTest network initState
   either (const . assert $ False)
          (\(stack, _) -> assert $ isApplyFail . head . head $ stack)
@@ -71,7 +71,7 @@ prop_affine_apply_single (Positive bSize) (Positive fSize) (Positive oSize) = mo
               .| sinkList
   params <- liftIO $ randomAffineParams fSize oSize
   let paramList = toPingPong [params]
-  let initState = TrainState { paramList }
+  let initState = TrainState { paramDerivs = [], paramList }
   let result = runTest network initState
   let check = apply affine params (head acts)
   either (const . assert $ False)

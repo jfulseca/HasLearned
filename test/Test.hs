@@ -11,6 +11,7 @@ import School.Types.Test.TypeName (typeNameTest)
 import School.Unit.Test.Affine (affineTest)
 import School.Unit.Test.RecLin (recLinTest)
 import School.Unit.Test.UnitForward (unitForwardTest)
+import School.Unit.Test.UnitBackward (unitBackwardTest)
 import Test.Tasty
 
 typeProps :: TestTree
@@ -33,6 +34,7 @@ unitProps :: TestTree
 unitProps = testGroup "Unit"
   [ affineTest
   , recLinTest
+  , unitBackwardTest
   , unitForwardTest
   ]
 

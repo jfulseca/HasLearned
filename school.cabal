@@ -29,6 +29,7 @@ library
                      , School.Unit.RecLin
                      , School.Unit.Unit
                      , School.Unit.UnitActivation
+                     , School.Unit.UnitBackward
                      , School.Unit.UnitForward
                      , School.Unit.UnitParams
                      , School.Unit.UnitGradient
@@ -82,6 +83,7 @@ test-suite school-test
                      , School.Types.Test.TypeName
                      , School.Unit.Test.Affine
                      , School.Unit.Test.RecLin
+                     , School.Unit.Test.UnitBackward
                      , School.Unit.Test.UnitForward
   build-depends:       QuickCheck
                      , base >= 4.9

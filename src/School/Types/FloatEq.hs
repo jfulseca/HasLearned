@@ -8,6 +8,8 @@ module School.Types.FloatEq
 import Numeric.LinearAlgebra (Element)
 import Numeric.LinearAlgebra.Data (Matrix, Vector, cols, toList, toLists)
 import School.Unit.UnitActivation (UnitActivation(..))
+import School.Unit.UnitGradient (UnitGradient(..))
+import School.Unit.UnitParams (UnitParams(..))
 
 class FloatEq a where
   (~=) :: a -> a -> Bool
@@ -55,4 +57,14 @@ instance (FloatEq b) => FloatEq (Either a b) where
 
 instance (Element a, FloatEq a) => FloatEq (UnitActivation a) where
   (BatchActivation m1) ~= (BatchActivation m2) = m1 ~= m2
+  _ ~= _ = False
+
+instance (Element a, FloatEq a) => FloatEq (UnitGradient a) where
+  (BatchGradient g1) ~= (BatchGradient g2) = g1 ~= g2
+  _ ~= _ = False
+
+instance (Element a, FloatEq a) => FloatEq (UnitParams a) where
+  AffineParams { affineBias = b1, affineWeights = w1 } ~= AffineParams { affineBias = b2, affineWeights = w2 } =
+    b1 ~= b2 && w1 ~= w2
+  EmptyParams ~= EmptyParams = True
   _ ~= _ = False
