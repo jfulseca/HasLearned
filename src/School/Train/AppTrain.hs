@@ -3,6 +3,7 @@
 module School.Train.AppTrain
 ( AppTrain
 , getParams
+, putParamDerivs
 ) where
 
 import Control.Monad.State.Lazy (StateT, get, put)
@@ -16,6 +17,15 @@ type AppTrain a =
 
 getParams :: AppTrain a (UnitParams a)
 getParams = do
-  TrainState{ paramList } <- get
-  put . TrainState . tail $ paramList
+  TrainState{ paramDerivs, paramList } <- get
+  put TrainState { paramDerivs
+                 , paramList = tail paramList
+                 }
   return $ head paramList
+
+putParamDerivs :: UnitParams a -> AppTrain a ()
+putParamDerivs derivs = do
+  TrainState{ paramDerivs, paramList } <- get
+  put TrainState { paramDerivs = derivs:paramDerivs
+                 , paramList
+                 }

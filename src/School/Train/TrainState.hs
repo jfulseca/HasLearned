@@ -5,5 +5,6 @@ import School.Types.PingPong (PingPong)
 import School.Unit.UnitParams (UnitParams)
 
 data TrainState a = TrainState
-  { paramList :: PingPong (UnitParams a)
+  { paramDerivs :: [UnitParams a]
+  , paramList :: PingPong (UnitParams a)
   }
