@@ -1,14 +1,14 @@
 {-# LANGUAGE NamedFieldPuns, TemplateHaskell #-}
 
-module School.Unit.Test.Affine
-( affineTest ) where
-
+module School.Unit.Test.RecLin
+( recLinTest ) where
+import School.Utils.Debug
 import Control.Monad.IO.Class (liftIO)
 import Numeric.LinearAlgebra ((><), (|>), IndexOf, Matrix, R, Vector, accum,
                               fromRows, ident, size, sumElements)
 import School.TestUtils (randomAffineParams, randomMatrix)
 import School.Types.FloatEq ((~=))
-import School.Unit.Affine
+import School.Unit.RecLin
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitGradient (UnitGradient(..))
@@ -20,23 +20,18 @@ import Test.Tasty.QuickCheck hiding ((><), scale)
 import Test.Tasty.TH
 import Test.QuickCheck.Monadic (assert, monadicIO)
 
-eps :: Double
-eps = 1e-5
-
-prec :: Double
-prec = 5e-2
-
 prop_trivial_apply :: (Positive Int) -> (Positive Int) -> Property
 prop_trivial_apply (Positive bSize) (Positive fSize) = monadicIO $ do
-  let affineBias = zeroVector fSize
   m <- liftIO $ randomMatrix bSize fSize
   let input = BatchActivation m
-  let affineWeights = ident fSize
-  let params = AffineParams { affineBias
-                            , affineWeights }
-  let result = apply affine params input
-  assert $ result ~= input
+  let params = EmptyParams
+  let result = apply recLin params input
+  showIO $ "res " ++ sl result
+  showIO $ "inp " ++ sl input
+--  assert $ result ~= input
+  assert $ bSize < 5 && fSize < 5
 
+{-
 randomSetup :: Int
             -> Int
             -> Int
@@ -65,6 +60,9 @@ prop_deriv_dims (Positive bSize) (Positive fSize) (Positive oSize) = monadicIO $
   assert $ (size gradOut == (bSize, fSize))
         && (size affineBias == oSize)
         && (size affineWeights == (oSize, fSize))
+
+eps :: Double
+eps = 1e-5 
 
 type AlterParams a = Double
                   -> IndexOf a
@@ -150,29 +148,11 @@ prop_numerical_gradient (Positive bSize) (Positive fSize) (Positive oSize) = (ma
   let numGrad = (bSize >< fSize) num
   let inGrad = BatchGradient $ oneMatrix bSize oSize
   let (BatchGradient result, _) = deriv affine params inGrad input
-  assert $ compareDoubleMatrix prec result numGrad
+  assert $ compareDoubleMatrix (eps*5) result numGrad
 
 prop_numerical_bias_deriv :: (Positive Int) -> (Positive Int) -> Positive Int -> Property
 prop_numerical_bias_deriv (Positive bSize) (Positive fSize) (Positive oSize) = (mapSize (const 10)) . monadicIO $ do
   (params, input) <- liftIO $ randomSetup bSize fSize oSize
-  let idxs = vecIndexes oSize
-  let num = map (\idx -> diffBias params input jTest idx)
-                idxs
-  let numDeriv = oSize |> num
-  let inGrad = BatchGradient $ oneMatrix bSize oSize
-  let (_, AffineParams { affineBias }) = deriv affine params inGrad input
-  assert $ compareDoubleVector prec affineBias numDeriv
-
-prop_numerical_weights_deriv :: (Positive Int) -> (Positive Int) -> Positive Int -> Property
-prop_numerical_weights_deriv (Positive bSize) (Positive fSize) (Positive oSize) = (mapSize (const 10)) . monadicIO $ do
-  (params, input) <- liftIO $ randomSetup bSize fSize oSize
-  let idxs = matIndexes oSize fSize
-  let num = map (\idx -> diffWeights params input jTest idx)
-                idxs
-  let numDeriv = (oSize >< fSize) num
-  let inGrad = BatchGradient $ oneMatrix bSize oSize
-  let (_, AffineParams { affineWeights }) = deriv affine params inGrad input
-  assert $ compareDoubleMatrix prec affineWeights numDeriv
-
-affineTest :: TestTree
-affineTest = $(testGroupGenerator)
+-}
+recLinTest :: TestTree
+recLinTest = $(testGroupGenerator)
