@@ -37,7 +37,10 @@ constVector d v = konst v d
 zeroVector :: Int -> Vector R
 zeroVector d = konst 0 d
 
-zeroMatrix :: Int -> Int -> Matrix R
+zeroMatrix :: (Container Vector a, Num a)
+           => Int
+           -> Int
+           -> Matrix a
 zeroMatrix r c = konst 0 (r, c)
 
 oneMatrix :: Int -> Int -> Matrix R
