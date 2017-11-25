@@ -30,5 +30,4 @@ unitForward :: Unit a -> ConduitM (ForwardStack a)
                                   (ForwardStack a)
                                   (AppTrain a)
                                   ()
-
 unitForward unit = mapMC (applyUnit unit)
