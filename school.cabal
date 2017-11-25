@@ -26,6 +26,8 @@ library
                      , School.Types.PingPong
                      , School.Types.PosInt
                      , School.Unit.Affine
+                     , School.Unit.ApplyCost
+                     , School.Unit.CostFunction
                      , School.Unit.RecLin
                      , School.Unit.Unit
                      , School.Unit.UnitActivation
