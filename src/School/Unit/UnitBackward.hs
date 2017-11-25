@@ -19,21 +19,20 @@ derivUnit :: Unit a
           -> BackwardStack a
           -> AppTrain a (BackwardStack a)
 derivUnit _ ([], _) =
-  throwError $ "ERROR: No input activations " ++
-               " to backward network unit "
+  throwError $ "No input activations " ++
+               "to backward network unit "
+derivUnit _ (_, GradientFail msg) = throwError msg
 derivUnit unit (acts, inGrad) = do
   let input = last acts
   case input of
     (ApplyFail msg) -> throwError $ "ERROR: " ++ msg
-    _ -> case inGrad of
-      (GradientFail msg) -> throwError $ "ERROR: " ++ msg
-      _ -> do
-        params <- getParams
-        let (gradient, derivs) = deriv unit params inGrad input
-        putParamDerivs derivs
-        return $ ( init acts
-                 , gradient
-                 )
+    _ -> do
+      params <- getParams
+      let (gradient, derivs) = deriv unit params inGrad input
+      putParamDerivs derivs
+      return $ ( init acts
+               , gradient
+               )
 
 unitBackward :: Unit a -> ConduitM (BackwardStack a)
                                    (BackwardStack a)
