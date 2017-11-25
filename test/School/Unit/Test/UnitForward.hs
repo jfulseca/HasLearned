@@ -12,7 +12,7 @@ import Numeric.LinearAlgebra (R)
 import Data.Void (Void)
 import School.TestUtils (randomAffineParams, randomMatrix)
 import School.Train.AppTrain (AppTrain)
-import School.Train.TrainState (TrainState(..))
+import School.Train.TrainState (TrainState(..), emptyTrainState)
 import School.Types.FloatEq ((~=))
 import School.Types.PingPong (toPingPong)
 import School.Unit.Affine (affine)
@@ -42,9 +42,7 @@ prop_affine_input_fail = let
   network =  yield acts
           .| forward
           .| sinkList
-  paramList = toPingPong [EmptyParams]
-  initState = TrainState { paramDerivs = [], paramList }
-  result = runTest network initState
+  result = runTest network emptyTrainState
   in isLeft result
 
 prop_affine_param_fail :: Positive Int -> Positive Int -> Property
@@ -56,7 +54,7 @@ prop_affine_param_fail (Positive fSize) (Positive oSize) = monadicIO $ do
               .| forward
               .| sinkList
   let paramList = toPingPong [EmptyParams]
-  let initState = TrainState { paramDerivs = [], paramList }
+  let initState = emptyTrainState { paramList }
   let result = runTest network initState
   either (const . assert $ False)
          (\(stack, _) -> assert $ isApplyFail . head . head $ stack)
@@ -77,7 +75,7 @@ prop_affine_apply_single (Positive bSize)
               .| sinkList
   params <- liftIO $ randomAffineParams fSize oSize
   let paramList = toPingPong [params]
-  let initState = TrainState { paramDerivs = [], paramList }
+  let initState = emptyTrainState { paramList }
   let result = runTest network initState
   let check = apply affine params (head acts)
   either (const . assert $ False)
@@ -108,9 +106,7 @@ prop_affine_apply_aff_rl_aff_rl (Positive b)
                              , params2
                              , EmptyParams
                              ]
-  let initState = TrainState { paramDerivs = []
-                             , paramList
-                             }
+  let initState = emptyTrainState { paramList }
   let result = runTest network initState
   let out1 = apply affine params1 (head acts)
   let out2 = apply recLin EmptyParams out1

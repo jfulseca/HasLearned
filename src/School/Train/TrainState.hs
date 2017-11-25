@@ -1,10 +1,20 @@
 module School.Train.TrainState
-( TrainState(..) ) where
+( emptyTrainState
+, TrainState(..)
+) where
 
-import School.Types.PingPong (PingPong)
+import School.Types.PingPong (PingPong, toPingPong)
 import School.Unit.UnitParams (UnitParams)
 
 data TrainState a = TrainState
-  { paramDerivs :: [UnitParams a]
+  { cost :: Maybe a
+  , paramDerivs :: [UnitParams a]
   , paramList :: PingPong (UnitParams a)
   }
+
+emptyTrainState :: TrainState a
+emptyTrainState =
+  TrainState { cost = Nothing
+             , paramDerivs = []
+             , paramList = toPingPong []
+             }
