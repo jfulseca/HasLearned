@@ -23,14 +23,14 @@ derivUnit _ ([], _) =
                "to backward network unit "
 derivUnit _ (_, GradientFail msg) = throwError msg
 derivUnit unit (acts, inGrad) = do
-  let input = last acts
+  let input = head acts
   case input of
     (ApplyFail msg) -> throwError $ "ERROR: " ++ msg
     _ -> do
       params <- getParams
       let (gradient, derivs) = deriv unit params inGrad input
       putParamDerivs derivs
-      return $ ( init acts
+      return $ ( tail acts
                , gradient
                )
 

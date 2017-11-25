@@ -136,10 +136,10 @@ prop_deriv_aff_rl_aff_rl (Positive b)
   act1Mat <- liftIO $ randomMatrix b h
   act2Mat <- liftIO $ randomMatrix b h
   act3Mat <- liftIO $ randomMatrix b o
-  let acts = BatchActivation <$> [ inMat
-                                 , act1Mat
+  let acts = BatchActivation <$> [ act3Mat
                                  , act2Mat
-                                 , act3Mat
+                                 , act1Mat
+                                 , inMat
                                  ]
   gradMat <- liftIO $ randomMatrix b o
   let inGrad = BatchGradient gradMat
@@ -159,10 +159,10 @@ prop_deriv_aff_rl_aff_rl (Positive b)
   let initState = TrainState { paramDerivs = []
                              , paramList }
   let result = runTest network initState
-  let (grad1, _) = deriv recLin EmptyParams inGrad (last acts)
-  let (grad2, dParams2) = deriv affine params2 grad1 (acts!!2)
-  let (grad3, _) = deriv recLin EmptyParams grad2 (acts!!1)
-  let (_, dParams1) = deriv affine params1 grad3 (head acts)
+  let (grad1, _) = deriv recLin EmptyParams inGrad (head acts)
+  let (grad2, dParams2) = deriv affine params2 grad1 (acts!!1)
+  let (grad3, _) = deriv recLin EmptyParams grad2 (acts!!2)
+  let (_, dParams1) = deriv affine params1 grad3 (last acts)
   let check = [ dParams1
               , EmptyParams
               , dParams2
