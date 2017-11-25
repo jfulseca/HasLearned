@@ -29,3 +29,5 @@ putParamDerivs derivs = do
   put TrainState { paramDerivs = derivs:paramDerivs
                  , paramList
                  }
+
+

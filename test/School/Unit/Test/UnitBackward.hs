@@ -107,7 +107,7 @@ prop_affine_derivs (Positive bSize) (Positive fSize) (Positive oSize) = monadicI
   let backward = unitBackward affine
   actMat <- liftIO $ randomMatrix bSize fSize
   let input = BatchActivation actMat
-  gradMat <- liftIO $ randomMatrix bSize fSize
+  gradMat <- liftIO $ randomMatrix bSize oSize
   let inGrad = BatchGradient gradMat
   let fStack = ([input], inGrad)
   let network =  yield fStack
@@ -121,6 +121,56 @@ prop_affine_derivs (Positive bSize) (Positive fSize) (Positive oSize) = monadicI
   let (_, check) = deriv affine params inGrad input
   either (const . assert $ False)
          (\(_, TrainState { paramDerivs }) -> assert $ check ~= (head paramDerivs))
+         result
+
+prop_deriv_aff_rl_aff_rl :: Positive Int
+                         -> Positive Int
+                         -> Positive Int
+                         -> Positive Int
+                         -> Property
+prop_deriv_aff_rl_aff_rl (Positive b)
+                         (Positive f)
+                         (Positive h)
+                         (Positive o) = monadicIO $ do
+  inMat <- liftIO $ randomMatrix b f
+  act1Mat <- liftIO $ randomMatrix b h
+  act2Mat <- liftIO $ randomMatrix b h
+  act3Mat <- liftIO $ randomMatrix b o
+  let acts = BatchActivation <$> [ inMat
+                                 , act1Mat
+                                 , act2Mat
+                                 , act3Mat
+                                 ]
+  gradMat <- liftIO $ randomMatrix b o
+  let inGrad = BatchGradient gradMat
+  let network =  yield (acts, inGrad)
+              .| unitBackward recLin
+              .| unitBackward affine
+              .| unitBackward recLin
+              .| unitBackward affine
+              .| sinkList
+  params1 <- liftIO $ randomAffineParams f h
+  params2 <- liftIO $ randomAffineParams h o
+  let paramList = toPingPong [ EmptyParams
+                             , params2
+                             , EmptyParams
+                             , params1
+                             ]
+  let initState = TrainState { paramDerivs = []
+                             , paramList }
+  let result = runTest network initState
+  let (grad1, _) = deriv recLin EmptyParams inGrad (last acts)
+  let (grad2, dParams2) = deriv affine params2 grad1 (acts!!2)
+  let (grad3, _) = deriv recLin EmptyParams grad2 (acts!!1)
+  let (_, dParams1) = deriv affine params1 grad3 (head acts)
+  let check = [ dParams1
+              , EmptyParams
+              , dParams2
+              , EmptyParams
+              ]
+  either (const . assert $ False)
+         (\(_, TrainState { paramDerivs }) ->
+           assert $ check ~= paramDerivs)
          result
 
 unitBackwardTest :: TestTree

@@ -16,6 +16,7 @@ import School.Train.TrainState (TrainState(..))
 import School.Types.FloatEq ((~=))
 import School.Types.PingPong (toPingPong)
 import School.Unit.Affine (affine)
+import School.Unit.RecLin (recLin)
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitActivation (UnitActivation(..), isApplyFail)
 import School.Unit.UnitForward
@@ -61,8 +62,13 @@ prop_affine_param_fail (Positive fSize) (Positive oSize) = monadicIO $ do
          (\(stack, _) -> assert $ isApplyFail . head . head $ stack)
          result
 
-prop_affine_apply_single :: Positive Int ->  Positive Int -> Positive Int -> Property
-prop_affine_apply_single (Positive bSize) (Positive fSize) (Positive oSize) = monadicIO $ do
+prop_affine_apply_single :: Positive Int
+                         -> Positive Int
+                         -> Positive Int
+                         -> Property
+prop_affine_apply_single (Positive bSize)
+                         (Positive fSize)
+                         (Positive oSize) = monadicIO $ do
   let forward = unitForward affine
   actMat <- liftIO $ randomMatrix bSize fSize
   let acts = [BatchActivation actMat]
@@ -74,6 +80,42 @@ prop_affine_apply_single (Positive bSize) (Positive fSize) (Positive oSize) = mo
   let initState = TrainState { paramDerivs = [], paramList }
   let result = runTest network initState
   let check = apply affine params (head acts)
+  either (const . assert $ False)
+         (\(stack, _) -> assert $ (head . head $ stack) ~= check)
+         result
+
+prop_affine_apply_aff_rl_aff_rl :: Positive Int
+                                -> Positive Int
+                                -> Positive Int
+                                -> Positive Int
+                                -> Property
+prop_affine_apply_aff_rl_aff_rl (Positive b)
+                                (Positive f)
+                                (Positive h)
+                                (Positive o) = monadicIO $ do
+  input <- liftIO $ randomMatrix b f
+  let acts = [BatchActivation input]
+  let network =  yield acts
+              .| unitForward affine
+              .| unitForward recLin
+              .| unitForward affine
+              .| unitForward recLin
+              .| sinkList
+  params1 <- liftIO $ randomAffineParams f h
+  params2 <- liftIO $ randomAffineParams h o
+  let paramList = toPingPong [ params1
+                             , EmptyParams
+                             , params2
+                             , EmptyParams
+                             ]
+  let initState = TrainState { paramDerivs = []
+                             , paramList
+                             }
+  let result = runTest network initState
+  let out1 = apply affine params1 (head acts)
+  let out2 = apply recLin EmptyParams out1
+  let out3 = apply affine params2 out2
+  let check = apply recLin EmptyParams out3
   either (const . assert $ False)
          (\(stack, _) -> assert $ (head . head $ stack) ~= check)
          result

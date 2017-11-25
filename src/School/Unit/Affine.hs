@@ -38,12 +38,12 @@ affineDeriv :: UnitParams R
                , UnitParams R
                )
 affineDeriv AffineParams { affineWeights }
-            (BatchGradient inJac)
+            (BatchGradient inGrad)
             (BatchActivation input) =
   (outJac, paramDerivs) where
-    outJac = BatchGradient $ inJac <> affineWeights
-    bias = sumCols inJac
-    weights = tr' inJac <> input
+    outJac = BatchGradient $ inGrad <> affineWeights
+    bias = sumCols inGrad
+    weights = tr' inGrad <> input
     paramDerivs = AffineParams { affineBias = bias
                                , affineWeights = weights
                                }
