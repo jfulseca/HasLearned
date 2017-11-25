@@ -12,6 +12,7 @@ import School.Unit.Test.Affine (affineTest)
 import School.Unit.Test.RecLin (recLinTest)
 import School.Unit.Test.UnitForward (unitForwardTest)
 import School.Unit.Test.UnitBackward (unitBackwardTest)
+import School.Unit.Test.WeightDecay (weightDecayTest)
 import Test.Tasty
 
 typeProps :: TestTree
@@ -36,6 +37,7 @@ unitProps = testGroup "Unit"
   , recLinTest
   , unitBackwardTest
   , unitForwardTest
+  , weightDecayTest
   ]
 
 schoolTest :: TestTree

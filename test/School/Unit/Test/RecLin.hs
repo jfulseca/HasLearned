@@ -16,7 +16,7 @@ import School.Utils.LinearAlgebra (compareDoubleMatrix, oneMatrix)
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck hiding ((><), scale)
 import Test.Tasty.TH
-import Test.QuickCheck.Monadic (assert, monadicIO)
+import Test.QuickCheck.Monadic (assert, monadicIO, pre)
 
 eps :: Double
 eps = 1e-5 
@@ -43,6 +43,7 @@ prop_gradient_dims (Positive bSize) (Positive fSize) = monadicIO $ do
 
 prop_numerical_gradient :: (Positive Int) -> Positive Int -> Property
 prop_numerical_gradient (Positive bSize) (Positive fSize) = monadicIO $ do
+  pre $ bSize < 25 && fSize < 25
   input <- liftIO $ fmap BatchActivation $ randomMatrix bSize fSize
   let params = EmptyParams
   let idxs = matIndexes bSize fSize

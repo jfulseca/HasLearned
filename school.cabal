@@ -35,6 +35,7 @@ library
                      , School.Unit.UnitForward
                      , School.Unit.UnitParams
                      , School.Unit.UnitGradient
+                     , School.Unit.WeightDecay
                      , School.Utils.Constants
                      , School.Utils.Debug
                      , School.Utils.LinearAlgebra
@@ -87,6 +88,7 @@ test-suite school-test
                      , School.Unit.Test.RecLin
                      , School.Unit.Test.UnitBackward
                      , School.Unit.Test.UnitForward
+                     , School.Unit.Test.WeightDecay
   build-depends:       QuickCheck
                      , base >= 4.9
                      , bytestring

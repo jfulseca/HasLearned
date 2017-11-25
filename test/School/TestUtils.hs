@@ -2,6 +2,7 @@
 
 module School.TestUtils
 ( CostFunc
+, diffCost
 , diffInput
 , dummyHeader
 , dummyList
@@ -12,18 +13,25 @@ module School.TestUtils
 , randomAffineParams
 , randomMatrix
 , randomVector
+, runTrainConduit
 , testRun
 , whenPrint
 ) where
 
-import Conduit (ConduitM)
+import Conduit (ConduitM, runConduit)
 import Control.Monad (when)
+import Control.Monad.Except (runExcept)
+import Control.Monad.State.Lazy (runStateT)
+import Data.Either (either)
 import Data.Void (Void)
 import Numeric.LinearAlgebra ((><), (|>), IndexOf, Matrix, R, Vector, accum, sumElements)
 import School.FileIO.AppIO (AppIO, runAppIO)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.DoubleConversion (doubleRange)
 import School.Types.TypeName (TypeName(INT))
+import School.Train.AppTrain (AppTrain)
+import School.Train.TrainState (TrainState)
+import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitParams (UnitParams(..))
@@ -99,6 +107,19 @@ diffInput unit params input eps idx =
     jAdd = jTest outAdd
     jSub = jTest outSub
 
+fromRight :: b -> Either a b -> b
+fromRight b = either (const b) id
+
+diffCost :: CostFunction R
+         -> UnitActivation R
+         -> Double
+         -> IndexOf Matrix
+         -> Double
+diffCost costFunc input eps idx = let
+  jAdd = computeCost costFunc (alterInput eps idx input)
+  jSub = computeCost costFunc (alterInput (-eps) idx input)
+  in (fromRight 0 jAdd - fromRight 0 jSub) / (2*eps)
+
 alterInput :: AlterInput
 alterInput change idx (BatchActivation m) =
   BatchActivation $ accum m (+) [(idx, change)]
@@ -111,4 +132,13 @@ type AlterInput = Double
 
 matIndexes :: Int -> Int -> [IndexOf Matrix]
 matIndexes r c = [ (j, k) | j <- [0..r-1], k <- [0..c-1] ] 
+
+runTrainConduit :: ConduitM ()
+                            Void
+                            (AppTrain R)
+                            a
+                -> TrainState Double
+                -> Either String (a, TrainState R)
+runTrainConduit conduit state = runExcept $
+  runStateT (runConduit conduit) state
 

@@ -19,7 +19,7 @@ import School.Utils.LinearAlgebra (compareDoubleMatrix, compareDoubleVector,
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck hiding ((><), scale)
 import Test.Tasty.TH
-import Test.QuickCheck.Monadic (assert, monadicIO)
+import Test.QuickCheck.Monadic (assert, monadicIO, pre)
 
 eps :: Double
 eps = 1e-5
@@ -112,7 +112,8 @@ vecIndexes :: Int -> [IndexOf Vector]
 vecIndexes n = [0..n-1]
 
 prop_numerical_gradient :: (Positive Int) -> (Positive Int) -> Positive Int -> Property
-prop_numerical_gradient (Positive bSize) (Positive fSize) (Positive oSize) = (mapSize (const 10)) . monadicIO $ do
+prop_numerical_gradient (Positive bSize) (Positive fSize) (Positive oSize) = monadicIO $ do
+  pre $ bSize < 50 && fSize < 50 && oSize < 50
   (params, input) <- liftIO $ randomSetup bSize fSize oSize
   let idxs = matIndexes bSize fSize
   let num = map (\idx -> diffInput affine params input eps idx)
@@ -124,6 +125,7 @@ prop_numerical_gradient (Positive bSize) (Positive fSize) (Positive oSize) = (ma
 
 prop_numerical_bias_deriv :: (Positive Int) -> (Positive Int) -> Positive Int -> Property
 prop_numerical_bias_deriv (Positive bSize) (Positive fSize) (Positive oSize) = (mapSize (const 10)) . monadicIO $ do
+  pre $ bSize < 50 && fSize < 50 && oSize < 50
   (params, input) <- liftIO $ randomSetup bSize fSize oSize
   let idxs = vecIndexes oSize
   let num = map (\idx -> diffBias params input jTest idx)
@@ -135,6 +137,7 @@ prop_numerical_bias_deriv (Positive bSize) (Positive fSize) (Positive oSize) = (
 
 prop_numerical_weights_deriv :: (Positive Int) -> (Positive Int) -> Positive Int -> Property
 prop_numerical_weights_deriv (Positive bSize) (Positive fSize) (Positive oSize) = (mapSize (const 10)) . monadicIO $ do
+  pre $ bSize < 50 && fSize < 50 && oSize < 50
   (params, input) <- liftIO $ randomSetup bSize fSize oSize
   let idxs = matIndexes oSize fSize
   let num = map (\idx -> diffWeights params input jTest idx)
