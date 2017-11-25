@@ -19,6 +19,7 @@ library
                      , School.FileIO.MatrixSink
                      , School.FileIO.MatrixSource
                      , School.Train.AppTrain
+                     , School.Train.BackwardPass
                      , School.Train.ForwardPass
                      , School.Train.TrainState
                      , School.Types.DoubleConversion
