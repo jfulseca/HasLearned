@@ -18,10 +18,8 @@ module School.TestUtils
 , whenPrint
 ) where
 
-import Conduit (ConduitM, runConduit)
+import Conduit (ConduitM)
 import Control.Monad (when)
-import Control.Monad.Except (runExcept)
-import Control.Monad.State.Lazy (runStateT)
 import Data.Either (either)
 import Data.Void (Void)
 import Numeric.LinearAlgebra ((><), (|>), IndexOf, Matrix, R, Vector, accum, sumElements)
@@ -29,8 +27,7 @@ import School.FileIO.AppIO (AppIO, runAppIO)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.DoubleConversion (doubleRange)
 import School.Types.TypeName (TypeName(INT))
-import School.Train.AppTrain (AppTrain)
-import School.Train.TrainState (TrainState)
+import School.Train.AppTrain (runTrainConduit)
 import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitActivation (UnitActivation(..))
@@ -132,13 +129,4 @@ type AlterInput = Double
 
 matIndexes :: Int -> Int -> [IndexOf Matrix]
 matIndexes r c = [ (j, k) | j <- [0..r-1], k <- [0..c-1] ] 
-
-runTrainConduit :: ConduitM ()
-                            Void
-                            (AppTrain R)
-                            a
-                -> TrainState Double
-                -> Either String (a, TrainState R)
-runTrainConduit conduit state = runExcept $
-  runStateT (runConduit conduit) state
 

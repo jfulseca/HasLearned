@@ -5,10 +5,13 @@ module School.Train.AppTrain
 , getParams
 , putCost
 , putParamDerivs
+, runTrainConduit
 ) where
 
-import Control.Monad.State.Lazy (StateT, get, put)
-import Control.Monad.Except (Except)
+import Conduit (ConduitM, runConduit)
+import Control.Monad.State.Lazy (StateT, get, runStateT, put)
+import Control.Monad.Except (Except, runExcept)
+import Data.Void (Void)
 import School.Train.TrainState (TrainState(..))
 import School.Unit.UnitParams (UnitParams)
 
@@ -32,4 +35,12 @@ putCost value = do
   state <- get
   put state { cost = Just value }
 
+runTrainConduit :: ConduitM ()
+                            Void
+                            (AppTrain a)
+                            b
+                -> TrainState a
+                -> Either String (b, TrainState a)
+runTrainConduit conduit state = runExcept $
+  runStateT (runConduit conduit) state
 
