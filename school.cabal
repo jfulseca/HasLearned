@@ -21,7 +21,9 @@ library
                      , School.Train.AppTrain
                      , School.Train.BackwardPass
                      , School.Train.ForwardPass
+                     , School.Train.GradientDescentPass
                      , School.Train.TrainState
+                     , School.Train.UpdateParams
                      , School.Types.DoubleConversion
                      , School.Types.FloatEq
                      , School.Types.TypeName
