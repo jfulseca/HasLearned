@@ -15,7 +15,7 @@ instance (Container Vector a, Num a, Eq a) => Eq (UnitGradient a) where
   (BatchGradient g1) == (BatchGradient g2) =
     g1 == g2
   (GradientFail _) == (GradientFail _) = True
-  _ == _ = True
+  _ == _ = False
 
 isGradientFail :: UnitGradient a -> Bool
 isGradientFail (GradientFail _) = True
