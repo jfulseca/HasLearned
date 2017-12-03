@@ -6,10 +6,10 @@ module School.Unit.Test.UnitForward
 import Conduit ((.|), sinkList, yield)
 import Control.Monad.IO.Class (liftIO)
 import Data.Either (isLeft)
-import School.TestUtils (randomAffineParams, randomMatrix, runTrainConduit)
+import School.TestUtils (fromRight, randomAffineParams, randomMatrix, runTrainConduit)
 import School.Train.TrainState (TrainState(..), emptyTrainState)
 import School.Types.FloatEq ((~=))
-import School.Types.PingPong (toPingPong)
+import School.Types.PingPong (pingPongSingleton, toPingPong)
 import School.Unit.Affine (affine)
 import School.Unit.RecLin (recLin)
 import School.Unit.Unit (Unit(..))
@@ -39,9 +39,7 @@ prop_affine_param_fail (Positive fSize) (Positive oSize) = monadicIO $ do
   let network =  yield acts
               .| forward
               .| sinkList
-  let paramList = toPingPong [EmptyParams]
-  let initState = emptyTrainState { paramList }
-  let result = runTrainConduit network initState
+  let result = runTrainConduit network emptyTrainState
   either (const . assert $ False)
          (\(stack, _) -> assert $ isApplyFail . head . head $ stack)
          result
@@ -60,7 +58,7 @@ prop_affine_apply_single (Positive bSize)
               .| forward
               .| sinkList
   params <- liftIO $ randomAffineParams fSize oSize
-  let paramList = toPingPong [params]
+  let paramList = pingPongSingleton params
   let initState = emptyTrainState { paramList }
   let result = runTrainConduit network initState
   let check = apply affine params (head acts)
@@ -87,11 +85,12 @@ prop_affine_apply_aff_rl_aff_rl (Positive b)
               .| sinkList
   params1 <- liftIO $ randomAffineParams f h
   params2 <- liftIO $ randomAffineParams h o
-  let paramList = toPingPong [ params1
+  let allParams = toPingPong [ params1
                              , EmptyParams
                              , params2
                              , EmptyParams
                              ]
+  let paramList = fromRight (pingPongSingleton EmptyParams) allParams
   let initState = emptyTrainState { paramList }
   let result = runTrainConduit network initState
   let out1 = apply affine params1 (head acts)

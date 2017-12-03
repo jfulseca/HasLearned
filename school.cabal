@@ -24,6 +24,7 @@ library
                      , School.Train.GradientDescent
                      , School.Train.GradientDescentPass
                      , School.Train.StoppingCondition
+                     , School.Train.SimpleDescentUpdate
                      , School.Train.TrainState
                      , School.Train.UpdateParams
                      , School.Types.DoubleConversion
@@ -90,6 +91,7 @@ test-suite school-test
                      , School.Types.Test.FloatEq
                      , School.Types.Test.PosInt
                      , School.Types.Test.TypeName
+                     , School.Train.Test.ForwardPass
                      , School.Unit.Test.Affine
                      , School.Unit.Test.RecLin
                      , School.Unit.Test.UnitBackward

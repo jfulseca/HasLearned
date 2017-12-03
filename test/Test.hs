@@ -4,6 +4,7 @@ import School.FileIO.Test.CSVReader (csvReaderTest)
 import School.FileIO.Test.MatrixHeader (matrixHeaderTest)
 import School.FileIO.Test.MatrixSink (matrixSinkTest)
 import School.FileIO.Test.MatrixSource (matrixSourceTest)
+import School.Train.Test.ForwardPass (forwardPassTest)
 import School.Types.Test.DoubleConversion (doubleToBinaryTest)
 import School.Types.Test.FloatEq (floatEqTest)
 import School.Types.Test.PosInt (posIntTest)
@@ -40,11 +41,16 @@ unitProps = testGroup "Unit"
   , weightDecayTest
   ]
 
+trainProps :: TestTree
+trainProps= testGroup "Train"
+  [ forwardPassTest ]
+
 schoolTest :: TestTree
 schoolTest = testGroup "School"
   [ typeProps
   , fileIOProps
   , unitProps
+  , trainProps
   ]
 
 main :: IO ()

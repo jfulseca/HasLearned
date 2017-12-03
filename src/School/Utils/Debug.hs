@@ -2,9 +2,11 @@ module School.Utils.Debug
 ( compareDoubleMatrixTrace
 , db
 , printConduit
+, printConduitP
 , printVar
 , showIO
 , sl
+, trace
 ) where
 
 import Conduit (ConduitM, mapC, peekC)
@@ -18,6 +20,13 @@ sl a = (show a) ++ " "
 
 showIO :: (MonadIO m) => String -> m ()
 showIO = liftIO . traceIO
+
+printConduitP :: (Monad m, Show a)
+              => String
+              -> ConduitM a a m ()
+printConduitP str = do
+  next <- peekC
+  mapC (db id (str ++ ": " ++ (show next)))
 
 printConduit :: (MonadIO m, Show a)
              => String

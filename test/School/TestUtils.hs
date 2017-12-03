@@ -7,6 +7,8 @@ module School.TestUtils
 , dummyHeader
 , dummyList
 , dummyMatrix
+, fromLeft
+, fromRight
 , getRandDouble
 , jTest
 , matIndexes
@@ -106,6 +108,9 @@ diffInput unit params input eps idx =
 
 fromRight :: b -> Either a b -> b
 fromRight b = either (const b) id
+
+fromLeft :: a -> Either a b -> a
+fromLeft b = either id (const b)
 
 diffCost :: CostFunction R
          -> UnitActivation R

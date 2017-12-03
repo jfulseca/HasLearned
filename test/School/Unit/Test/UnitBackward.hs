@@ -7,10 +7,10 @@ import Conduit ((.|), sinkList, yield)
 import Control.Monad.IO.Class (liftIO)
 import Data.Either (isLeft)
 import Numeric.LinearAlgebra (ident)
-import School.TestUtils (randomAffineParams, randomMatrix, runTrainConduit)
+import School.TestUtils (fromRight, randomAffineParams, randomMatrix, runTrainConduit)
 import School.Train.TrainState (TrainState(..), emptyTrainState)
 import School.Types.FloatEq ((~=))
-import School.Types.PingPong (toPingPong)
+import School.Types.PingPong (pingPongSingleton, reversePingPong, toPingPong)
 import School.Unit.Affine (affine)
 import School.Unit.RecLin (recLin)
 import School.Unit.Unit (Unit(..))
@@ -55,9 +55,7 @@ prop_affine_param_fail (Positive fSize) (Positive oSize) = monadicIO $ do
   let network =  yield fStack
               .| backward
               .| sinkList
-  let paramList = toPingPong [EmptyParams]
-  let initState = emptyTrainState { paramList }
-  let result = runTrainConduit network initState
+  let result = runTrainConduit network emptyTrainState
   either (const . assert $ False)
          (\(stack, _) -> assert $ isGradientFail (snd . head $ stack))
          result
@@ -73,9 +71,7 @@ prop_reclin_gradient (Positive bSize) (Positive fSize) = monadicIO $ do
   let network =  yield fStack
               .| backward
               .| sinkList
-  let paramList = toPingPong [EmptyParams]
-  let initState = emptyTrainState { paramList }
-  let result = runTrainConduit network initState
+  let result = runTrainConduit network emptyTrainState
   let (check, _) = deriv recLin EmptyParams inGrad input
   either (const . assert $ False)
          (\(stack, _) -> assert $ check ~= (snd . head $ stack))
@@ -93,7 +89,7 @@ prop_affine_derivs (Positive bSize) (Positive fSize) (Positive oSize) = monadicI
               .| backward
               .| sinkList
   params <- liftIO $ randomAffineParams fSize oSize
-  let paramList = toPingPong [params]
+  let paramList = pingPongSingleton params
   let initState = emptyTrainState { paramList }
   let result = runTrainConduit network initState
   let (_, check) = deriv affine params inGrad input
@@ -129,11 +125,12 @@ prop_deriv_aff_rl_aff_rl (Positive b)
               .| sinkList
   params1 <- liftIO $ randomAffineParams f h
   params2 <- liftIO $ randomAffineParams h o
-  let paramList = toPingPong [ EmptyParams
+  let allParams = toPingPong [ params1
+                             , EmptyParams
                              , params2
                              , EmptyParams
-                             , params1
                              ]
+  let paramList = reversePingPong $ fromRight (pingPongSingleton EmptyParams) allParams
   let initState = emptyTrainState { paramList }
   let result = runTrainConduit network initState
   let (grad1, _) = deriv recLin EmptyParams inGrad (head acts)

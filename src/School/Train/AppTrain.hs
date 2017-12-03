@@ -13,6 +13,7 @@ import Control.Monad.State.Lazy (StateT, get, runStateT, put)
 import Control.Monad.Except (Except, runExcept)
 import Data.Void (Void)
 import School.Train.TrainState (TrainState(..))
+import School.Types.PingPong (getPingPong)
 import School.Unit.UnitParams (UnitParams)
 
 type AppTrain a =
@@ -22,8 +23,9 @@ type AppTrain a =
 getParams :: AppTrain a (UnitParams a)
 getParams = do
   state@TrainState{ paramList } <- get
-  put state { paramList = tail paramList }
-  return $ head paramList
+  let (p, pList) = getPingPong paramList
+  put state { paramList = pList }
+  return p
 
 putParamDerivs :: UnitParams a -> AppTrain a ()
 putParamDerivs derivs = do
@@ -33,7 +35,7 @@ putParamDerivs derivs = do
 putCost :: a -> AppTrain a ()
 putCost value = do
   state <- get
-  put state { cost = Just value }
+  put state { cost = value }
 
 runTrainConduit :: ConduitM ()
                             Void

@@ -2,6 +2,7 @@ module School.Train.GradientDescentPass
 ( gradientDescentPass ) where
 
 import Conduit ((.|), ConduitM)
+import Control.Monad.Except (throwError)
 import Control.Monad.State.Lazy (get, put)
 import School.Train.AppTrain (AppTrain)
 import School.Train.BackwardPass (backwardPass)
@@ -18,7 +19,8 @@ updateStep :: UpdateParams a
                        ()
 updateStep update = do
   currentState <- get
-  put (update currentState)
+  let newState = update currentState
+  either throwError put newState
 
 gradientDescentPass :: [Unit a]
                     -> CostFunction a

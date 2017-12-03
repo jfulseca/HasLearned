@@ -4,4 +4,4 @@ module School.Train.UpdateParams
 import School.Train.TrainState (TrainState)
 
 type UpdateParams a = TrainState a
-                   -> TrainState a
+                   -> Either String (TrainState a)
