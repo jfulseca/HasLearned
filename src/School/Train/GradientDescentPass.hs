@@ -1,7 +1,7 @@
 module School.Train.GradientDescentPass
 ( gradientDescentPass ) where
 
-import Conduit ((.|), ConduitM)
+import Conduit ((.|), ConduitM, await)
 import Control.Monad.Except (throwError)
 import Control.Monad.State.Lazy (get, put)
 import School.Train.AppTrain (AppTrain)
@@ -18,6 +18,7 @@ updateStep :: UpdateParams a
                        (AppTrain a)
                        ()
 updateStep update = do
+  _ <- await
   currentState <- get
   let newState = update currentState
   either throwError put newState
