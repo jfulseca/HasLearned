@@ -1,7 +1,7 @@
 module School.Train.BackwardPass
 ( backwardPass ) where
 
-import Conduit ((.|), ConduitM,  mapM_C)
+import Conduit ((.|), ConduitM,  mapC, mapM_C, sinkNull)
 import Control.Monad.Except (throwError)
 import School.Train.AppTrain (AppTrain)
 import School.Unit.Unit (Unit)
@@ -14,5 +14,8 @@ backwardPass :: [Unit a]
                          ()
 backwardPass [] = mapM_C . const $
   (throwError "No units given to backwardPass")
-backwardPass (unit:units) =
-  unitBackward unit .| backwardPass units
+backwardPass unitList = go unitList .| sinkNull
+  where go [] = mapC id
+        go [unit] = unitBackward unit
+        go (unit:units) = go units
+                       .| unitBackward unit
