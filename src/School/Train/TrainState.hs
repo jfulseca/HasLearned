@@ -2,6 +2,7 @@
 
 module School.Train.TrainState
 ( emptyTrainState
+, HandlerStore(..)
 , TrainState(..)
 ) where
 
@@ -9,8 +10,12 @@ import Numeric.LinearAlgebra (Container, Vector)
 import School.Types.PingPong (PingPong, pingPongSingleton)
 import School.Unit.UnitParams (UnitParams(..))
 
+data HandlerStore a = CostList [a]
+                    | NoStore deriving (Show)
+
 data TrainState a = TrainState
   { cost :: a
+  , handlerStore :: HandlerStore a
   , iterationCount :: Int
   , learningRate :: a
   , paramDerivs :: [UnitParams a]
@@ -27,6 +32,7 @@ instance (Container Vector a, Eq a, Num a) => Eq (TrainState a) where
 emptyTrainState :: (Num a) => TrainState a
 emptyTrainState =
   TrainState { cost = 0
+             , handlerStore = NoStore
              , iterationCount = 0
              , learningRate = 0
              , paramDerivs = []

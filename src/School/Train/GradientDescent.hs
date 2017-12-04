@@ -7,6 +7,7 @@ import Data.Either (either)
 import Data.Void (Void)
 import School.Train.AppTrain (AppTrain, runTrainConduit)
 import School.Train.GradientDescentPass (gradientDescentPass)
+import School.Train.IterationHandler (IterationHandler)
 import School.Train.UpdateParams (UpdateParams)
 import School.Train.StoppingCondition (StoppingCondition)
 import School.Train.TrainState (TrainState)
@@ -35,6 +36,7 @@ gradientDescent :: ConduitM ()
                 -> CostFunction a
                 -> UpdateParams a
                 -> StoppingCondition a
+                -> IterationHandler a
                 -> TrainState a
                 -> Either String
                           (TrainState a)
@@ -43,10 +45,12 @@ gradientDescent source
                 cost
                 update
                 condition
+                handler
                 initState = 
   let pass = gradientDescentPass units cost update
       iterations = source
                 .| pass
+                .| handler
                 .| stopping condition
       result = runTrainConduit iterations $ initState
   in either Left
