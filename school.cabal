@@ -91,6 +91,7 @@ test-suite school-test
                      , School.Types.Test.FloatEq
                      , School.Types.Test.PosInt
                      , School.Types.Test.TypeName
+                     , School.Train.Test.BackwardPass
                      , School.Train.Test.ForwardPass
                      , School.Unit.Test.Affine
                      , School.Unit.Test.RecLin
