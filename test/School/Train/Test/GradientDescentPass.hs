@@ -55,7 +55,8 @@ prop_affine_reclin (Positive b) (Positive f) (Positive o) = monadicIO $ do
           .| await
   let paramList = fromRight (pingPongSingleton EmptyParams)
                             (toPingPong [params, EmptyParams])
-  let initState = emptyTrainState { paramList }
+  let learningRate = 1 :: Double
+  let initState = emptyTrainState { learningRate, paramList }
   let result = runTrainConduit pass initState
   let out1 = apply affine params input
   let out2 = apply recLin EmptyParams out1
@@ -64,10 +65,14 @@ prop_affine_reclin (Positive b) (Positive f) (Positive o) = monadicIO $ do
   let (_, deriv1) = deriv affine params grad2 input
   let paramDerivs = [deriv1, deriv2]
   let state = emptyTrainState { cost
+                              , learningRate
                               , paramDerivs
                               , paramList
-                              }
-  let check = Right (Nothing, state) :: Either String (Maybe (), TrainState Double)
+                              } :: TrainState Double
+  let newState = either (const emptyTrainState)
+                        id
+                        (simpleDescentUpdate state)
+  let check = Right (Nothing, newState) :: Either String (Maybe (), TrainState Double)
   assert $ result == check
 
 gradientDescentPassTest :: TestTree
