@@ -5,8 +5,7 @@ module School.Train.Test.GradientDescentPass
 
 import Conduit ((.|), yield, liftIO, await)
 import Data.Either (isLeft)
-import Numeric.LinearAlgebra ((><), Element, Matrix, R)
-import School.TestUtils (fromRight, randomAffineParams, randomMatrix)
+import School.TestUtils (doCost, empty, fromRight, randomAffineParams, randomMatrix, weight1)
 import School.Train.AppTrain (runTrainConduit)
 import School.Train.GradientDescentPass
 import School.Train.SimpleDescentUpdate (simpleDescentUpdate)
@@ -14,33 +13,13 @@ import School.Train.TrainState (TrainState(..), emptyTrainState)
 import School.Types.PingPong (pingPongSingleton, toPingPong)
 import School.Unit.Affine (affine)
 import School.Unit.RecLin (recLin)
-import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitActivation (UnitActivation(..))
-import School.Unit.UnitGradient (UnitGradient(..))
 import School.Unit.UnitParams (UnitParams(..))
-import School.Unit.WeightDecay (weightDecay)
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck hiding ((><))
 import Test.Tasty.TH
 import Test.QuickCheck.Monadic (assert, monadicIO)
-
-empty :: (Element a) => Matrix a
-empty = (0><0) []
-
-weight1 :: CostFunction R
-weight1 = weightDecay 1
-
-doCost :: (Element a, Num a)
-       => CostFunction a
-       -> UnitActivation a
-       -> (a, UnitGradient a)
-doCost costFunction activation =
-  fromRight (0, BatchGradient empty) result where
-    result = do
-      cost <- computeCost costFunction activation
-      grad <- derivCost costFunction activation
-      return (cost, grad)
 
 prop_no_units :: Bool
 prop_no_units = let
@@ -62,7 +41,7 @@ prop_single_reclin (Positive b) (Positive f) = monadicIO $ do
   let out = apply recLin EmptyParams input
   let (cost, _) = doCost weight1 out
   let state = emptyTrainState { cost, paramDerivs = [EmptyParams] }
-  let check = Right (Nothing, state) :: Either String (Maybe (), TrainState R)
+  let check = Right (Nothing, state) :: Either String (Maybe (), TrainState Double)
   assert $ result == check
 
 prop_affine_reclin :: Positive Int -> Positive Int -> Positive Int -> Property
@@ -88,7 +67,7 @@ prop_affine_reclin (Positive b) (Positive f) (Positive o) = monadicIO $ do
                               , paramDerivs
                               , paramList
                               }
-  let check = Right (Nothing, state) :: Either String (Maybe (), TrainState R)
+  let check = Right (Nothing, state) :: Either String (Maybe (), TrainState Double)
   assert $ result == check
 
 gradientDescentPassTest :: TestTree

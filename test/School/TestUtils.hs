@@ -4,9 +4,11 @@ module School.TestUtils
 ( CostFunc
 , diffCost
 , diffInput
+, doCost
 , dummyHeader
 , dummyList
 , dummyMatrix
+, empty
 , fromLeft
 , fromRight
 , getRandDouble
@@ -17,6 +19,7 @@ module School.TestUtils
 , randomVector
 , runTrainConduit
 , testRun
+, weight1
 , whenPrint
 ) where
 
@@ -24,7 +27,7 @@ import Conduit (ConduitM)
 import Control.Monad (when)
 import Data.Either (either)
 import Data.Void (Void)
-import Numeric.LinearAlgebra ((><), (|>), IndexOf, Matrix, R, Vector, accum, sumElements)
+import Numeric.LinearAlgebra ((><), (|>), Element, IndexOf, Matrix, R, Vector, accum, sumElements)
 import School.FileIO.AppIO (AppIO, runAppIO)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.DoubleConversion (doubleRange)
@@ -32,8 +35,10 @@ import School.Types.TypeName (TypeName(INT))
 import School.Train.AppTrain (runTrainConduit)
 import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.Unit (Unit(..))
+import School.Unit.UnitGradient (UnitGradient(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitParams (UnitParams(..))
+import School.Unit.WeightDecay (weightDecay)
 import System.Random (getStdRandom, randomR)
 import Test.QuickCheck.Modifiers (Positive(..))
 import Test.QuickCheck.Monadic (PropertyM, run)
@@ -135,3 +140,19 @@ type AlterInput = Double
 matIndexes :: Int -> Int -> [IndexOf Matrix]
 matIndexes r c = [ (j, k) | j <- [0..r-1], k <- [0..c-1] ] 
 
+empty :: (Element a) => Matrix a
+empty = (0><0) []
+
+weight1 :: CostFunction R
+weight1 = weightDecay 1
+
+doCost :: (Element a, Num a)
+       => CostFunction a
+       -> UnitActivation a
+       -> (a, UnitGradient a)
+doCost costFunction activation =
+  fromRight (0, BatchGradient empty) result where
+    result = do
+      cost <- computeCost costFunction activation
+      grad <- derivCost costFunction activation
+      return (cost, grad)
