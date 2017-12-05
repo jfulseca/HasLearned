@@ -42,7 +42,6 @@ prop_single_reclin (Positive b) (Positive f) = monadicIO $ do
   let (cost, grad) = doCost weight1 out
   let state = emptyTrainState { cost
                               , iterationCount = 1
-                              , paramDerivs = [EmptyParams]
                               }
   let check = Right (Just grad, state)
   assert $ result == check
@@ -76,7 +75,7 @@ prop_affine_reclin (Positive b) (Positive f) (Positive o) = monadicIO $ do
   let newState = either (const emptyTrainState)
                         id
                         (simpleDescentUpdate state)
-  let check = Right (Just grad3, newState)
+  let check = Right (Just grad3, newState { paramDerivs = [] })
   assert $ result == check
 
 prop_stream_several :: Positive Int -> Positive Int -> Positive Int -> Property

@@ -23,10 +23,15 @@ updateStep :: UpdateParams a
                        (AppTrain a)
                        ()
 updateStep update = mapMC $ \(_, grad) -> do
-  currentState@TrainState{ iterationCount } <- get
-  let iterState = currentState { iterationCount = iterationCount + 1 }
-  let newState = update iterState
-  either throwError put newState
+  state@TrainState{ iterationCount } <- get
+  let tryUpdate = update state
+  either throwError
+         (\state' -> do
+            let state'' = state' { iterationCount = iterationCount + 1
+                                 , paramDerivs = []
+                                 }
+            put state'')
+         tryUpdate
   return grad
 
 gradientDescentPass :: [Unit a]
