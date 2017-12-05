@@ -1,11 +1,11 @@
 module School.Train.ForwardPass
 ( forwardPass ) where
 
-import Conduit ((.|), ConduitM, mapC, mapM_C)
+import Conduit ((.|), ConduitM, mapM_C)
 import Control.Monad.Except (throwError)
 import School.Train.AppTrain (AppTrain)
 import School.Unit.ApplyCost (applyCost)
-import School.Unit.CostFunction (CostFunction)
+import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.Unit (Unit)
 import School.Unit.UnitActivation (UnitActivation)
 import School.Unit.UnitBackward (BackwardStack)
@@ -30,6 +30,6 @@ forwardPass :: [Unit a]
 forwardPass [] _ = mapM_C . const $
   (throwError "No units given to forwardPass")
 forwardPass units cost =
-    mapC pure
+    setupCost cost
  .| hiddenUnits units
  .| applyCost cost

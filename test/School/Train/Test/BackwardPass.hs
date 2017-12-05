@@ -8,7 +8,7 @@ import Data.Either (isLeft)
 import School.TestUtils (empty, doCost, fromRight, randomAffineParams, randomMatrix, weight1)
 import School.Train.AppTrain (runTrainConduit)
 import School.Train.BackwardPass
-import School.Train.TrainState (TrainState(..), emptyTrainState)
+import School.Train.TrainState (TrainState(..), CostParams(..), emptyTrainState)
 import School.Types.PingPong (pingPongSingleton, reversePingPong, toPingPong)
 import School.Unit.Affine (affine)
 import School.Unit.RecLin (recLin)
@@ -64,7 +64,7 @@ prop_aff_rl_aff_rl (Positive b) (Positive f) (Positive h) (Positive o) = monadic
   let out2 = apply recLin EmptyParams out1
   let out3 = apply affine params2 out2
   let out4 = apply recLin EmptyParams out3
-  let (cost, grad) = doCost weight1 out4
+  let (cost, grad) = doCost weight1 out4 NoCostParams
   let (grad2, deriv1) = deriv recLin EmptyParams grad out3
   let (grad3, deriv2) = deriv affine params2 grad2 out2
   let (grad4, deriv3) = deriv recLin EmptyParams grad3 out1

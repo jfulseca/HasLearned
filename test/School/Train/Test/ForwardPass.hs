@@ -9,7 +9,7 @@ import Numeric.LinearAlgebra (R, ident)
 import School.TestUtils (doCost, fromRight, randomAffineParams, randomMatrix, weight1)
 import School.Train.AppTrain (runTrainConduit)
 import School.Train.ForwardPass
-import School.Train.TrainState (TrainState(..), emptyTrainState)
+import School.Train.TrainState (CostParams(..), TrainState(..), emptyTrainState)
 import School.Types.PingPong (pingPongSingleton, reversePingPong, toPingPong)
 import School.Unit.Affine (affine)
 import School.Unit.RecLin (recLin)
@@ -38,7 +38,7 @@ prop_single_recLin (Positive bSize) (Positive fSize) = monadicIO $ do
   let pass = source .| forward .| await
   let result = runTrainConduit pass emptyTrainState
   let out = apply recLin EmptyParams input
-  let (cost, grad) = doCost weight1 out
+  let (cost, grad) = doCost weight1 out NoCostParams
   let bParams = reversePingPong . paramList $ emptyTrainState
   let state = emptyTrainState { cost, paramList = bParams }
   let stack = ([input], grad)
@@ -66,7 +66,7 @@ prop_aff_rl_aff_rl (Positive b) (Positive f) (Positive h) (Positive o) = monadic
   let out2 = apply recLin EmptyParams out1
   let out3 = apply affine params2 out2
   let out4 = apply recLin EmptyParams out3
-  let (cost, grad) = doCost weight1 out4
+  let (cost, grad) = doCost weight1 out4 NoCostParams
   let bParams = reversePingPong paramList
   let state = emptyTrainState { cost, paramList = bParams }
   let stack = ([out3, out2, out1, input], grad)

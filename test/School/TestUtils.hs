@@ -36,6 +36,7 @@ import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.DoubleConversion (doubleRange)
 import School.Types.TypeName (TypeName(INT))
 import School.Train.AppTrain (runTrainConduit)
+import School.Train.TrainState (CostParams)
 import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitGradient (UnitGradient(..))
@@ -133,10 +134,11 @@ diffCost :: CostFunction R
          -> UnitActivation R
          -> Double
          -> IndexOf Matrix
+         -> CostParams R
          -> Double
-diffCost costFunc input eps idx = let
-  jAdd = computeCost costFunc (alterInput eps idx input)
-  jSub = computeCost costFunc (alterInput (-eps) idx input)
+diffCost costFunc input eps idx costParams = let
+  jAdd = computeCost costFunc (alterInput eps idx input) costParams
+  jSub = computeCost costFunc (alterInput (-eps) idx input) costParams
   in (fromRight 0 jAdd - fromRight 0 jSub) / (2*eps)
 
 alterInput :: AlterInput
@@ -161,10 +163,11 @@ weight1 = weightDecay 1
 doCost :: (Element a, Num a)
        => CostFunction a
        -> UnitActivation a
+       -> CostParams a
        -> (a, UnitGradient a)
-doCost costFunction activation =
+doCost costFunction activation params =
   fromRight (0, BatchGradient empty) result where
     result = do
-      cost <- computeCost costFunction activation
-      grad <- derivCost costFunction activation
+      cost <- computeCost costFunction activation params
+      grad <- derivCost costFunction activation params
       return (cost, grad)
