@@ -7,13 +7,28 @@ module School.Utils.LinearAlgebra
 , constVector
 , oneMatrix
 , oneVector
+, mapCols
+, mapRows
 , sumCols
+, sumRows
 , zeroMatrix
 , zeroVector
 ) where
 
 import Numeric.LinearAlgebra
 import School.Types.FloatEq (compareDouble)
+
+mapCols :: (Element a)
+        => (Vector a -> Vector a)
+        -> Matrix a
+        -> Matrix a
+mapCols f = fromColumns . (map f) . toColumns
+
+mapRows :: (Element a)
+        => (Vector a -> Vector a)
+        -> Matrix a
+        -> Matrix a
+mapRows f = fromRows . (map f) . toRows
 
 -- Adds vector to each row
 (+>) :: (Element a, Container Vector a)
@@ -25,8 +40,13 @@ import School.Types.FloatEq (compareDouble)
 
 sumCols :: Matrix R -> Vector R
 sumCols m = n |> summedCols where
+  n = rows m
+  summedCols = map sumElements $ toRows m
+
+sumRows :: Matrix R -> Vector R
+sumRows m = n |> summedRows where
   n = cols m
-  summedCols = map sumElements $ toColumns m
+  summedRows = map sumElements $ toColumns m
 
 oneVector :: Int -> Vector R
 oneVector d = konst 1 d

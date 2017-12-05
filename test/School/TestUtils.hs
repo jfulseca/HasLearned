@@ -17,6 +17,7 @@ module School.TestUtils
 , matIndexes
 , randomAffineParams
 , randomMatrix
+, randomMatrixL
 , randomVector
 , runTrainConduit
 , testRun
@@ -73,6 +74,12 @@ randomMatrix :: Int -> Int -> IO (Matrix R)
 randomMatrix nRows nCols = do
   let nEls = nRows * nCols
   inputList <- sequence . (replicate nEls) $ getStdRandom (randomR (-matMax, matMax))
+  return $ (nRows >< nCols) inputList
+
+randomMatrixL :: Double -> Int -> Int -> IO (Matrix R)
+randomMatrixL limit nRows nCols = do
+  let nEls = nRows * nCols
+  inputList <- sequence . (replicate nEls) $ getStdRandom (randomR (-limit, limit))
   return $ (nRows >< nCols) inputList
 
 randomVector :: Int -> IO (Vector R)

@@ -36,6 +36,7 @@ library
                      , School.Unit.Affine
                      , School.Unit.ApplyCost
                      , School.Unit.CostFunction
+                     , School.Unit.LogSoftMax
                      , School.Unit.RecLin
                      , School.Unit.Unit
                      , School.Unit.UnitActivation
@@ -97,6 +98,7 @@ test-suite school-test
                      , School.Train.Test.GradientDescent
                      , School.Train.Test.GradientDescentPass
                      , School.Unit.Test.Affine
+                     , School.Unit.Test.LogSoftMax
                      , School.Unit.Test.RecLin
                      , School.Unit.Test.UnitBackward
                      , School.Unit.Test.UnitForward
