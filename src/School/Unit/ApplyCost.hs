@@ -1,11 +1,9 @@
 module School.Unit.ApplyCost
 ( applyCost ) where
 
-import Conduit (ConduitM, await, yield)
+import Conduit (ConduitM, mapMC)
 import Control.Monad (when)
 import Control.Monad.Except (throwError)
-import Control.Monad.Trans (lift)
-import Data.Maybe (fromMaybe)
 import School.Train.AppTrain (AppTrain, putCost)
 import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.UnitBackward (BackwardStack)
@@ -16,14 +14,13 @@ applyCost :: CostFunction a
                       (BackwardStack a)
                       (AppTrain a)
                       ()
-applyCost costFunc = do
-  stack <- await
-  let activations = fromMaybe [] stack
-  when (length activations < 1) $ throwError "No activations in applyCost"
-  let activation = head activations
+applyCost costFunc = mapMC $ \stack -> do
+  when (length stack < 1) $ throwError "No activations in applyCost"
+  let activation = head stack
   let cost = computeCost costFunc activation
-  either throwError (lift . putCost) cost
+  either throwError putCost cost
   let grad = derivCost costFunc activation
   either throwError
-    (\g -> yield (tail activations, g))
+    (\g -> return (tail stack, g))
     grad
+

@@ -16,8 +16,7 @@ hiddenUnits :: [Unit a]
                         (ForwardStack a)
                         (AppTrain a)
                         ()
-hiddenUnits [] =  mapM_C . const $
-  (throwError "No units given to hiddenUnits")
+hiddenUnits [] = throwError "No units given to hiddenUnits"
 hiddenUnits [unit] = unitForward unit
 hiddenUnits (unit:units) =
   unitForward unit .| hiddenUnits units

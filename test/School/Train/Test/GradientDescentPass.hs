@@ -3,7 +3,7 @@
 module School.Train.Test.GradientDescentPass
 ( gradientDescentPassTest ) where
 
-import Conduit ((.|), yield, liftIO, await)
+import Conduit ((.|), await, liftIO, sinkList, yield, yieldMany)
 import Data.Either (isLeft)
 import School.TestUtils (doCost, empty, fromRight, randomAffineParams, randomMatrix, weight1)
 import School.Train.AppTrain (runTrainConduit)
@@ -39,9 +39,12 @@ prop_single_reclin (Positive b) (Positive f) = monadicIO $ do
           .| await
   let result = runTrainConduit pass emptyTrainState
   let out = apply recLin EmptyParams input
-  let (cost, _) = doCost weight1 out
-  let state = emptyTrainState { cost, paramDerivs = [EmptyParams] }
-  let check = Right (Nothing, state) :: Either String (Maybe (), TrainState Double)
+  let (cost, grad) = doCost weight1 out
+  let state = emptyTrainState { cost
+                              , iterationCount = 1
+                              , paramDerivs = [EmptyParams]
+                              }
+  let check = Right (Just grad, state)
   assert $ result == check
 
 prop_affine_reclin :: Positive Int -> Positive Int -> Positive Int -> Property
@@ -62,9 +65,10 @@ prop_affine_reclin (Positive b) (Positive f) (Positive o) = monadicIO $ do
   let out2 = apply recLin EmptyParams out1
   let (cost, grad1) = doCost weight1 out2
   let (grad2, deriv2) = deriv recLin EmptyParams grad1 out1
-  let (_, deriv1) = deriv affine params grad2 input
+  let (grad3, deriv1) = deriv affine params grad2 input
   let paramDerivs = [deriv1, deriv2]
   let state = emptyTrainState { cost
+                              , iterationCount = 1
                               , learningRate
                               , paramDerivs
                               , paramList
@@ -72,8 +76,21 @@ prop_affine_reclin (Positive b) (Positive f) (Positive o) = monadicIO $ do
   let newState = either (const emptyTrainState)
                         id
                         (simpleDescentUpdate state)
-  let check = Right (Nothing, newState) :: Either String (Maybe (), TrainState Double)
+  let check = Right (Just grad3, newState)
   assert $ result == check
+
+prop_stream_several :: Positive Int -> Positive Int -> Positive Int -> Property
+prop_stream_several (Positive n) (Positive b) (Positive f) = monadicIO $ do
+  input <- liftIO $ BatchActivation <$> randomMatrix b f
+  let descent = gradientDescentPass [recLin] weight1 simpleDescentUpdate
+  let source = yieldMany . (replicate n) $ input
+  let pass = source
+          .| descent
+          .| sinkList
+  let result = runTrainConduit pass emptyTrainState
+  either (const $ assert False)
+         (\(grads, _) -> assert $ length grads == n)
+         result
 
 gradientDescentPassTest :: TestTree
 gradientDescentPassTest = $(testGroupGenerator)
