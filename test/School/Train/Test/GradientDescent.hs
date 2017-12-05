@@ -70,7 +70,6 @@ prop_cost_decline (Positive b) (Positive f) (Positive o) = monadicIO $ do
                                (itStop 5)
                                storeCost
                                initState
---  showIO $ "res " ++ sl result
   either (const $ assert False)
          (\TrainState { handlerStore = (CostList costs) } ->
             assert $ isSorted costs)
