@@ -34,7 +34,7 @@ lsmApply :: UnitParams R
 lsmApply EmptyParams (BatchActivation inMatrix) =
   BatchActivation $ mapRows handleRow inMatrix
 lsmApply _ (ApplyFail msg) = ApplyFail msg
-lsmApply _ _ = ApplyFail "Failure when applying affine unit"
+lsmApply _ _ = ApplyFail "Failure when applying log softmax unit"
 
 failure :: String
         -> ( UnitGradient R
@@ -71,4 +71,4 @@ lsmDeriv EmptyParams
     outGrad = BatchGradient $ add inGrad delta
 lsmDeriv _ (GradientFail msg) _ = failure msg
 lsmDeriv _ _ (ApplyFail msg) = failure msg
-lsmDeriv _ _ _ = failure "Failure when differentiating affine unit"
+lsmDeriv _ _ _ = failure "Failure when differentiating log softmax unit"
