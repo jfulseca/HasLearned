@@ -1,10 +1,10 @@
 module School.Train.GradientDescent
 ( gradientDescent ) where
 
-import Conduit ((.|), ConduitM, await)
+import Conduit ((.|), ConduitM, mapMC, sinkNull, takeWhileC)
 import Control.Monad.State.Lazy (get)
 import Data.Either (either)
-import Data.Void (Void)
+import Data.Maybe (isJust)
 import School.Train.AppTrain (AppTrain, runTrainConduit)
 import School.Train.GradientDescentPass (gradientDescentPass)
 import School.Train.IterationHandler (IterationHandler)
@@ -14,19 +14,18 @@ import School.Train.TrainState (TrainState)
 import School.Unit.CostFunction (CostFunction)
 import School.Unit.Unit (Unit)
 import School.Unit.UnitActivation (UnitActivation)
+import School.Unit.UnitGradient (UnitGradient)
 
 stopping :: StoppingCondition a
-         -> ConduitM ()
-                     Void
+         -> ConduitM (UnitGradient a)
+                     (Maybe (UnitGradient a))
                      (AppTrain a)
                      ()
-stopping condition = do
+stopping condition = mapMC $ \input -> do
   state <- get
   if condition state
-    then return ()
-    else do
-      _ <- await
-      return ()
+    then return Nothing
+    else return . Just $ input
 
 gradientDescent :: ConduitM ()
                             (UnitActivation a)
@@ -36,7 +35,7 @@ gradientDescent :: ConduitM ()
                 -> CostFunction a
                 -> UpdateParams a
                 -> StoppingCondition a
-                -> IterationHandler a
+                -> IterationHandler a (UnitGradient a)
                 -> TrainState a
                 -> Either String
                           (TrainState a)
@@ -52,6 +51,8 @@ gradientDescent source
                 .| pass
                 .| handler
                 .| stopping condition
+                .| takeWhileC isJust
+                .| sinkNull
       result = runTrainConduit iterations $ initState
   in either Left
             (\(_, state) -> Right state)

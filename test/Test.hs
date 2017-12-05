@@ -6,6 +6,7 @@ import School.FileIO.Test.MatrixSink (matrixSinkTest)
 import School.FileIO.Test.MatrixSource (matrixSourceTest)
 import School.Train.Test.BackwardPass (backwardPassTest)
 import School.Train.Test.ForwardPass (forwardPassTest)
+import School.Train.Test.GradientDescent (gradientDescentTest)
 import School.Train.Test.GradientDescentPass (gradientDescentPassTest)
 import School.Types.Test.DoubleConversion (doubleToBinaryTest)
 import School.Types.Test.FloatEq (floatEqTest)
@@ -47,6 +48,7 @@ trainProps :: TestTree
 trainProps= testGroup "Train"
   [ backwardPassTest
   , forwardPassTest
+  , gradientDescentTest
   , gradientDescentPassTest
   ]
 

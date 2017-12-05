@@ -12,6 +12,7 @@ module School.TestUtils
 , fromLeft
 , fromRight
 , getRandDouble
+, isSorted
 , jTest
 , matIndexes
 , randomAffineParams
@@ -26,6 +27,7 @@ module School.TestUtils
 import Conduit (ConduitM)
 import Control.Monad (when)
 import Data.Either (either)
+import Data.List (sort)
 import Data.Void (Void)
 import Numeric.LinearAlgebra ((><), (|>), Element, IndexOf, Matrix, R, Vector, accum, sumElements)
 import School.FileIO.AppIO (AppIO, runAppIO)
@@ -42,6 +44,9 @@ import School.Unit.WeightDecay (weightDecay)
 import System.Random (getStdRandom, randomR)
 import Test.QuickCheck.Modifiers (Positive(..))
 import Test.QuickCheck.Monadic (PropertyM, run)
+
+isSorted :: (Ord a) => [a] -> Bool
+isSorted xs = xs == (reverse . sort $ xs)
 
 testRun :: ConduitM () Void AppIO a
         -> PropertyM IO (Either String a)
