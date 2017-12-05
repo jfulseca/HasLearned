@@ -1,3 +1,9 @@
+{-
+  TODO: Stabilize with constant exp(z_ij - C)/sum_kl exp(z_kl - C)
+             where C = max_i(z_ij) 
+        Avoid recomputing norms
+-}
+
 {-# LANGUAGE BangPatterns, FlexibleContexts, NamedFieldPuns #-}
 
 module School.Unit.LogSoftMax
