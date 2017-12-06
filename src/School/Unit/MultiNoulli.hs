@@ -30,7 +30,7 @@ multiNoulli =
         . (zipWith (flip (!!)) target)
         . toLists
         $ input
-      computeCost _ _ = Left "Weight decay expects batch activation and batch classification target"
+      computeCost _ _ = Left "MultiNoulli expects batch activation and batch classification target"
       derivCost (BatchActivation input)
                 (BatchClassTarget target) =
         let factor = (-1) / (fromIntegral . rows $ input)
@@ -40,7 +40,7 @@ multiNoulli =
         . fromRows
         . map (\idx -> assoc c 0 [(idx, factor)])
         $ target
-      derivCost _ _ = Left "Weight decay expects batch activation and no cost params"
+      derivCost _ _ = Left "MultiNoulli expects batch activation and batch class target"
       setupCost = mapMC $ \(BatchActivation input) -> do
         let c = cols input
         let activations = takeColumns (c - 1) input
