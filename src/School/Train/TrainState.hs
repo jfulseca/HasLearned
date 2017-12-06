@@ -7,19 +7,19 @@ module School.Train.TrainState
 , emptyTrainState
 ) where
 
-import Numeric.LinearAlgebra (Container, Matrix, Vector)
+import Numeric.LinearAlgebra (Container, Vector)
 import School.Types.PingPong (PingPong, pingPongSingleton)
 import School.Unit.UnitParams (UnitParams(..))
 
 data HandlerStore a = CostList [a]
                     | NoStore deriving (Show)
 
-data CostParams a = BatchClassTarget (Matrix a)
-                  | NoCostParams deriving (Show)
+data CostParams = BatchClassTarget [Int]
+                | NoCostParams deriving (Show)
 
 data TrainState a = TrainState
   { cost :: a
-  , costParams :: CostParams a
+  , costParams :: CostParams
   , handlerStore :: HandlerStore a
   , iterationCount :: Int
   , learningRate :: a

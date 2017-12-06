@@ -4,6 +4,7 @@ module School.Train.AppTrain
 ( AppTrain
 , getParams
 , putCost
+, putCostParams
 , putParamDerivs
 , runTrainConduit
 ) where
@@ -12,7 +13,7 @@ import Conduit (ConduitM, runConduit)
 import Control.Monad.State.Lazy (StateT, get, runStateT, put)
 import Control.Monad.Except (Except, runExcept)
 import Data.Void (Void)
-import School.Train.TrainState (TrainState(..))
+import School.Train.TrainState (TrainState(..), CostParams)
 import School.Types.PingPong (getPingPong)
 import School.Unit.UnitParams (UnitParams)
 
@@ -36,6 +37,11 @@ putCost :: a -> AppTrain a ()
 putCost value = do
   state <- get
   put state { cost = value }
+
+putCostParams :: CostParams -> AppTrain a ()
+putCostParams params = do
+  state <- get
+  put state { costParams = params }
 
 runTrainConduit :: ConduitM ()
                             Void

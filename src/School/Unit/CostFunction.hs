@@ -12,10 +12,10 @@ import School.Unit.UnitGradient (UnitGradient(..))
 
 data CostFunction a =
   CostFunction { computeCost :: UnitActivation a
-                             -> CostParams a
+                             -> CostParams
                              -> Either String a
                , derivCost :: UnitActivation a
-                           -> CostParams a
+                           -> CostParams
                            -> Either String (UnitGradient a)
                , setupCost :: ConduitM (UnitActivation a)
                                        (ForwardStack a)

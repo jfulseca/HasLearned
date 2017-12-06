@@ -37,6 +37,7 @@ library
                      , School.Unit.ApplyCost
                      , School.Unit.CostFunction
                      , School.Unit.LogSoftMax
+                     , School.Unit.MultiNoulli
                      , School.Unit.RecLin
                      , School.Unit.Unit
                      , School.Unit.UnitActivation
