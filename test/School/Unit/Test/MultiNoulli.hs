@@ -7,7 +7,7 @@ import Conduit ((.|), await, yield)
 import Control.Monad.IO.Class (liftIO)
 import Numeric.LinearAlgebra ((><), Element, Matrix, R, Vector, assoc,
                               cols, fromColumns, fromRows, fromList, toColumns)
-import School.TestUtils (diffCost, randomMatrix, randomMatrixL, randomNNInts)
+import School.TestUtils (diffCost, randomMatrix, randomNNInts)
 import School.Train.AppTrain (runTrainConduit)
 import School.Train.ForwardPass (forwardPass)
 import School.Train.TrainState (CostParams(..), TrainState(..), emptyTrainState)
@@ -69,7 +69,7 @@ prop_wrong_classes (Positive c) (Positive b) = monadicIO $ do
 prop_norm :: (Positive Int) -> (Positive Int) -> Property
 prop_norm (Positive c) (Positive b) = monadicIO $ do
   classes <- liftIO $ randomNNInts (c - 1) b
-  input <- liftIO $ BatchActivation <$> randomMatrixL 5 b c
+  input <- liftIO $ BatchActivation <$> randomMatrix b c
   let out = apply logSoftMax EmptyParams input
   let params = BatchClassTarget classes
   let cost = computeCost multiNoulli out params

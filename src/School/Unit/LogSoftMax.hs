@@ -1,7 +1,4 @@
-{-
-  TODO: Stabilize grad with constant
-        Avoid recomputing norms and reg const
--}
+-- TODO: Avoid recomputing norms and reg const
 
 {-# LANGUAGE BangPatterns, FlexibleContexts, NamedFieldPuns #-}
 
@@ -74,7 +71,8 @@ lsmDeriv EmptyParams
          (BatchGradient inGrad)
          (BatchActivation input) =
   (outGrad, EmptyParams) where
-    !exps = cmap exp input
+    !reg = maxElement input
+    !exps = cmap (exp . (flip (-) $ reg)) input
     !norms = sumCols exps
     !gradCols = sumCols inGrad
     delta = build (size input) (builder exps norms gradCols)
