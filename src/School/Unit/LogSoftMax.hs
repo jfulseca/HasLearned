@@ -1,7 +1,6 @@
 {-
-  TODO: Stabilize with constant exp(z_ij - C)/sum_kl exp(z_kl - C)
-             where C = max_i(z_ij) 
-        Avoid recomputing norms
+  TODO: Stabilize grad with constant
+        Avoid recomputing norms and reg const
 -}
 
 {-# LANGUAGE BangPatterns, FlexibleContexts, NamedFieldPuns #-}
@@ -10,7 +9,7 @@ module School.Unit.LogSoftMax
 ( logSoftMax ) where
 
 import Numeric.LinearAlgebra (Container, Matrix, R, Vector,
-                              add, atIndex, build, cmap, size, sumElements)
+                              add, atIndex, build, cmap, maxElement, size, sumElements)
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitParams (UnitParams(..))
@@ -24,15 +23,20 @@ logSoftMax = Unit
   }
 
 getNorm :: (Container Vector a, Floating a)
-        => Vector a
+        => a
+        -> Vector a
         -> a
-getNorm = log . sumElements . (cmap exp)
+getNorm reg = log
+      . sumElements
+      . (cmap (exp . (flip (-) $ reg)))
 
 handleRow :: (Container Vector a, Floating a)
           => Vector a
           -> Vector a
-handleRow v = let !norm = getNorm v
-  in cmap (flip (-) $ norm) v
+handleRow v =
+  let !reg = maxElement v
+      !norm = getNorm reg v
+  in cmap (flip (-) $ (norm + reg)) v
 
 lsmApply :: UnitParams R
          -> UnitActivation R

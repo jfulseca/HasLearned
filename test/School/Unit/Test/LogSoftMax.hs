@@ -26,13 +26,13 @@ prec = 1e-3
 
 prop_norm_size :: (Positive Int) -> (Positive Int) -> Property
 prop_norm_size (Positive bSize) (Positive fSize) = monadicIO $ do
-  input <- liftIO $ BatchActivation <$> randomMatrixL 5 bSize fSize
+  input <- liftIO $ BatchActivation <$> randomMatrix bSize fSize
   let (BatchActivation result) = apply logSoftMax EmptyParams input
   assert $ and . (map (<= prec)) . concat . toLists $ result
 
 prop_norm_sum :: (Positive Int) -> (Positive Int) -> Property
 prop_norm_sum (Positive bSize) (Positive fSize) = monadicIO $ do
-  input <- liftIO $ BatchActivation <$> randomMatrixL 5 bSize fSize
+  input <- liftIO $ BatchActivation <$> randomMatrix bSize fSize
   let (BatchActivation result) = apply logSoftMax EmptyParams input
   assert $ and
          . (map (~= 1))
