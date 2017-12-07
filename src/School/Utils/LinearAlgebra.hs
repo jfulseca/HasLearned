@@ -1,8 +1,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 
 module School.Utils.LinearAlgebra
-( (+>)
-, compareDoubleMatrix
+( compareDoubleMatrix
 , compareDoubleVector
 , constVector
 , oneMatrix
@@ -29,14 +28,6 @@ mapRows :: (Element a)
         -> Matrix a
         -> Matrix a
 mapRows f = fromRows . (map f) . toRows
-
--- Adds vector to each row
-(+>) :: (Element a, Container Vector a)
-     => Matrix a
-     -> Vector a
-     -> Matrix a
-(+>) m v =
-  fromRows $ map (add v) (toRows m)
 
 sumCols :: Matrix R -> Vector R
 sumCols m = n |> summedCols where

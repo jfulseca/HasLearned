@@ -66,15 +66,15 @@ prop_affine_apply_single (Positive bSize)
          (\(stack, _) -> assert $ (head . head $ stack) ~= check)
          result
 
-prop_affine_apply_aff_rl_aff_rl :: Positive Int
-                                -> Positive Int
-                                -> Positive Int
-                                -> Positive Int
-                                -> Property
-prop_affine_apply_aff_rl_aff_rl (Positive b)
-                                (Positive f)
-                                (Positive h)
-                                (Positive o) = monadicIO $ do
+prop_apply_aff_rl_aff_rl :: Positive Int
+                         -> Positive Int
+                         -> Positive Int
+                         -> Positive Int
+                         -> Property
+prop_apply_aff_rl_aff_rl (Positive b)
+                         (Positive f)
+                         (Positive h)
+                         (Positive o) = monadicIO $ do
   input <- liftIO $ randomMatrix b f
   let acts = [BatchActivation input]
   let network =  yield acts

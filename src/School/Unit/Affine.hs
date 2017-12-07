@@ -3,12 +3,12 @@
 module School.Unit.Affine
 ( affine ) where
 
-import Numeric.LinearAlgebra ((<>), R, tr')
+import Numeric.LinearAlgebra ((<>), R, add, tr')
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitParams (UnitParams(..))
 import School.Unit.UnitGradient (UnitGradient(..))
-import School.Utils.LinearAlgebra ((+>), sumRows)
+import School.Utils.LinearAlgebra (mapRows, sumRows)
 
 affine :: Unit Double
 affine = Unit
@@ -21,7 +21,7 @@ affineApply :: UnitParams R
             -> UnitActivation R
 affineApply AffineParams { affineBias, affineWeights }
             (BatchActivation inMatrix) =
-  BatchActivation $ (inMatrix <> tr' affineWeights) +> affineBias
+  BatchActivation $ mapRows (add affineBias) (inMatrix <> tr' affineWeights)
 affineApply _ (ApplyFail msg) = ApplyFail msg
 affineApply _ _ = ApplyFail "Failure when applying affine unit"
 
