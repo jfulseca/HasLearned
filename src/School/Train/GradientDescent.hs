@@ -3,7 +3,6 @@ module School.Train.GradientDescent
 
 import Conduit ((.|), ConduitM, mapMC, sinkNull, takeWhileC)
 import Control.Monad.State.Lazy (get)
-import Data.Either (either)
 import Data.Maybe (isJust)
 import School.Train.AppTrain (AppTrain, runTrainConduit)
 import School.Train.GradientDescentPass (gradientDescentPass)
@@ -45,15 +44,13 @@ gradientDescent source
                 update
                 condition
                 handler
-                initState = 
+                initState = do
   let pass = gradientDescentPass units cost update
-      iterations = source
+  let iterations = source
                 .| pass
                 .| handler
                 .| stopping condition
                 .| takeWhileC isJust
                 .| sinkNull
-      result = runTrainConduit iterations $ initState
-  in either Left
-            (\(_, state) -> Right state)
-            result
+  (_, result) <- runTrainConduit iterations $ initState
+  return result
