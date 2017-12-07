@@ -15,6 +15,7 @@ import School.Types.Test.TypeName (typeNameTest)
 import School.Unit.Test.Affine (affineTest)
 import School.Unit.Test.LogSoftMax (logSoftMaxTest)
 import School.Unit.Test.RecLin (recLinTest)
+import School.Unit.Test.MultiNoulli (multiNoulliTest)
 import School.Unit.Test.UnitForward (unitForwardTest)
 import School.Unit.Test.UnitBackward (unitBackwardTest)
 import School.Unit.Test.WeightDecay (weightDecayTest)
@@ -40,6 +41,7 @@ unitProps :: TestTree
 unitProps = testGroup "Unit"
   [ affineTest
   , logSoftMaxTest
+  , multiNoulliTest
   , recLinTest
   , unitBackwardTest
   , unitForwardTest

@@ -18,6 +18,7 @@ module School.TestUtils
 , randomAffineParams
 , randomMatrix
 , randomMatrixL
+, randomNNInts
 , randomVector
 , runTrainConduit
 , testRun
@@ -67,6 +68,10 @@ dummyMatrix r c = r >< c $ dummyList r c
 getRandDouble :: IO Double
 getRandDouble =
   getStdRandom (randomR doubleRange)
+
+randomNNInts :: Int -> Int -> IO [Int]
+randomNNInts maxInt n =
+  sequence . (replicate n) $ getStdRandom (randomR (0, maxInt))
 
 matMax :: Double
 matMax = 1e3

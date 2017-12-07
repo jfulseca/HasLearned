@@ -100,6 +100,7 @@ test-suite school-test
                      , School.Train.Test.GradientDescentPass
                      , School.Unit.Test.Affine
                      , School.Unit.Test.LogSoftMax
+                     , School.Unit.Test.MultiNoulli
                      , School.Unit.Test.RecLin
                      , School.Unit.Test.UnitBackward
                      , School.Unit.Test.UnitForward
