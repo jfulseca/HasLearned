@@ -5,6 +5,8 @@ module School.App.AppS
 , maybeToAppS
 , runAppSConduit
 , runAppSConduitDefState
+, throw
+, throwConduit
 ) where 
 {-( Confirmer
 , AppIO
@@ -19,7 +21,7 @@ module School.App.AppS
 import Conduit (ConduitM, ResourceT, mapM_C, runConduitRes)
 import Control.Monad.State.Lazy (StateT, runStateT)
 import Control.Monad.Trans.Class (lift)
-import Control.Monad.Trans.Except (ExceptT(..), runExceptT)
+import Control.Monad.Trans.Except (ExceptT(..), runExceptT, throwE)
 import Data.Attoparsec.ByteString (parseOnly)
 import Data.ByteString (ByteString)
 import Data.ByteString.Conversion (FromByteString, parser)
@@ -63,6 +65,13 @@ runAppSConduitDefState conduit = do
   return $ either Left
                   (\(result', _) -> Right result')
                   result
+
+throw :: String -> AppS a b
+throw = liftAppS . Left
+
+throwConduit :: String -> ConduitM i o (AppS a) ()
+throwConduit = lift . liftAppS . Left
+
 {-
 appIOFail :: String -> ConduitM i o AppIO ()
 appIOFail e = mapM_C (\_ -> liftAppIO. Left $ e)

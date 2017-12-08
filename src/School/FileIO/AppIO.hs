@@ -1,52 +1,25 @@
 module School.FileIO.AppIO
 ( Confirmer
-, AppIO
-, ConduitAppIO
-, appIOFail
 , confirmAtom
-, liftAppIO
-, maybeToAppIO
-, runAppIO
 ) where
 
-import Conduit (ConduitM, ResourceT, mapM_C, runConduitRes)
-import Control.Monad.Trans.Class (lift)
-import Control.Monad.Trans.Except (ExceptT(..), runExceptT)
+import Conduit (ConduitM, mapM_C)
 import Data.Attoparsec.ByteString (parseOnly)
 import Data.ByteString (ByteString)
 import Data.ByteString.Conversion (FromByteString, parser)
-import Data.Void (Void)
+import School.App.AppS (AppS, liftAppS)
 
-type AppIO = ResourceT (ExceptT String IO)
+type Confirmer a = ConduitM ByteString
+                            ByteString
+                            (AppS a)
+                            ()
 
-type ConduitAppIO = ConduitM ()
-                             Void
-                             AppIO
-                             ()
-
-runAppIO :: ConduitM () Void AppIO a -> IO (Either String a)
-runAppIO = runExceptT . runConduitRes
-
-liftAppIO ::Either String a -> AppIO a
-liftAppIO = lift . ExceptT . return
-
-appIOFail :: String -> ConduitM i o AppIO ()
-appIOFail e = mapM_C (\_ -> liftAppIO. Left $ e)
-
-type Confirmer = ConduitM ByteString
-                          ByteString
-                          AppIO
-                          ()
-
-confirmAtom :: (Eq a, FromByteString a, Show a)
-             => (a -> Bool) -> Confirmer
-confirmAtom atom = mapM_C (checkAtom atom)
-
-checkAtom :: (Eq a, FromByteString a, Show a)
-          => (a -> Bool) -> ByteString -> AppIO ()
-checkAtom check bytes = do
+confirmAtom :: (Eq b, FromByteString b, Show b)
+            => (b -> Bool)
+            -> Confirmer a
+confirmAtom check = mapM_C $ \bytes -> do
   let parseResult = atomParser check bytes
-  liftAppIO parseResult
+  liftAppS parseResult
   where
     atomParser c b = do
       atom <- parseOnly parser b
@@ -55,7 +28,3 @@ checkAtom check bytes = do
         else Left $ msg b
     msg b = "Parser gave unexpected "
          ++ "result " ++ (show b)
-
-maybeToAppIO :: String -> Maybe a -> AppIO a
-maybeToAppIO msg =
-  maybe (liftAppIO . Left $ msg) (liftAppIO . Right)

@@ -12,9 +12,8 @@ import Conduit ((.|), ConduitM, mapC, mapMC, nullC,
 import Control.Monad (replicateM)
 import Data.ByteString (ByteString)
 import Data.Serialize.Get (Get, runGet)
-import Foreign.Storable (Storable)
-import School.FileIO.AppIO (AppIO, Confirmer, appIOFail,
-                         confirmAtom, liftAppIO)
+import School.App.AppS (AppS, liftAppS, throwConduit)
+import School.FileIO.AppIO (Confirmer, confirmAtom)
 import School.FileIO.MatrixHeader (MatrixHeader(..), compatibleHeaders)
 import School.Types.DoubleConversion (getDouble)
 import School.Types.Errors (errorContext)
@@ -29,7 +28,7 @@ matrixDoubleSource :: MatrixHeader
                    -> FilePath
                    -> ConduitM ()
                                (Matrix Double)
-                               AppIO
+                               (AppS Double)
                                ()
 matrixDoubleSource header path = do
   let r = rows header
@@ -39,9 +38,10 @@ matrixDoubleSource header path = do
     DBL -> sourceFileBS path
         .| confirmMatrixHeader header
         .| poolMatrixDouble r c
-    _ -> appIOFail $ "Expected data type \'DBL\', got \'" ++ (show dType) ++ "\'"
+    _ -> throwConduit $ "Expected data type \'DBL\', got \'" ++ (show dType) ++ "\'"
 
-confirmMatrixHeader :: MatrixHeader -> Confirmer
+confirmMatrixHeader :: MatrixHeader
+                    -> Confirmer a
 confirmMatrixHeader header = do
   takeCE 1 .| confirmAtom (==separator)
   takeWhileCE (/= binSeparator) .| confirmAtom (compatibleHeaders header)
@@ -64,17 +64,17 @@ poolMatrixDouble nRows nCols =
       suggestion = Just "Does the data have the right shape?"
       transformer bytes = do
         let result = runGet (toMatrixDouble r c) bytes
-        liftAppIO $ errorContext context suggestion result
+        liftAppS $ errorContext context suggestion result
   in poolMatrix (r * c * doubleSize) transformer
 
 type MatrixConduit a = ConduitM ByteString
                                 (Matrix a)
-                                AppIO
+                                (AppS a)
                                 ()
 
-poolMatrix :: (Element a, Storable a)
+poolMatrix :: (Element a)
            => Int
-           -> (ByteString -> AppIO (Matrix a))
+           -> (ByteString -> AppS a (Matrix a))
            -> MatrixConduit a
 poolMatrix chunkSize transformer = loop where
   loop = do
