@@ -50,6 +50,7 @@ library
                      , School.Unit.WeightDecay
                      , School.Utils.Constants
                      , School.Utils.Debug
+                     , School.Utils.Either
                      , School.Utils.LinearAlgebra
                      , School.Utils.SafeEncoding
   other-modules:       School.Types.Errors

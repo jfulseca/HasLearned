@@ -5,7 +5,7 @@ module School.Unit.CostFunction
 
 import Conduit ((.|), ConduitM, mapC)
 import Numeric.LinearAlgebra (Container, Vector, add, cols, rows)
-import School.Train.AppTrain (AppTrain)
+import School.App.AppS (AppS)
 import School.Unit.CostParams (LinkedParams(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitForward (ForwardStack)
@@ -21,7 +21,7 @@ data CostFunction a =
                            -> Either String (UnitGradient a)
                , setupCost :: ConduitM (UnitActivation a)
                                        (ForwardStack a)
-                                       (AppTrain a)
+                                       (AppS a)
                                        ()
                }
 

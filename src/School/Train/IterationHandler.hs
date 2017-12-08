@@ -8,11 +8,11 @@ module School.Train.IterationHandler
 
 import Conduit (ConduitM, mapC, mapMC)
 import Control.Monad.State.Lazy (get, put)
-import School.Train.AppTrain (AppTrain)
+import School.App.AppS (AppS)
 import School.Train.TrainState (HandlerStore(..), TrainState(..))
 
 type IterationHandler a b =
-  ConduitM b b (AppTrain a) ()
+  ConduitM b b (AppS a) ()
 
 storeCost :: IterationHandler a b
 storeCost = mapMC $ \input -> do

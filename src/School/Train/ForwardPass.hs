@@ -3,7 +3,7 @@ module School.Train.ForwardPass
 
 import Conduit ((.|), ConduitM, mapM_C)
 import Control.Monad.Except (throwError)
-import School.Train.AppTrain (AppTrain)
+import School.App.AppS (AppS)
 import School.Unit.ApplyCost (applyCost)
 import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.Unit (Unit)
@@ -14,7 +14,7 @@ import School.Unit.UnitForward (ForwardStack, unitForward)
 hiddenUnits :: [Unit a]
             -> ConduitM (ForwardStack a)
                         (ForwardStack a)
-                        (AppTrain a)
+                        (AppS a)
                         ()
 hiddenUnits [] = throwError "No units given to hiddenUnits"
 hiddenUnits [unit] = unitForward unit
@@ -25,7 +25,7 @@ forwardPass :: [Unit a]
             -> CostFunction a
             -> ConduitM (UnitActivation a)
                         (BackwardStack a)
-                        (AppTrain a)
+                        (AppS a)
                         ()
 forwardPass [] _ = mapM_C . const $
   (throwError "No units given to forwardPass")

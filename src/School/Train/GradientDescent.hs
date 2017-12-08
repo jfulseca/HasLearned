@@ -4,7 +4,7 @@ module School.Train.GradientDescent
 import Conduit ((.|), ConduitM, mapMC, sinkNull, takeWhileC)
 import Control.Monad.State.Lazy (get)
 import Data.Maybe (isJust)
-import School.Train.AppTrain (AppTrain, runTrainConduit)
+import School.App.AppS (AppS, runAppSConduit)
 import School.Train.GradientDescentPass (gradientDescentPass)
 import School.Train.IterationHandler (IterationHandler)
 import School.Train.UpdateParams (UpdateParams)
@@ -14,11 +14,12 @@ import School.Unit.CostFunction (CostFunction)
 import School.Unit.Unit (Unit)
 import School.Unit.UnitActivation (UnitActivation)
 import School.Unit.UnitGradient (UnitGradient)
+import School.Utils.Either (mapRight)
 
 stopping :: StoppingCondition a
          -> ConduitM (UnitGradient a)
                      (Maybe (UnitGradient a))
-                     (AppTrain a)
+                     (AppS a)
                      ()
 stopping condition = mapMC $ \input -> do
   state <- get
@@ -28,7 +29,7 @@ stopping condition = mapMC $ \input -> do
 
 gradientDescent :: ConduitM ()
                             (UnitActivation a)
-                            (AppTrain a)
+                            (AppS a)
                             ()
                 -> [Unit a]
                 -> CostFunction a
@@ -36,8 +37,8 @@ gradientDescent :: ConduitM ()
                 -> StoppingCondition a
                 -> IterationHandler a (UnitGradient a)
                 -> TrainState a
-                -> Either String
-                          (TrainState a)
+                -> IO (Either String
+                              (TrainState a))
 gradientDescent source
                 units
                 cost
@@ -52,5 +53,5 @@ gradientDescent source
                 .| stopping condition
                 .| takeWhileC isJust
                 .| sinkNull
-  (_, result) <- runTrainConduit iterations $ initState
-  return result
+  result <- runAppSConduit iterations $ initState
+  return $ mapRight snd result
