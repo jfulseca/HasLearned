@@ -13,8 +13,9 @@ import Conduit (ConduitM, runConduit)
 import Control.Monad.State.Lazy (StateT, get, runStateT, put)
 import Control.Monad.Except (Except, runExcept)
 import Data.Void (Void)
-import School.Train.TrainState (TrainState(..), CostParams)
+import School.Train.TrainState (TrainState(..))
 import School.Types.PingPong (getPingPong)
+import School.Unit.CostParams (CostParams, paramPrepend)
 import School.Unit.UnitParams (UnitParams)
 
 type AppTrain a =
@@ -40,8 +41,9 @@ putCost value = do
 
 putCostParams :: CostParams -> AppTrain a ()
 putCostParams params = do
-  state <- get
-  put state { costParams = params }
+  state@TrainState { costParams } <- get
+  let newParams = paramPrepend params costParams
+  put state { costParams = newParams }
 
 runTrainConduit :: ConduitM ()
                             Void

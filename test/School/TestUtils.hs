@@ -37,8 +37,8 @@ import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.DoubleConversion (doubleRange)
 import School.Types.TypeName (TypeName(INT))
 import School.Train.AppTrain (runTrainConduit)
-import School.Train.TrainState (CostParams)
 import School.Unit.CostFunction (CostFunction(..))
+import School.Unit.CostParams (LinkedParams)
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitGradient (UnitGradient(..))
 import School.Unit.UnitActivation (UnitActivation(..))
@@ -139,7 +139,7 @@ diffCost :: CostFunction R
          -> UnitActivation R
          -> Double
          -> IndexOf Matrix
-         -> CostParams
+         -> LinkedParams
          -> Double
 diffCost costFunc input eps idx costParams = let
   jAdd = computeCost costFunc (alterInput eps idx input) costParams
@@ -168,7 +168,7 @@ weight1 = weightDecay 1
 doCost :: (Element a, Num a)
        => CostFunction a
        -> UnitActivation a
-       -> CostParams
+       -> LinkedParams
        -> (a, UnitGradient a)
 doCost costFunction activation params =
   fromRight (0, BatchGradient empty) result where

@@ -7,10 +7,10 @@ import Conduit (mapMC)
 import Numeric.LinearAlgebra (Container, Element, Vector, assoc, cols, fromRows,
                               rows, takeColumns, toColumns, toList, toLists)
 import School.Train.AppTrain (putCostParams)
-import School.Train.TrainState (CostParams(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitGradient (UnitGradient(..))
 import School.Unit.CostFunction (CostFunction(..))
+import School.Unit.CostParams (CostParams(..), LinkedParams(..))
 
 toTarget :: (Element a, RealFrac a)
          => Vector a
@@ -22,7 +22,7 @@ multiNoulli :: (Container Vector a, RealFrac a)
             => CostFunction a
 multiNoulli =
   let computeCost (BatchActivation input)
-                  (BatchClassTarget target) =
+                  (Node (BatchClassTarget target) _) =
           Right
         . (*(-1))
         . ((flip (/)) (fromIntegral . rows $ input))
@@ -32,7 +32,7 @@ multiNoulli =
         $ input
       computeCost _ _ = Left "MultiNoulli expects batch activation and batch classification target"
       derivCost (BatchActivation input)
-                (BatchClassTarget target) =
+                (Node (BatchClassTarget target) _) =
         let factor = (-1) / (fromIntegral . rows $ input)
             c = cols input in
           Right
@@ -44,7 +44,8 @@ multiNoulli =
       setupCost = mapMC $ \(BatchActivation input) -> do
         let c = cols input
         let activations = takeColumns (c - 1) input
-        putCostParams . toTarget . last . toColumns $ input
+        let newParams = toTarget . last . toColumns $ input
+        putCostParams newParams
         return [BatchActivation activations]
   in CostFunction { computeCost
                   , derivCost

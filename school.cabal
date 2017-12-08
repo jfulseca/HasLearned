@@ -36,6 +36,7 @@ library
                      , School.Unit.Affine
                      , School.Unit.ApplyCost
                      , School.Unit.CostFunction
+                     , School.Unit.CostParams
                      , School.Unit.LogSoftMax
                      , School.Unit.MultiNoulli
                      , School.Unit.RecLin

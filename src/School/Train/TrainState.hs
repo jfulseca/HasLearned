@@ -1,14 +1,14 @@
 {-# LANGUAGE FlexibleContexts, UndecidableInstances #-}
 
 module School.Train.TrainState
-( CostParams(..)
-, HandlerStore(..)
+( HandlerStore(..)
 , TrainState(..)
 , emptyTrainState
 ) where
 
 import Numeric.LinearAlgebra (Container, Vector)
 import School.Types.PingPong (PingPong, pingPongSingleton)
+import School.Unit.CostParams (LinkedParams(..))
 import School.Unit.UnitParams (UnitParams(..))
 
 data HandlerStore a = CostList [a]
@@ -19,7 +19,7 @@ data CostParams = BatchClassTarget [Int]
 
 data TrainState a = TrainState
   { cost :: a
-  , costParams :: CostParams
+  , costParams :: LinkedParams
   , handlerStore :: HandlerStore a
   , iterationCount :: Int
   , learningRate :: a
@@ -37,7 +37,7 @@ instance (Container Vector a, Eq a, Num a) => Eq (TrainState a) where
 emptyTrainState :: (Num a) => TrainState a
 emptyTrainState =
   TrainState { cost = 0
-             , costParams = NoCostParams
+             , costParams = NoNode
              , handlerStore = NoStore
              , iterationCount = 0
              , learningRate = 0
