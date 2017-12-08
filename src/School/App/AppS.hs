@@ -8,23 +8,11 @@ module School.App.AppS
 , throw
 , throwConduit
 ) where 
-{-( Confirmer
-, AppIO
-, ConduitAppIO
-, appIOFail
-, confirmAtom
-, liftAppIO
-, maybeToAppIO
-, runAppIO
-) where -}
 
-import Conduit (ConduitM, ResourceT, mapM_C, runConduitRes)
+import Conduit (ConduitM, ResourceT, runConduitRes)
 import Control.Monad.State.Lazy (StateT, runStateT)
 import Control.Monad.Trans.Class (lift)
-import Control.Monad.Trans.Except (ExceptT(..), runExceptT, throwE)
-import Data.Attoparsec.ByteString (parseOnly)
-import Data.ByteString (ByteString)
-import Data.ByteString.Conversion (FromByteString, parser)
+import Control.Monad.Trans.Except (ExceptT(..), runExceptT)
 import Data.Void (Void)
 import School.Train.TrainState (TrainState, emptyTrainState)
 

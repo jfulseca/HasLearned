@@ -32,7 +32,7 @@ import Data.Either (either)
 import Data.List (sort)
 import Data.Void (Void)
 import Numeric.LinearAlgebra ((><), (|>), Element, IndexOf, Matrix, R, Vector, accum, sumElements)
-import School.FileIO.AppIO (AppIO, runAppIO)
+import School.App.AppS (AppS, runAppSConduitDefState)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.DoubleConversion (doubleRange)
 import School.Types.TypeName (TypeName(INT))
@@ -51,9 +51,9 @@ import Test.QuickCheck.Monadic (PropertyM, run)
 isSorted :: (Ord a) => [a] -> Bool
 isSorted xs = xs == (reverse . sort $ xs)
 
-testRun :: ConduitM () Void AppIO a
-        -> PropertyM IO (Either String a)
-testRun = run . runAppIO
+testRun :: ConduitM () Void (AppS R) b
+        -> PropertyM IO (Either String b)
+testRun = run . runAppSConduitDefState
 
 dummyHeader :: MatrixHeader
 dummyHeader = MatrixHeader INT n n where

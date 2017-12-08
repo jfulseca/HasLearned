@@ -9,9 +9,10 @@ import School.TestUtils (doCost, empty, fromRight, randomAffineParams, randomMat
 import School.Train.AppTrain (runTrainConduit)
 import School.Train.GradientDescentPass
 import School.Train.SimpleDescentUpdate (simpleDescentUpdate)
-import School.Train.TrainState (CostParams(..), TrainState(..), emptyTrainState)
+import School.Train.TrainState (TrainState(..), emptyTrainState)
 import School.Types.PingPong (pingPongSingleton, toPingPong)
 import School.Unit.Affine (affine)
+import School.Unit.CostParams (LinkedParams(..))
 import School.Unit.RecLin (recLin)
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitActivation (UnitActivation(..))
@@ -39,7 +40,7 @@ prop_single_reclin (Positive b) (Positive f) = monadicIO $ do
           .| await
   let result = runTrainConduit pass emptyTrainState
   let out = apply recLin EmptyParams input
-  let (cost, grad) = doCost weight1 out NoCostParams
+  let (cost, grad) = doCost weight1 out NoNode
   let state = emptyTrainState { cost
                               , iterationCount = 1
                               }
@@ -62,7 +63,7 @@ prop_affine_reclin (Positive b) (Positive f) (Positive o) = monadicIO $ do
   let result = runTrainConduit pass initState
   let out1 = apply affine params input
   let out2 = apply recLin EmptyParams out1
-  let (cost, grad1) = doCost weight1 out2 NoCostParams
+  let (cost, grad1) = doCost weight1 out2 NoNode
   let (grad2, deriv2) = deriv recLin EmptyParams grad1 out1
   let (grad3, deriv1) = deriv affine params grad2 input
   let paramDerivs = [deriv1, deriv2]
