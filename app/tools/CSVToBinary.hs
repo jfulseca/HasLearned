@@ -1,6 +1,8 @@
+import Conduit (ConduitM)
 import Data.Either (either)
 import Data.Semigroup ((<>))
-import School.FileIO.AppIO (runAppIO)
+import Data.Void (Void)
+import School.App.AppS (AppS, runAppSConduitDefState)
 import School.FileIO.CSVReader
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.PosInt (extractPosInts)
@@ -51,10 +53,11 @@ convert args = do
     Nothing -> failPosInt
     Just dims -> do
       let matrixHeader = MatrixHeader DBL (dims!!0) (dims!!1)
-      result <- runAppIO $
-        csvToBinary (inFile args)
-                    (outFile args)
-                    matrixHeader
+      let conv = csvToBinary (inFile args)
+                             (outFile args)
+                             matrixHeader
+                   :: ConduitM () Void (AppS Double) ()
+      result <- runAppSConduitDefState conv
       either putStrLn return result
 
 main :: IO ()

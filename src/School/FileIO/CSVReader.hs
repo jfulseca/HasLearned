@@ -13,7 +13,7 @@ import Conduit ((.|), ConduitM, mapC, mapMC, sourceFileBS)
 import qualified Data.ByteString as BS
 import Data.ByteString.Conversion (fromByteString)
 import qualified Data.Conduit.Binary as CB
-import School.FileIO.AppIO (AppIO, ConduitAppIO, maybeToAppIO)
+import School.App.AppS (AppS, FullConduitAppS, maybeToAppS)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.FileIO.MatrixSink (matrixDoubleSink)
 import School.Types.PosInt (getPosInt)
@@ -25,7 +25,7 @@ parseDoubles = sequence . map fromByteString
 
 readCSV :: FilePath -> ConduitM ()
                                 [BS.ByteString]
-                                AppIO
+                                (AppS a)
                                 ()
 readCSV path = sourceFileBS path
             .| CB.lines
@@ -34,17 +34,17 @@ readCSV path = sourceFileBS path
 csvToMatrixDouble :: MatrixHeader
                   -> ConduitM [BS.ByteString]
                               (Matrix Double)
-                              AppIO
+                              (AppS a)
                               ()
 csvToMatrixDouble MatrixHeader { cols } =
     mapC parseDoubles
- .| mapMC (maybeToAppIO "Could not parse doubles")
+ .| mapMC (maybeToAppS "Could not parse doubles")
  .| mapC (1 >< (getPosInt cols))
 
 csvToBinary :: FilePath
             -> FilePath
             -> MatrixHeader
-            -> ConduitAppIO 
+            -> FullConduitAppS a
 csvToBinary inPath outPath header  = 
     readCSV inPath
  .| csvToMatrixDouble header 

@@ -6,7 +6,7 @@ import Data.ByteString (ByteString)
 import Data.ByteString.Conversion (toByteString')
 import Data.Serialize.Put (runPut)
 import Data.Void (Void)
-import School.FileIO.AppIO (AppIO)
+import School.App.AppS (AppS)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.DoubleConversion (putDouble)
 import Numeric.LinearAlgebra.Data (Matrix, toLists)
@@ -15,7 +15,7 @@ matrixDoubleSink :: MatrixHeader
                  -> FilePath
                  -> ConduitM (Matrix Double)
                              Void
-                             AppIO
+                             (AppS a)
                              ()
 matrixDoubleSink header path =
   byteBuilder .| sinkFileBS path where

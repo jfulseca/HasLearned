@@ -13,7 +13,8 @@ extra-source-files:  ChangeLog.md
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     School.FileIO.AppIO
+  exposed-modules:     School.App.AppS
+                     , School.FileIO.AppIO
                      , School.FileIO.CSVReader
                      , School.FileIO.MatrixHeader
                      , School.FileIO.MatrixSink
