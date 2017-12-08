@@ -58,33 +58,4 @@ throw :: String -> AppS a b
 throw = liftAppS . Left
 
 throwConduit :: String -> ConduitM i o (AppS a) ()
-throwConduit = lift . liftAppS . Left
-
-{-
-appIOFail :: String -> ConduitM i o AppIO ()
-appIOFail e = mapM_C (\_ -> liftAppIO. Left $ e)
-
-type Confirmer = ConduitM ByteString
-                          ByteString
-                          AppIO
-                          ()
-
-confirmAtom :: (Eq a, FromByteString a, Show a)
-             => (a -> Bool) -> Confirmer
-confirmAtom atom = mapM_C (checkAtom atom)
-
-checkAtom :: (Eq a, FromByteString a, Show a)
-          => (a -> Bool) -> ByteString -> AppIO ()
-checkAtom check bytes = do
-  let parseResult = atomParser check bytes
-  liftAppIO parseResult
-  where
-    atomParser c b = do
-      atom <- parseOnly parser b
-      if c atom
-        then Right ()
-        else Left $ msg b
-    msg b = "Parser gave unexpected "
-         ++ "result " ++ (show b)
-
--}
+throwConduit = lift . throw
