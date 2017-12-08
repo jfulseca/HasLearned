@@ -1,5 +1,5 @@
 import Criterion.Main
-import School.FileIO.AppIO (ConduitAppIO, runAppIO)
+import School.App.AppS (FullConduitAppS, runAppSConduitDefState)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.FileIO.CSVReader (csvToBinary)
 import School.Types.PosInt (PosInt)
@@ -12,7 +12,10 @@ import Test.QuickCheck.Modifiers (Positive(..))
 dataDir :: FilePath
 dataDir = "app/benchmark/data/"
 
-convert :: (FilePath -> FilePath -> MatrixHeader -> ConduitAppIO)
+convert :: (  FilePath
+           -> FilePath
+           -> MatrixHeader
+           -> FullConduitAppS Double)
         -> FilePath
         -> PosInt
         -> PosInt
@@ -20,9 +23,10 @@ convert :: (FilePath -> FilePath -> MatrixHeader -> ConduitAppIO)
 convert readWrite fName nRows nCols = do
   let header = MatrixHeader DBL nRows nCols
   let outFile = (takeBaseName fName) ++ ".dat"
-  result <- runAppIO $ readWrite (dataDir ++ fName)
-                                 outFile
-                                 header
+  let conversion = readWrite (dataDir ++ fName)
+                             outFile
+                             header
+  result <- runAppSConduitDefState conversion
   removeFile outFile
   either putStrLn
          (const $ return ())
