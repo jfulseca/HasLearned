@@ -15,6 +15,7 @@ import Control.Monad.Trans.Class (lift)
 import Control.Monad.Trans.Except (ExceptT(..), runExceptT)
 import Data.Void (Void)
 import School.Train.TrainState (TrainState, emptyTrainState)
+import School.Utils.Either (mapRight)
 
 type AppS a = ResourceT (StateT (TrainState a)
                                 (ExceptT String
@@ -22,10 +23,6 @@ type AppS a = ResourceT (StateT (TrainState a)
 
 liftAppS :: Either String b -> AppS a b
 liftAppS = lift . lift . ExceptT . return
-
-maybeToAppS :: String -> Maybe b -> AppS a b
-maybeToAppS msg =
-  maybe (liftAppS . Left $ msg) (liftAppS . Right)
 
 type FullConduitAppS a = ConduitM ()
                                   Void
@@ -50,12 +47,14 @@ runAppSConduitDefState :: (Num a)
 runAppSConduitDefState conduit = do
   result <- runAppSConduit conduit
                            emptyTrainState
-  return $ either Left
-                  (\(result', _) -> Right result')
-                  result
+  return $ mapRight fst result
 
 throw :: String -> AppS a b
 throw = liftAppS . Left
 
 throwConduit :: String -> ConduitM i o (AppS a) ()
 throwConduit = lift . throw
+
+maybeToAppS :: String -> Maybe b -> AppS a b
+maybeToAppS msg =
+  maybe (throw msg) (liftAppS . Right)
