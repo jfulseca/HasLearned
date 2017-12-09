@@ -5,8 +5,8 @@ module School.Train.Test.BackwardPass
 
 import Conduit ((.|), yield, liftIO, sinkList, await)
 import Data.Either (isLeft)
-import School.TestUtils (empty, doCost, fromRight, randomAffineParams, randomMatrix, weight1)
-import School.Train.AppTrain (runTrainConduit)
+import School.TestUtils (assertRight, empty, doCost, fromRight, randomAffineParams,
+                         randomMatrix, testState, weight1)
 import School.Train.BackwardPass
 import School.Train.TrainState (TrainState(..), emptyTrainState)
 import School.Types.PingPong (pingPongSingleton, reversePingPong, toPingPong)
@@ -23,13 +23,13 @@ import Test.Tasty.QuickCheck hiding ((><))
 import Test.Tasty.TH
 import Test.QuickCheck.Monadic (assert, monadicIO)
 
-prop_no_units :: Bool
-prop_no_units = let
-  backward = backwardPass []
-  source = yield (([BatchActivation empty], BatchGradient empty) :: BackwardStack Double)
-  pass = source .| backward .| sinkList
-  result = runTrainConduit pass emptyTrainState
-  in isLeft result
+prop_no_units :: Property
+prop_no_units = monadicIO $ do
+  let backward = backwardPass []
+  let source = yield (([BatchActivation empty], BatchGradient empty) :: BackwardStack Double)
+  let pass = source .| backward .| sinkList
+  result <- testState pass emptyTrainState
+  assert $ isLeft result
 
 prop_single_affine :: (Positive Int) -> (Positive Int) -> (Positive Int) -> Property
 prop_single_affine (Positive bSize) (Positive fSize) (Positive oSize) = monadicIO $ do
@@ -41,12 +41,10 @@ prop_single_affine (Positive bSize) (Positive fSize) (Positive oSize) = monadicI
   let pass = source .| backward .| await
   let pl = reversePingPong $ pingPongSingleton params
   let state = emptyTrainState { paramList = pl }
-  let result = runTrainConduit pass state
+  result <- testState pass state
   let (_, check) = deriv affine params grad input
-  either (const $ assert False)
-         (\(_, TrainState { paramDerivs }) ->
-            assert $ paramDerivs == [check])
-         result
+  assertRight ((== [check]) . paramDerivs . snd)
+              result
 
 prop_aff_rl_aff_rl :: (Positive Int) -> (Positive Int) -> (Positive Int) -> (Positive Int) -> Property
 prop_aff_rl_aff_rl (Positive b) (Positive f) (Positive h) (Positive o) = monadicIO $ do
@@ -73,12 +71,10 @@ prop_aff_rl_aff_rl (Positive b) (Positive f) (Positive h) (Positive o) = monadic
   let source = yield ([out3, out2, out1, input], grad)
   let pass = source .| backward .| await
   let initState = emptyTrainState { cost, paramList }
-  let result = runTrainConduit pass initState
+  result <- testState pass initState
   let check = [deriv4, deriv3, deriv2, deriv1]
-  either (const $ assert False)
-         (\(_, TrainState { paramDerivs }) ->
-            assert $ check == paramDerivs)
-         result
+  assertRight ((== check) . paramDerivs . snd)
+              result
 
 backwardPassTest :: TestTree
 backwardPassTest = $(testGroupGenerator)

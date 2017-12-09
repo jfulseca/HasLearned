@@ -1,27 +1,18 @@
 {-# LANGUAGE NamedFieldPuns #-}
 
 module School.Train.AppTrain
-( AppTrain
-, getParams
+( getParams
 , putCost
 , putCostParams
 , putParamDerivs
-, runTrainConduit
 ) where
 
-import Conduit (ConduitM, runConduit)
-import Control.Monad.State.Lazy (StateT, get, runStateT, put)
-import Control.Monad.Except (Except, runExcept)
-import Data.Void (Void)
+import Control.Monad.State.Lazy (get, put)
 import School.App.AppS (AppS)
 import School.Train.TrainState (TrainState(..))
 import School.Types.PingPong (getPingPong)
 import School.Unit.CostParams (CostParams, paramPrepend)
 import School.Unit.UnitParams (UnitParams)
-
-type AppTrain a =
-  StateT (TrainState a)
-         (Except String)
 
 getParams :: AppS a (UnitParams a)
 getParams = do
@@ -45,13 +36,4 @@ putCostParams params = do
   state@TrainState { costParams } <- get
   let newParams = paramPrepend params costParams
   put state { costParams = newParams }
-
-runTrainConduit :: ConduitM ()
-                            Void
-                            (AppTrain a)
-                            b
-                -> TrainState a
-                -> Either String (b, TrainState a)
-runTrainConduit conduit state = runExcept $
-  runStateT (runConduit conduit) state
 

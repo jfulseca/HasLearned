@@ -6,8 +6,7 @@ module School.Train.Test.ForwardPass
 import Conduit ((.|), yield, liftIO, sinkList, await)
 import Data.Either (isLeft)
 import Numeric.LinearAlgebra (R, ident)
-import School.TestUtils (doCost, fromRight, randomAffineParams, randomMatrix, weight1)
-import School.Train.AppTrain (runTrainConduit)
+import School.TestUtils (doCost, fromRight, randomAffineParams, randomMatrix, testState, weight1)
 import School.Train.ForwardPass
 import School.Train.TrainState (TrainState(..), emptyTrainState)
 import School.Types.PingPong (pingPongSingleton, reversePingPong, toPingPong)
@@ -23,13 +22,13 @@ import Test.Tasty.QuickCheck hiding ((><))
 import Test.Tasty.TH
 import Test.QuickCheck.Monadic (assert, monadicIO)
 
-prop_no_units :: Bool
-prop_no_units = let
-  forward = forwardPass [] weight1
-  source = yield . BatchActivation $ ident 1
-  pass = source .| forward .| sinkList
-  result = runTrainConduit pass emptyTrainState
-  in isLeft result
+prop_no_units :: Property
+prop_no_units = monadicIO $ do
+  let forward = forwardPass [] weight1
+  let source = yield . BatchActivation $ ident 1
+  let pass = source .| forward .| sinkList
+  result <- testState pass emptyTrainState
+  assert $ isLeft result
 
 prop_single_recLin :: (Positive Int) -> (Positive Int) -> Property
 prop_single_recLin (Positive bSize) (Positive fSize) = monadicIO $ do
@@ -37,7 +36,7 @@ prop_single_recLin (Positive bSize) (Positive fSize) = monadicIO $ do
   input <- liftIO $ BatchActivation <$> (randomMatrix bSize fSize)
   let source = yield input
   let pass = source .| forward .| await
-  let result = runTrainConduit pass emptyTrainState
+  result <- testState pass emptyTrainState
   let out = apply recLin EmptyParams input
   let (cost, grad) = doCost weight1 out NoNode
   let bParams = reversePingPong . paramList $ emptyTrainState
@@ -62,7 +61,7 @@ prop_aff_rl_aff_rl (Positive b) (Positive f) (Positive h) (Positive o) = monadic
                              ]
   let paramList = fromRight (pingPongSingleton EmptyParams) allParams
   let initState = emptyTrainState { paramList }
-  let result = runTrainConduit pass initState
+  result <- testState pass initState
   let out1 = apply affine params1 input
   let out2 = apply recLin EmptyParams out1
   let out3 = apply affine params2 out2

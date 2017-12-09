@@ -6,7 +6,7 @@ module School.Unit.Test.UnitForward
 import Conduit ((.|), sinkList, yield)
 import Control.Monad.IO.Class (liftIO)
 import Data.Either (isLeft)
-import School.TestUtils (fromRight, randomAffineParams, randomMatrix, runTrainConduit)
+import School.TestUtils (assertRight, fromRight, randomAffineParams, randomMatrix, testState)
 import School.Train.TrainState (TrainState(..), emptyTrainState)
 import School.Types.FloatEq ((~=))
 import School.Types.PingPong (pingPongSingleton, toPingPong)
@@ -21,15 +21,15 @@ import Test.Tasty.QuickCheck
 import Test.Tasty.TH
 import Test.QuickCheck.Monadic (assert, monadicIO)
 
-prop_affine_input_fail :: Bool
-prop_affine_input_fail = let
-  forward = unitForward affine
-  acts = [ApplyFail "init"]
-  network =  yield acts
-          .| forward
-          .| sinkList
-  result = runTrainConduit network emptyTrainState
-  in isLeft result
+prop_affine_input_fail :: Property
+prop_affine_input_fail = monadicIO $ do
+  let forward = unitForward affine
+  let acts = [ApplyFail "init"]
+  let network =  yield acts
+              .| forward
+              .| sinkList
+  result <- testState network emptyTrainState
+  assert $ isLeft result
 
 prop_affine_param_fail :: Positive Int -> Positive Int -> Property
 prop_affine_param_fail (Positive fSize) (Positive oSize) = monadicIO $ do
@@ -39,10 +39,9 @@ prop_affine_param_fail (Positive fSize) (Positive oSize) = monadicIO $ do
   let network =  yield acts
               .| forward
               .| sinkList
-  let result = runTrainConduit network emptyTrainState
-  either (const . assert $ False)
-         (\(stack, _) -> assert $ isApplyFail . head . head $ stack)
-         result
+  result <- testState network emptyTrainState
+  assertRight (isApplyFail . head . head . fst)
+              result
 
 prop_affine_apply_single :: Positive Int
                          -> Positive Int
@@ -60,11 +59,10 @@ prop_affine_apply_single (Positive bSize)
   params <- liftIO $ randomAffineParams fSize oSize
   let paramList = pingPongSingleton params
   let initState = emptyTrainState { paramList }
-  let result = runTrainConduit network initState
+  result <- testState network initState
   let check = apply affine params (head acts)
-  either (const . assert $ False)
-         (\(stack, _) -> assert $ (head . head $ stack) ~= check)
-         result
+  assertRight (((~=) check) . head . head . fst)
+              result
 
 prop_apply_aff_rl_aff_rl :: Positive Int
                          -> Positive Int
@@ -92,14 +90,13 @@ prop_apply_aff_rl_aff_rl (Positive b)
                              ]
   let paramList = fromRight (pingPongSingleton EmptyParams) allParams
   let initState = emptyTrainState { paramList }
-  let result = runTrainConduit network initState
+  result <- testState network initState
   let out1 = apply affine params1 (head acts)
   let out2 = apply recLin EmptyParams out1
   let out3 = apply affine params2 out2
   let check = apply recLin EmptyParams out3
-  either (const . assert $ False)
-         (\(stack, _) -> assert $ (head . head $ stack) ~= check)
-         result
+  assertRight (((~=) check) . head . head . fst)
+              result
 
 unitForwardTest :: TestTree
 unitForwardTest = $(testGroupGenerator)

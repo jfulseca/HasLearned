@@ -7,8 +7,7 @@ import Conduit ((.|), await, yield)
 import Control.Monad.IO.Class (liftIO)
 import Numeric.LinearAlgebra ((><), Element, Matrix, R, Vector, assoc,
                               cols, fromColumns, fromRows, fromList, toColumns)
-import School.TestUtils (diffCost, randomMatrix, randomNNInts)
-import School.Train.AppTrain (runTrainConduit)
+import School.TestUtils (assertRight, diffCost, randomMatrix, randomNNInts, testState)
 import School.Train.ForwardPass (forwardPass)
 import School.Train.TrainState (TrainState(..), emptyTrainState)
 import School.Unit.CostFunction (CostFunction(..))
@@ -74,9 +73,7 @@ prop_norm (Positive c) (Positive b) = monadicIO $ do
   let out = apply logSoftMax EmptyParams input
   let params = paramSingleton $ BatchClassTarget classes
   let cost = computeCost multiNoulli out params
-  either (const $ assert False)
-         (\res -> assert $ res >= (-1))
-         cost
+  assertRight (>= (-1)) cost
 
 prop_numerical_deriv :: (Positive Int) -> (Positive Int) -> Property
 prop_numerical_deriv (Positive c) (Positive b) = monadicIO $ do
@@ -90,9 +87,8 @@ prop_numerical_deriv (Positive c) (Positive b) = monadicIO $ do
                                   (j, k)
                                   classes
                                | j <- [0..b-1], k <- [0..c-1] ]
-  either (const (assert False))
-         (\(BatchGradient g) -> assert $ compareDoubleMatrix prec g check)
-         deriv
+  assertRight (\(BatchGradient g) -> compareDoubleMatrix prec g check)
+              deriv
 
 unitCorrect :: [Int] -> Unit R
 unitCorrect classes = Unit { apply, deriv } where
@@ -112,11 +108,8 @@ prop_correct_forward_pass (Positive c) (Positive b) = monadicIO $ do
   let pass = yield input
           .| forward
           .| await
-  let result = runTrainConduit pass emptyTrainState
-  either (const $ assert False)
-         (\(_, TrainState { cost }) ->
-            assert $ cost == -1)
-         result
+  result <- testState pass emptyTrainState
+  assertRight ((== (-1)) . cost . snd) result
 
 multiNoulliTest :: TestTree
 multiNoulliTest = $(testGroupGenerator)

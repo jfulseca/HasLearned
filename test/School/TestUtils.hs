@@ -2,6 +2,7 @@
 
 module School.TestUtils
 ( CostFunc
+, assertRight
 , diffCost
 , diffInput
 , doCost
@@ -20,23 +21,23 @@ module School.TestUtils
 , randomMatrixL
 , randomNNInts
 , randomVector
-, runTrainConduit
 , testRun
+, testState
 , weight1
 , whenPrint
 ) where
 
-import Conduit (ConduitM)
+import Conduit (ConduitM, liftIO)
 import Control.Monad (when)
 import Data.Either (either)
 import Data.List (sort)
 import Data.Void (Void)
 import Numeric.LinearAlgebra ((><), (|>), Element, IndexOf, Matrix, R, Vector, accum, sumElements)
-import School.App.AppS (AppS, runAppSConduitDefState)
+import School.App.AppS (AppS, runAppSConduit, runAppSConduitDefState)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.DoubleConversion (doubleRange)
 import School.Types.TypeName (TypeName(INT))
-import School.Train.AppTrain (runTrainConduit)
+import School.Train.TrainState (TrainState)
 import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.CostParams (LinkedParams)
 import School.Unit.Unit (Unit(..))
@@ -46,7 +47,19 @@ import School.Unit.UnitParams (UnitParams(..))
 import School.Unit.WeightDecay (weightDecay)
 import System.Random (getStdRandom, randomR)
 import Test.QuickCheck.Modifiers (Positive(..))
-import Test.QuickCheck.Monadic (PropertyM, run)
+import Test.QuickCheck.Monadic (PropertyM, assert, run)
+
+assertRight :: (b -> Bool)
+            -> Either a b
+            -> PropertyM IO ()
+assertRight f = either (const $ assert False)
+                       (\x -> assert $ f x)
+
+testState :: ConduitM () Void (AppS R) b
+          -> TrainState R
+          -> PropertyM IO (Either String (b, TrainState R))
+testState conduit state =
+  liftIO $ runAppSConduit conduit state
 
 isSorted :: (Ord a) => [a] -> Bool
 isSorted xs = xs == (reverse . sort $ xs)

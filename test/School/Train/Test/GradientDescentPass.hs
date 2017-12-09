@@ -5,8 +5,8 @@ module School.Train.Test.GradientDescentPass
 
 import Conduit ((.|), await, liftIO, sinkList, yield, yieldMany)
 import Data.Either (isLeft)
-import School.TestUtils (doCost, empty, fromRight, randomAffineParams, randomMatrix, weight1)
-import School.Train.AppTrain (runTrainConduit)
+import School.TestUtils (assertRight, doCost, empty, fromRight, randomAffineParams,
+                         randomMatrix, testState, weight1)
 import School.Train.GradientDescentPass
 import School.Train.SimpleDescentUpdate (simpleDescentUpdate)
 import School.Train.TrainState (TrainState(..), emptyTrainState)
@@ -22,14 +22,14 @@ import Test.Tasty.QuickCheck hiding ((><))
 import Test.Tasty.TH
 import Test.QuickCheck.Monadic (assert, monadicIO)
 
-prop_no_units :: Bool
-prop_no_units = let
-  descent = gradientDescentPass [] weight1 simpleDescentUpdate
-  pass = yield (BatchActivation empty)
-      .| descent
-      .| await
-  result = runTrainConduit pass emptyTrainState
-  in isLeft result
+prop_no_units :: Property
+prop_no_units = monadicIO $ do
+  let descent = gradientDescentPass [] weight1 simpleDescentUpdate
+  let pass = yield (BatchActivation empty)
+          .| descent
+          .| await
+  result <- testState pass emptyTrainState
+  assert $ isLeft result
 
 prop_single_reclin :: Positive Int -> Positive Int -> Property
 prop_single_reclin (Positive b) (Positive f) = monadicIO $ do
@@ -38,7 +38,7 @@ prop_single_reclin (Positive b) (Positive f) = monadicIO $ do
   let pass = yield input
           .| descent
           .| await
-  let result = runTrainConduit pass emptyTrainState
+  result <- testState pass emptyTrainState
   let out = apply recLin EmptyParams input
   let (cost, grad) = doCost weight1 out NoNode
   let state = emptyTrainState { cost
@@ -60,7 +60,7 @@ prop_affine_reclin (Positive b) (Positive f) (Positive o) = monadicIO $ do
                             (toPingPong [params, EmptyParams])
   let learningRate = 1 :: Double
   let initState = emptyTrainState { learningRate, paramList }
-  let result = runTrainConduit pass initState
+  result <- testState pass initState
   let out1 = apply affine params input
   let out2 = apply recLin EmptyParams out1
   let (cost, grad1) = doCost weight1 out2 NoNode
@@ -87,10 +87,8 @@ prop_stream_several (Positive n) (Positive b) (Positive f) = monadicIO $ do
   let pass = source
           .| descent
           .| sinkList
-  let result = runTrainConduit pass emptyTrainState
-  either (const $ assert False)
-         (\(grads, _) -> assert $ length grads == n)
-         result
+  result <- testState pass emptyTrainState
+  assertRight ((\g -> length g == n) . fst) result
 
 gradientDescentPassTest :: TestTree
 gradientDescentPassTest = $(testGroupGenerator)
