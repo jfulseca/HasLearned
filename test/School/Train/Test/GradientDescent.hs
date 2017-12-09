@@ -9,7 +9,7 @@ import School.TestUtils (assertRight, empty, isSorted,
                          randomAffineParams, randomMatrix, weight1)
 import School.Train.GradientDescent
 import School.Train.SimpleDescentUpdate (simpleDescentUpdate)
-import School.Train.StoppingCondition (StoppingCondition)
+import School.Train.StoppingCondition (maxIterations)
 import School.Train.IterationHandler (storeCost, noHandling)
 import School.Train.TrainState (TrainState(..), HandlerStore(..), defTrainState)
 import School.Types.PingPong (pingPongSingleton)
@@ -33,10 +33,6 @@ prop_no_units = monadicIO $ do
                                      defTrainState
   assert $ isLeft result
 
-itStop :: Int -> StoppingCondition Double
-itStop maxIt (TrainState { iterationCount }) =
-  iterationCount >= maxIt
-
 prop_iterations :: Positive Int -> Positive Int -> Positive Int -> Property
 prop_iterations (Positive n) (Positive b) (Positive f) = monadicIO $ do
   input <- liftIO $ BatchActivation <$> randomMatrix b f
@@ -45,7 +41,7 @@ prop_iterations (Positive n) (Positive b) (Positive f) = monadicIO $ do
                                     [recLin]
                                     weight1
                                     simpleDescentUpdate
-                                    (itStop n)
+                                    (maxIterations n)
                                     noHandling
                                     defTrainState
   assertRight ((== n) . iterationCount) result
@@ -64,7 +60,7 @@ prop_cost_decline (Positive b) (Positive f) (Positive o) = monadicIO $ do
                                      [affine]
                                      weight1
                                      simpleDescentUpdate
-                                     (itStop 5)
+                                     (maxIterations 5)
                                      storeCost
                                      initState
   assertRight ((\(CostList c) -> isSorted c) . handlerStore)

@@ -2,7 +2,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE NamedFieldPuns #-}
 
-module School.FileIO.CSVReader
+module School.App.CSVReader
 ( csvToBinary
 , csvToMatrixDouble
 , parseDoubles

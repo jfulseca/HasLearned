@@ -14,8 +14,9 @@ cabal-version:       >=1.10
 
 library
   exposed-modules:     School.App.AppS
+                     , School.App.CSVReader
+                     , School.App.MultiLayerPerceptron 
                      , School.FileIO.AppIO
-                     , School.FileIO.CSVReader
                      , School.FileIO.MatrixHeader
                      , School.FileIO.MatrixSink
                      , School.FileIO.MatrixSource
@@ -52,6 +53,7 @@ library
                      , School.Utils.Debug
                      , School.Utils.Either
                      , School.Utils.LinearAlgebra
+                     , School.Utils.Random
                      , School.Utils.SafeEncoding
   other-modules:       School.Types.Errors
   build-depends:       QuickCheck
@@ -65,6 +67,7 @@ library
                      , filepath
                      , hmatrix
                      , mtl
+                     , random
                      , text
                      , transformers
   hs-source-dirs:      src
@@ -88,7 +91,7 @@ test-suite school-test
   hs-source-dirs:      test
   default-language:    Haskell2010
   ghc-options:         -Wall
-  other-modules:       School.FileIO.Test.CSVReader
+  other-modules:       School.App.Test.CSVReader
                      , School.FileIO.Test.MatrixHeader
                      , School.FileIO.Test.MatrixSink
                      , School.FileIO.Test.MatrixSource

@@ -3,13 +3,15 @@
 module School.Train.IterationHandler
 ( IterationHandler
 , noHandling
+, logCost
 , storeCost
 ) where
 
-import Conduit (ConduitM, mapC, mapMC)
+import Conduit (ConduitM, liftIO, mapC, mapMC)
 import Control.Monad.State.Lazy (get, put)
 import School.App.AppS (AppS)
 import School.Train.TrainState (HandlerStore(..), TrainState(..))
+import System.FilePath (FilePath)
 
 type IterationHandler a b =
   ConduitM b b (AppS a) ()
@@ -26,3 +28,12 @@ storeCost = mapMC $ \input -> do
 
 noHandling :: IterationHandler a b
 noHandling = mapC id
+
+logCost :: (Show a)
+        => FilePath
+        -> IterationHandler a b
+logCost path = do
+  state <- get
+  let str = (show . cost $ state) ++ "\n"
+  liftIO $ appendFile path str
+  mapC id

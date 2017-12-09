@@ -3,7 +3,7 @@ import Data.Either (either)
 import Data.Semigroup ((<>))
 import Data.Void (Void)
 import School.App.AppS (AppS, runAppSConduitDefState)
-import School.FileIO.CSVReader
+import School.App.CSVReader
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.PosInt (extractPosInts)
 import School.Types.TypeName (TypeName(..))

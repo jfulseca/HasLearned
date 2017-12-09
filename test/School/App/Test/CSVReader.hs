@@ -1,13 +1,13 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module School.FileIO.Test.CSVReader
+module School.App.Test.CSVReader
 ( csvReaderTest ) where
 
 import Conduit ((.|), sinkList)
 import Control.Monad.IO.Class (liftIO)
 import Data.Either (isRight)
 import Data.List.Split (chunksOf)
-import School.FileIO.CSVReader
+import School.App.CSVReader
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.FileIO.MatrixSource (matrixDoubleSource)
 import School.TestUtils (testRun)

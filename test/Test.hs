@@ -1,6 +1,6 @@
 module Main where
 
-import School.FileIO.Test.CSVReader (csvReaderTest)
+import School.App.Test.CSVReader (csvReaderTest)
 import School.FileIO.Test.MatrixHeader (matrixHeaderTest)
 import School.FileIO.Test.MatrixSink (matrixSinkTest)
 import School.FileIO.Test.MatrixSource (matrixSourceTest)
@@ -21,6 +21,10 @@ import School.Unit.Test.UnitBackward (unitBackwardTest)
 import School.Unit.Test.WeightDecay (weightDecayTest)
 import Test.Tasty
 
+appProps :: TestTree
+appProps = testGroup "App"
+  [ csvReaderTest ]
+
 typeProps :: TestTree
 typeProps = testGroup "Types"
   [ doubleToBinaryTest
@@ -31,8 +35,7 @@ typeProps = testGroup "Types"
 
 fileIOProps :: TestTree
 fileIOProps = testGroup "FileIO"
-  [ csvReaderTest
-  , matrixHeaderTest
+  [ matrixHeaderTest
   , matrixSinkTest
   , matrixSourceTest
   ]
@@ -58,7 +61,8 @@ trainProps= testGroup "Train"
 
 schoolTest :: TestTree
 schoolTest = testGroup "School"
-  [ typeProps
+  [ appProps
+  , typeProps
   , fileIOProps
   , unitProps
   , trainProps
