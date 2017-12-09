@@ -8,7 +8,7 @@ import Control.Monad.IO.Class (liftIO)
 import Data.Either (isLeft)
 import Numeric.LinearAlgebra (ident)
 import School.TestUtils (assertRight, fromRight, randomAffineParams, randomMatrix, testState)
-import School.Train.TrainState (TrainState(..), emptyTrainState)
+import School.Train.TrainState (TrainState(..), defTrainState)
 import School.Types.FloatEq ((~=))
 import School.Types.PingPong (pingPongSingleton, reversePingPong, toPingPong)
 import School.Unit.Affine (affine)
@@ -31,7 +31,7 @@ prop_affine_input_fail = monadicIO $ do
   let network =  yield (acts, inGrad)
               .| backward
               .| sinkList
-  result <- testState network emptyTrainState
+  result <- testState network defTrainState
   assert $ isLeft result
 
 prop_affine_gradient_fail :: Property
@@ -42,7 +42,7 @@ prop_affine_gradient_fail = monadicIO $ do
   let network =  yield (acts, inGrad)
               .| backward
               .| sinkList
-  result <- testState network emptyTrainState
+  result <- testState network defTrainState
   assert $ isLeft result
 
 prop_affine_param_fail :: Positive Int -> Positive Int -> Property
@@ -55,7 +55,7 @@ prop_affine_param_fail (Positive fSize) (Positive oSize) = monadicIO $ do
   let network =  yield fStack
               .| backward
               .| sinkList
-  result <- testState network emptyTrainState
+  result <- testState network defTrainState
   assertRight (isGradientFail . snd . head . fst)
               result
 
@@ -70,7 +70,7 @@ prop_reclin_gradient (Positive bSize) (Positive fSize) = monadicIO $ do
   let network =  yield fStack
               .| backward
               .| sinkList
-  result <- testState network emptyTrainState
+  result <- testState network defTrainState
   let (check, _) = deriv recLin EmptyParams inGrad input
   assertRight (((~=) check) . snd . head . fst)
               result
@@ -88,7 +88,7 @@ prop_affine_derivs (Positive bSize) (Positive fSize) (Positive oSize) = monadicI
               .| sinkList
   params <- liftIO $ randomAffineParams fSize oSize
   let paramList = pingPongSingleton params
-  let initState = emptyTrainState { paramList }
+  let initState = defTrainState { paramList }
   result <- testState network initState
   let (_, check) = deriv affine params inGrad input
   assertRight (((~=) check) . head . paramDerivs . snd)
@@ -128,7 +128,7 @@ prop_deriv_aff_rl_aff_rl (Positive b)
                              , EmptyParams
                              ]
   let paramList = reversePingPong $ fromRight (pingPongSingleton EmptyParams) allParams
-  let initState = emptyTrainState { paramList }
+  let initState = defTrainState { paramList }
   result <- testState network initState
   let (grad1, _) = deriv recLin EmptyParams inGrad (head acts)
   let (grad2, dParams2) = deriv affine params2 grad1 (acts!!1)

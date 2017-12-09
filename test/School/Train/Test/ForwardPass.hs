@@ -8,7 +8,7 @@ import Data.Either (isLeft)
 import Numeric.LinearAlgebra (R, ident)
 import School.TestUtils (doCost, fromRight, randomAffineParams, randomMatrix, testState, weight1)
 import School.Train.ForwardPass
-import School.Train.TrainState (TrainState(..), emptyTrainState)
+import School.Train.TrainState (TrainState(..), defTrainState)
 import School.Types.PingPong (pingPongSingleton, reversePingPong, toPingPong)
 import School.Unit.Affine (affine)
 import School.Unit.CostParams (LinkedParams(..))
@@ -27,7 +27,7 @@ prop_no_units = monadicIO $ do
   let forward = forwardPass [] weight1
   let source = yield . BatchActivation $ ident 1
   let pass = source .| forward .| sinkList
-  result <- testState pass emptyTrainState
+  result <- testState pass defTrainState
   assert $ isLeft result
 
 prop_single_recLin :: (Positive Int) -> (Positive Int) -> Property
@@ -36,11 +36,11 @@ prop_single_recLin (Positive bSize) (Positive fSize) = monadicIO $ do
   input <- liftIO $ BatchActivation <$> (randomMatrix bSize fSize)
   let source = yield input
   let pass = source .| forward .| await
-  result <- testState pass emptyTrainState
+  result <- testState pass defTrainState
   let out = apply recLin EmptyParams input
   let (cost, grad) = doCost weight1 out NoNode
-  let bParams = reversePingPong . paramList $ emptyTrainState
-  let state = emptyTrainState { cost, paramList = bParams }
+  let bParams = reversePingPong . paramList $ defTrainState
+  let state = defTrainState { cost, paramList = bParams }
   let stack = ([input], grad)
   let check = Right $ (Just stack, state) :: Either String (Maybe (BackwardStack R), TrainState R)
   assert $ result == check
@@ -60,7 +60,7 @@ prop_aff_rl_aff_rl (Positive b) (Positive f) (Positive h) (Positive o) = monadic
                              , EmptyParams
                              ]
   let paramList = fromRight (pingPongSingleton EmptyParams) allParams
-  let initState = emptyTrainState { paramList }
+  let initState = defTrainState { paramList }
   result <- testState pass initState
   let out1 = apply affine params1 input
   let out2 = apply recLin EmptyParams out1
@@ -68,7 +68,7 @@ prop_aff_rl_aff_rl (Positive b) (Positive f) (Positive h) (Positive o) = monadic
   let out4 = apply recLin EmptyParams out3
   let (cost, grad) = doCost weight1 out4 NoNode
   let bParams = reversePingPong paramList
-  let state = emptyTrainState { cost, paramList = bParams }
+  let state = defTrainState { cost, paramList = bParams }
   let stack = ([out3, out2, out1, input], grad)
   let check = Right $ (Just stack, state) :: Either String (Maybe (BackwardStack R), TrainState R)
   assert $ result == check

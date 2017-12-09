@@ -8,7 +8,7 @@ import Data.Either (isLeft)
 import School.TestUtils (assertRight, empty, doCost, fromRight, randomAffineParams,
                          randomMatrix, testState, weight1)
 import School.Train.BackwardPass
-import School.Train.TrainState (TrainState(..), emptyTrainState)
+import School.Train.TrainState (TrainState(..), defTrainState)
 import School.Types.PingPong (pingPongSingleton, reversePingPong, toPingPong)
 import School.Unit.Affine (affine)
 import School.Unit.CostParams (LinkedParams(..))
@@ -28,7 +28,7 @@ prop_no_units = monadicIO $ do
   let backward = backwardPass []
   let source = yield (([BatchActivation empty], BatchGradient empty) :: BackwardStack Double)
   let pass = source .| backward .| sinkList
-  result <- testState pass emptyTrainState
+  result <- testState pass defTrainState
   assert $ isLeft result
 
 prop_single_affine :: (Positive Int) -> (Positive Int) -> (Positive Int) -> Property
@@ -40,7 +40,7 @@ prop_single_affine (Positive bSize) (Positive fSize) (Positive oSize) = monadicI
   let source = yield ([input], grad)
   let pass = source .| backward .| await
   let pl = reversePingPong $ pingPongSingleton params
-  let state = emptyTrainState { paramList = pl }
+  let state = defTrainState { paramList = pl }
   result <- testState pass state
   let (_, check) = deriv affine params grad input
   assertRight ((== [check]) . paramDerivs . snd)
@@ -70,7 +70,7 @@ prop_aff_rl_aff_rl (Positive b) (Positive f) (Positive h) (Positive o) = monadic
   let (_, deriv4) = deriv affine params1 grad4 input
   let source = yield ([out3, out2, out1, input], grad)
   let pass = source .| backward .| await
-  let initState = emptyTrainState { cost, paramList }
+  let initState = defTrainState { cost, paramList }
   result <- testState pass initState
   let check = [deriv4, deriv3, deriv2, deriv1]
   assertRight ((== check) . paramDerivs . snd)

@@ -3,7 +3,7 @@
 module School.Train.TrainState
 ( HandlerStore(..)
 , TrainState(..)
-, emptyTrainState
+, defTrainState
 ) where
 
 import Numeric.LinearAlgebra (Container, Vector)
@@ -34,8 +34,8 @@ instance (Container Vector a, Eq a, Num a) => Eq (TrainState a) where
           && paramDerivs s1 == paramDerivs s2
           && paramList s1 == paramList s2
 
-emptyTrainState :: (Num a) => TrainState a
-emptyTrainState =
+defTrainState :: (Num a) => TrainState a
+defTrainState =
   TrainState { cost = 0
              , costParams = NoNode
              , handlerStore = NoStore

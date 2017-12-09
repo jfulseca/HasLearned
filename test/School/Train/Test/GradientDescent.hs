@@ -11,7 +11,7 @@ import School.Train.GradientDescent
 import School.Train.SimpleDescentUpdate (simpleDescentUpdate)
 import School.Train.StoppingCondition (StoppingCondition)
 import School.Train.IterationHandler (storeCost, noHandling)
-import School.Train.TrainState (TrainState(..), HandlerStore(..), emptyTrainState)
+import School.Train.TrainState (TrainState(..), HandlerStore(..), defTrainState)
 import School.Types.PingPong (pingPongSingleton)
 import School.Unit.Affine (affine)
 import School.Unit.RecLin (recLin)
@@ -30,7 +30,7 @@ prop_no_units = monadicIO $ do
                                      simpleDescentUpdate
                                      (const False)
                                      (mapC id)
-                                     emptyTrainState
+                                     defTrainState
   assert $ isLeft result
 
 itStop :: Int -> StoppingCondition Double
@@ -47,7 +47,7 @@ prop_iterations (Positive n) (Positive b) (Positive f) = monadicIO $ do
                                     simpleDescentUpdate
                                     (itStop n)
                                     noHandling
-                                    emptyTrainState
+                                    defTrainState
   assertRight ((== n) . iterationCount) result
 
 prop_cost_decline :: Positive Int -> Positive Int -> Positive Int -> Property
@@ -56,7 +56,7 @@ prop_cost_decline (Positive b) (Positive f) (Positive o) = monadicIO $ do
   let source = yieldMany . repeat $ input
   paramList <- liftIO $ pingPongSingleton <$> randomAffineParams f o
   let store = CostList []
-  let initState = emptyTrainState { handlerStore = store
+  let initState = defTrainState { handlerStore = store
                                   , learningRate = 1e-2
                                   , paramList
                                   }
