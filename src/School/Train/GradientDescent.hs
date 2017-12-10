@@ -8,7 +8,7 @@ import School.App.AppS (AppS, runAppSConduit)
 import School.Train.GradientDescentPass (gradientDescentPass)
 import School.Train.IterationHandler (IterationHandler)
 import School.Train.UpdateParams (UpdateParams)
-import School.Train.StoppingCondition (StoppingCondition)
+import School.Train.StoppingCondition (StoppingCondition(..))
 import School.Train.TrainState (TrainState)
 import School.Unit.CostFunction (CostFunction)
 import School.Unit.Unit (Unit)
@@ -23,7 +23,7 @@ stopping :: StoppingCondition a
                      ()
 stopping condition = mapMC $ \input -> do
   state <- get
-  if condition state
+  if (runCondition condition) state
     then return Nothing
     else return . Just $ input
 

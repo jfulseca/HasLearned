@@ -28,7 +28,7 @@ prop_no_units = monadicIO $ do
                                      []
                                      weight1
                                      simpleDescentUpdate
-                                     (const False)
+                                     mempty
                                      (mapC id)
                                      defTrainState
   assert $ isLeft result
