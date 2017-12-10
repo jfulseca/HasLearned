@@ -18,6 +18,7 @@ library
                      , School.App.MultiLayerPerceptron 
                      , School.Evaluate.Evaluate
                      , School.FileIO.AppIO
+                     , School.FileIO.IdxSource
                      , School.FileIO.MatrixHeader
                      , School.FileIO.MatrixSink
                      , School.FileIO.MatrixSource

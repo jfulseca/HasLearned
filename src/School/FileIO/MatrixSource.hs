@@ -1,7 +1,8 @@
 {-# LANGUAGE NamedFieldPuns #-}
 
 module School.FileIO.MatrixSource
-( confirmMatrixHeader
+( MatrixSource
+, confirmMatrixHeader
 , matrixDoubleSource
 , poolMatrix
 , poolMatrixDouble
@@ -24,12 +25,12 @@ import Numeric.LinearAlgebra.Data ((><), Matrix)
 import System.FilePath (FilePath)
 import School.Utils.Constants (binSeparator, doubleSize, separator)
 
+type MatrixSource a =
+  ConduitM () (Matrix a) (AppS a) ()
+
 matrixDoubleSource :: MatrixHeader
                    -> FilePath
-                   -> ConduitM ()
-                               (Matrix Double)
-                               (AppS Double)
-                               ()
+                   -> MatrixSource Double
 matrixDoubleSource header path = do
   let r = rows header
   let c = cols header
