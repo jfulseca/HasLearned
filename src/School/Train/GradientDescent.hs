@@ -12,7 +12,7 @@ import School.Train.StoppingCondition (StoppingCondition(..))
 import School.Train.TrainState (TrainState)
 import School.Unit.CostFunction (CostFunction)
 import School.Unit.Unit (Unit)
-import School.Unit.UnitActivation (UnitActivation)
+import School.Unit.UnitActivation (ActivationSource)
 import School.Unit.UnitGradient (UnitGradient)
 import School.Utils.Either (mapRight)
 
@@ -27,10 +27,7 @@ stopping condition = mapMC $ \input -> do
     then return Nothing
     else return . Just $ input
 
-gradientDescent :: ConduitM ()
-                            (UnitActivation a)
-                            (AppS a)
-                            ()
+gradientDescent :: ActivationSource a
                 -> [Unit a]
                 -> CostFunction a
                 -> UpdateParams a

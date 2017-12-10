@@ -16,6 +16,7 @@ library
   exposed-modules:     School.App.AppS
                      , School.App.CSVReader
                      , School.App.MultiLayerPerceptron 
+                     , School.Evaluate.Evaluate
                      , School.FileIO.AppIO
                      , School.FileIO.MatrixHeader
                      , School.FileIO.MatrixSink
