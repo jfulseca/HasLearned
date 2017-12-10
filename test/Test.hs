@@ -1,6 +1,7 @@
 module Main where
 
 import School.App.Test.CSVReader (csvReaderTest)
+import School.Evaluate.Test.Evaluate (evaluateTest)
 import School.FileIO.Test.MatrixHeader (matrixHeaderTest)
 import School.FileIO.Test.MatrixSink (matrixSinkTest)
 import School.FileIO.Test.MatrixSource (matrixSourceTest)
@@ -24,6 +25,10 @@ import Test.Tasty
 appProps :: TestTree
 appProps = testGroup "App"
   [ csvReaderTest ]
+
+evaluateProps :: TestTree
+evaluateProps = testGroup "Evaluate"
+  [ evaluateTest ]
 
 typeProps :: TestTree
 typeProps = testGroup "Types"
@@ -62,10 +67,11 @@ trainProps= testGroup "Train"
 schoolTest :: TestTree
 schoolTest = testGroup "School"
   [ appProps
-  , typeProps
+  , evaluateProps
   , fileIOProps
-  , unitProps
   , trainProps
+  , typeProps
+  , unitProps
   ]
 
 main :: IO ()

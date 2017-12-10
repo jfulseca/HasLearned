@@ -95,6 +95,7 @@ test-suite school-test
   ghc-options:         -Wall
   other-modules:       School.App.Test.CSVReader
                      , School.FileIO.Test.MatrixHeader
+                     , School.Evaluate.Test.Evaluate
                      , School.FileIO.Test.MatrixSink
                      , School.FileIO.Test.MatrixSource
                      , School.TestUtils

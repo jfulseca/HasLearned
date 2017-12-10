@@ -1,7 +1,8 @@
-{-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE FlexibleContexts, NamedFieldPuns #-}
 
 module School.TestUtils
 ( CostFunc
+, addClasses
 , assertRight
 , diffCost
 , diffInput
@@ -21,8 +22,10 @@ module School.TestUtils
 , randomMatrixL
 , randomNNInts
 , randomVector
+, singleClassOutput
 , testRun
 , testState
+, unitCorrect
 , weight1
 , whenPrint
 ) where
@@ -32,7 +35,7 @@ import Control.Monad (when)
 import Data.Either (either)
 import Data.List (sort)
 import Data.Void (Void)
-import Numeric.LinearAlgebra ((><), (|>), Element, IndexOf, Matrix, R, Vector, accum, sumElements)
+import Numeric.LinearAlgebra ((><), (|>), Element, IndexOf, Matrix, R, Vector, accum, assoc, fromColumns, fromList, fromRows, size, sumElements, toColumns)
 import School.App.AppS (AppS, runAppSConduit, runAppSConduitDefState)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Train.TrainState (TrainState)
@@ -190,3 +193,30 @@ doCost costFunction activation params =
       cost <- computeCost costFunction activation params
       grad <- derivCost costFunction activation params
       return (cost, grad)
+
+appCol :: (Element a)
+       => Vector a
+       -> Matrix a
+       -> Matrix a
+appCol v =
+  fromColumns . (flip (++) $ [v]) . toColumns
+
+addClasses :: (Element a, Num a)
+           => [Int]
+           -> Matrix a
+           -> Matrix a
+addClasses classes mat = appCol v mat where
+  v = fromList . (map fromIntegral) $ classes
+
+singleClassOutput :: Int -> [Int] -> UnitActivation R
+singleClassOutput nClasses =
+  BatchActivation . fromRows . (map (\idx -> assoc nClasses 0 [(idx, 1)]))
+
+unitCorrect :: [Int] -> Unit R
+unitCorrect classes = Unit { apply, deriv } where
+  apply _ (BatchActivation input) =
+    singleClassOutput n classes
+    where (_, n) = size input
+  apply _ _ = ApplyFail ""
+  deriv = undefined
+

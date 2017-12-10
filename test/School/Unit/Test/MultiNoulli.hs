@@ -3,11 +3,10 @@
 module School.Unit.Test.MultiNoulli
 ( multiNoulliTest ) where
 
-import Conduit ((.|), await, yield)
-import Control.Monad.IO.Class (liftIO)
-import Numeric.LinearAlgebra ((><), Element, Matrix, R, Vector, assoc,
-                              cols, fromColumns, fromRows, fromList, toColumns)
-import School.TestUtils (assertRight, diffCost, randomMatrix, randomNNInts, testState)
+import Conduit ((.|), await, liftIO, yield)
+import Numeric.LinearAlgebra ((><))
+import School.TestUtils (addClasses, assertRight, diffCost, randomMatrix,
+                         randomNNInts, singleClassOutput, testState, unitCorrect)
 import School.Train.ForwardPass (forwardPass)
 import School.Train.TrainState (TrainState(..), defTrainState)
 import School.Types.Slinky (slinkySingleton)
@@ -30,24 +29,6 @@ eps = 1e-5
 
 prec :: Double
 prec = 5e-2
-
-appCol :: (Element a)
-       => Vector a
-       -> Matrix a
-       -> Matrix a
-appCol v =
-  fromColumns . (flip (++) $ [v]) . toColumns
-
-addClasses :: (Element a, Num a)
-           => [Int]
-           -> Matrix a
-           -> Matrix a
-addClasses classes mat = appCol v mat where
-  v = fromList . (map fromIntegral) $ classes
-
-singleClassOutput :: Int -> [Int] -> UnitActivation R
-singleClassOutput nClasses =
-  BatchActivation . fromRows . (map (\idx -> assoc nClasses 0 [(idx, 1)]))
 
 prop_correct_classes :: (Positive Int) -> (Positive Int) -> Property
 prop_correct_classes (Positive c) (Positive b) = monadicIO $ do
@@ -90,14 +71,6 @@ prop_numerical_deriv (Positive c) (Positive b) = monadicIO $ do
                                | j <- [0..b-1], k <- [0..c-1] ]
   assertRight (\(BatchGradient g) -> compareDoubleMatrix prec g check)
               deriv
-
-unitCorrect :: [Int] -> Unit R
-unitCorrect classes = Unit { apply, deriv } where
-  apply _ (BatchActivation input) =
-    singleClassOutput n classes
-    where n = cols input
-  apply _ _ = ApplyFail ""
-  deriv = undefined
 
 prop_correct_forward_pass :: (Positive Int) -> (Positive Int) -> Property
 prop_correct_forward_pass (Positive c) (Positive b) = monadicIO $ do
