@@ -35,6 +35,7 @@ library
                      , School.Types.TypeName
                      , School.Types.PingPong
                      , School.Types.PosInt
+                     , School.Types.Slinky
                      , School.Unit.Affine
                      , School.Unit.ApplyCost
                      , School.Unit.CostFunction

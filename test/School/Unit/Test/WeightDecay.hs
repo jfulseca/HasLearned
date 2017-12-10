@@ -7,8 +7,8 @@ import Control.Monad.IO.Class (liftIO)
 import Numeric.LinearAlgebra ((><))
 import School.TestUtils (diffCost, randomMatrix)
 import School.Types.FloatEq ((~=))
+import School.Types.Slinky (Slinky(..))
 import School.Unit.CostFunction (CostFunction(..))
-import School.Unit.CostParams (LinkedParams(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitGradient (UnitGradient(..))
 import School.Unit.WeightDecay
@@ -28,7 +28,7 @@ prop_coeff_zero :: (Positive Int) -> (Positive Int) -> Property
 prop_coeff_zero (Positive bSize) (Positive fSize) = monadicIO $ do
   inputMat <- liftIO $ randomMatrix bSize fSize
   let input = BatchActivation inputMat
-  let cost = computeCost (weightDecay 0) input NoNode
+  let cost = computeCost (weightDecay 0) input SNil
   either (const (assert False))
          (\result -> assert $ result ~= 0)
          cost
@@ -39,12 +39,12 @@ prop_numerical_deriv (Positive bSize) (Positive fSize) coeff = monadicIO $ do
   inputMat <- liftIO $ randomMatrix bSize fSize
   let input = BatchActivation inputMat
   let costFunc = weightDecay coeff
-  let deriv = derivCost costFunc input NoNode
+  let deriv = derivCost costFunc input SNil
   let check = (bSize >< fSize) [ diffCost costFunc
                                           input
                                           eps
                                           (j, k)
-                                          NoNode
+                                          SNil
                                | j <- [0..bSize-1], k <- [0..fSize-1] ]
   either (const (assert False))
          (\(BatchGradient g) -> assert $ compareDoubleMatrix prec g check)

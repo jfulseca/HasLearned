@@ -7,10 +7,11 @@ import Conduit (mapMC)
 import Numeric.LinearAlgebra (Container, Element, Vector, assoc, cols, fromRows,
                               rows, takeColumns, toColumns, toList, toLists)
 import School.Train.AppTrain (putCostParams)
+import School.Types.Slinky (Slinky(..))
+import School.Unit.CostParams (CostParams(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitGradient (UnitGradient(..))
 import School.Unit.CostFunction (CostFunction(..))
-import School.Unit.CostParams (CostParams(..), LinkedParams(..))
 
 toTarget :: (Element a, RealFrac a)
          => Vector a
@@ -22,7 +23,7 @@ multiNoulli :: (Container Vector a, RealFrac a)
             => CostFunction a
 multiNoulli =
   let computeCost (BatchActivation input)
-                  (Node (BatchClassTarget target) _) =
+                  (SNode (BatchClassTarget target) _) =
           Right
         . (*(-1))
         . ((flip (/)) (fromIntegral . rows $ input))
@@ -32,7 +33,7 @@ multiNoulli =
         $ input
       computeCost _ _ = Left "MultiNoulli expects batch activation and batch classification target"
       derivCost (BatchActivation input)
-                (Node (BatchClassTarget target) _) =
+                (SNode (BatchClassTarget target) _) =
         let factor = (-1) / (fromIntegral . rows $ input)
             c = cols input in
           Right

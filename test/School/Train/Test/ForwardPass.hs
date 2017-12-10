@@ -10,8 +10,8 @@ import School.TestUtils (doCost, fromRight, randomAffineParams, randomMatrix, te
 import School.Train.ForwardPass
 import School.Train.TrainState (TrainState(..), defTrainState)
 import School.Types.PingPong (pingPongSingleton, reversePingPong, toPingPong)
+import School.Types.Slinky (Slinky(..))
 import School.Unit.Affine (affine)
-import School.Unit.CostParams (LinkedParams(..))
 import School.Unit.RecLin (recLin)
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitActivation (UnitActivation(..))
@@ -38,7 +38,7 @@ prop_single_recLin (Positive bSize) (Positive fSize) = monadicIO $ do
   let pass = source .| forward .| await
   result <- testState pass defTrainState
   let out = apply recLin EmptyParams input
-  let (cost, grad) = doCost weight1 out NoNode
+  let (cost, grad) = doCost weight1 out SNil
   let bParams = reversePingPong . paramList $ defTrainState
   let state = defTrainState { cost, paramList = bParams }
   let stack = ([input], grad)
@@ -66,7 +66,7 @@ prop_aff_rl_aff_rl (Positive b) (Positive f) (Positive h) (Positive o) = monadic
   let out2 = apply recLin EmptyParams out1
   let out3 = apply affine params2 out2
   let out4 = apply recLin EmptyParams out3
-  let (cost, grad) = doCost weight1 out4 NoNode
+  let (cost, grad) = doCost weight1 out4 SNil
   let bParams = reversePingPong paramList
   let state = defTrainState { cost, paramList = bParams }
   let stack = ([out3, out2, out1, input], grad)

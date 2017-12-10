@@ -6,8 +6,9 @@ module School.Unit.WeightDecay
 import Conduit (mapC)
 import Numeric.LinearAlgebra (Container, Matrix, Vector,
                               cmap, scale, sumElements)
+import School.Types.Slinky (Slinky(..))
 import School.Unit.CostFunction (CostFunction(..))
-import School.Unit.CostParams (CostParams(..), LinkedParams(..))
+import School.Unit.CostParams (CostParams(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitGradient (UnitGradient(..))
 
@@ -31,30 +32,30 @@ errorMsg = "Weight decay expects batch activation and no cost params"
 compute :: (Container Vector a, Num a)
         => a
         -> UnitActivation a
-        -> LinkedParams
+        -> Slinky CostParams
         -> Either String a
 compute coeff
         (BatchActivation input)
-        (Node NoCostParams _) =
+        (SNode NoCostParams _) =
   Right $ weight coeff input
 compute coeff
         (BatchActivation input)
-        NoNode =
+        SNil =
   Right $ weight coeff input
 compute _ _ _ = Left errorMsg
 
 deriv :: (Container Vector a, Num a)
       => a
       -> UnitActivation a
-      -> LinkedParams
+      -> Slinky CostParams
       -> Either String (UnitGradient a)
 deriv coeff
       (BatchActivation input)
-      (Node NoCostParams _) =
+      (SNode NoCostParams _) =
   Right $ weightDeriv coeff input
 deriv coeff
       (BatchActivation input)
-      NoNode =
+      SNil =
   Right $ weightDeriv coeff input
 deriv _ _ _ = Left errorMsg
 

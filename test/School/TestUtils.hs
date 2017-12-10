@@ -35,11 +35,12 @@ import Data.Void (Void)
 import Numeric.LinearAlgebra ((><), (|>), Element, IndexOf, Matrix, R, Vector, accum, sumElements)
 import School.App.AppS (AppS, runAppSConduit, runAppSConduitDefState)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
-import School.Types.DoubleConversion (doubleRange)
-import School.Types.TypeName (TypeName(INT))
 import School.Train.TrainState (TrainState)
+import School.Types.DoubleConversion (doubleRange)
+import School.Types.Slinky (Slinky)
+import School.Types.TypeName (TypeName(INT))
 import School.Unit.CostFunction (CostFunction(..))
-import School.Unit.CostParams (LinkedParams)
+import School.Unit.CostParams (CostParams)
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitGradient (UnitGradient(..))
 import School.Unit.UnitActivation (UnitActivation(..))
@@ -152,7 +153,7 @@ diffCost :: CostFunction R
          -> UnitActivation R
          -> Double
          -> IndexOf Matrix
-         -> LinkedParams
+         -> Slinky CostParams
          -> Double
 diffCost costFunc input eps idx costParams = let
   jAdd = computeCost costFunc (alterInput eps idx input) costParams
@@ -181,7 +182,7 @@ weight1 = weightDecay 1
 doCost :: (Element a, Num a)
        => CostFunction a
        -> UnitActivation a
-       -> LinkedParams
+       -> Slinky CostParams
        -> (a, UnitGradient a)
 doCost costFunction activation params =
   fromRight (0, BatchGradient empty) result where

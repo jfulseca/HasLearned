@@ -11,7 +11,8 @@ import Control.Monad.State.Lazy (get, put)
 import School.App.AppS (AppS)
 import School.Train.TrainState (TrainState(..))
 import School.Types.PingPong (getPingPong)
-import School.Unit.CostParams (CostParams, paramPrepend)
+import School.Types.Slinky (slinkyPrepend)
+import School.Unit.CostParams (CostParams)
 import School.Unit.UnitParams (UnitParams)
 
 getParams :: AppS a (UnitParams a)
@@ -34,6 +35,6 @@ putCost value = do
 putCostParams :: CostParams -> AppS a ()
 putCostParams params = do
   state@TrainState { costParams } <- get
-  let newParams = paramPrepend params costParams
+  let newParams = slinkyPrepend params costParams
   put state { costParams = newParams }
 
