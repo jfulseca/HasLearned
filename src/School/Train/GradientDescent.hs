@@ -6,7 +6,7 @@ import Control.Monad.State.Lazy (get)
 import Data.Maybe (isJust)
 import School.App.AppS (AppS, runAppSConduit)
 import School.Train.GradientDescentPass (gradientDescentPass)
-import School.Train.IterationHandler (IterationHandler)
+import School.Train.IterationHandler (IterationHandler(..))
 import School.Train.UpdateParams (UpdateParams)
 import School.Train.StoppingCondition (StoppingCondition(..))
 import School.Train.TrainState (TrainState)
@@ -49,7 +49,7 @@ gradientDescent source
   let pass = gradientDescentPass units cost update
   let iterations = source
                 .| pass
-                .| handler
+                .| runHandler handler
                 .| stopping condition
                 .| takeWhileC isJust
                 .| sinkNull

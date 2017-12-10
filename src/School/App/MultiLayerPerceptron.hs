@@ -10,7 +10,7 @@ import Numeric.LinearAlgebra (R)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.FileIO.MatrixSource (matrixDoubleSource)
 import School.Train.GradientDescent (gradientDescent)
-import School.Train.IterationHandler (logCost, noHandling)
+import School.Train.IterationHandler (logCost)
 import School.Train.SimpleDescentUpdate (simpleDescentUpdate)
 import School.Train.StoppingCondition (maxIterations)
 import School.Train.TrainState (TrainState(..), defTrainState)
@@ -114,7 +114,7 @@ multiLayerPerceptron (MLPOptions { nClasses = nC
       let update = simpleDescentUpdate
       let condition = maxIterations maxIter
       let handler = case writeCost of
-                      Nothing -> noHandling
+                      Nothing -> mempty
                       Just p -> logCost p
       let initState = defTrainState { paramList
                                     , learningRate
