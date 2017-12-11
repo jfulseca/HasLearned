@@ -4,7 +4,7 @@ import School.App.Test.CSVReader (csvReaderTest)
 import School.Evaluate.Test.Evaluate (evaluateTest)
 import School.FileIO.Test.MatrixHeader (matrixHeaderTest)
 import School.FileIO.Test.MatrixSink (matrixSinkTest)
-import School.FileIO.Test.MatrixSource (matrixSourceTest)
+import School.FileIO.Test.SmSource (smSourceTest)
 import School.Train.Test.BackwardPass (backwardPassTest)
 import School.Train.Test.ForwardPass (forwardPassTest)
 import School.Train.Test.GradientDescent (gradientDescentTest)
@@ -42,7 +42,7 @@ fileIOProps :: TestTree
 fileIOProps = testGroup "FileIO"
   [ matrixHeaderTest
   , matrixSinkTest
-  , matrixSourceTest
+  , smSourceTest
   ]
 
 unitProps :: TestTree

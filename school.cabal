@@ -22,6 +22,7 @@ library
                      , School.FileIO.MatrixHeader
                      , School.FileIO.MatrixSink
                      , School.FileIO.MatrixSource
+                     , School.FileIO.SmSource
                      , School.Train.AppTrain
                      , School.Train.BackwardPass
                      , School.Train.ForwardPass
@@ -97,7 +98,7 @@ test-suite school-test
                      , School.FileIO.Test.MatrixHeader
                      , School.Evaluate.Test.Evaluate
                      , School.FileIO.Test.MatrixSink
-                     , School.FileIO.Test.MatrixSource
+                     , School.FileIO.Test.SmSource
                      , School.TestUtils
                      , School.Types.Test.DoubleConversion
                      , School.Types.Test.FloatEq

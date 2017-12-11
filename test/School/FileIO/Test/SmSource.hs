@@ -1,7 +1,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module School.FileIO.Test.MatrixSource
-( matrixSourceTest ) where
+module School.FileIO.Test.SmSource
+( smSourceTest ) where
 
 import Conduit ((.|), sinkList, yield)
 import Data.ByteString (ByteString)
@@ -9,7 +9,7 @@ import Data.ByteString.Conversion (toByteString')
 import Data.Either (isLeft, isRight)
 import Data.Monoid ((<>))
 import School.FileIO.MatrixHeader (MatrixHeader(..))
-import School.FileIO.MatrixSource
+import School.FileIO.SmSource
 import School.TestUtils (dummyHeader, dummyList, dummyMatrix, testRun)
 import School.Types.DoubleConversion (toBinary)
 import School.Types.PosInt (PosInt)
@@ -118,7 +118,7 @@ prop_read_3x3_matrix :: Property
 prop_read_3x3_matrix = monadicIO $ do
   let h = MatrixHeader DBL64B (Positive 3) (Positive 3)
   let path = "test/data/matrix3x3.dat"
-  matrix <- testRun $ matrixDoubleSource h path .| sinkList
+  matrix <- testRun $ smSource h path .| sinkList
   let check = Right $ [dummyMatrix 3 3]
   assert $ matrix == check
 
@@ -126,9 +126,9 @@ prop_read_3x3_matrix_twice :: Property
 prop_read_3x3_matrix_twice = monadicIO $ do
   let h = MatrixHeader DBL64B (Positive 3) (Positive 3)
   let path = "test/data/matrix3x3Twice.dat"
-  matrix <- testRun $ matrixDoubleSource h path .| sinkList
+  matrix <- testRun $ smSource h path .| sinkList
   let check = dummyMatrix 3 3
   assert $ matrix == Right [check, check]
 
-matrixSourceTest :: TestTree
-matrixSourceTest = $(testGroupGenerator)
+smSourceTest :: TestTree
+smSourceTest = $(testGroupGenerator)
