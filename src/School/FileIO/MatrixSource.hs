@@ -36,7 +36,7 @@ matrixDoubleSource header path = do
   let c = cols header
   let dType = dataType header
   case dType of
-    DBL -> sourceFileBS path
+    DBL64B -> sourceFileBS path
         .| confirmMatrixHeader header
         .| poolMatrixDouble r c
     _ -> throwConduit $ "Expected data type \'DBL\', got \'" ++ (show dType) ++ "\'"

@@ -21,7 +21,7 @@ convert :: (  FilePath
         -> PosInt
         -> IO ()
 convert readWrite fName nRows nCols = do
-  let header = MatrixHeader DBL nRows nCols
+  let header = MatrixHeader DBL64B64B nRows nCols
   let outFile = (takeBaseName fName) ++ ".dat"
   let conversion = readWrite (dataDir ++ fName)
                              outFile

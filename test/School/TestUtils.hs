@@ -41,7 +41,7 @@ import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Train.TrainState (TrainState)
 import School.Types.DoubleConversion (doubleRange)
 import School.Types.Slinky (Slinky)
-import School.Types.TypeName (TypeName(INT))
+import School.Types.TypeName (TypeName(INT16B))
 import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.CostParams (CostParams)
 import School.Unit.Unit (Unit(..))
@@ -73,7 +73,7 @@ testRun :: ConduitM () Void (AppS R) b
 testRun = run . runAppSConduitDefState
 
 dummyHeader :: MatrixHeader
-dummyHeader = MatrixHeader INT n n where
+dummyHeader = MatrixHeader INT16B n n where
   n = Positive 1
 
 dummyList :: (Num a) => Int -> Int -> [a]

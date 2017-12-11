@@ -52,7 +52,7 @@ convert args = do
   case mDims of
     Nothing -> failPosInt
     Just dims -> do
-      let matrixHeader = MatrixHeader DBL (dims!!0) (dims!!1)
+      let matrixHeader = MatrixHeader DBL64B (dims!!0) (dims!!1)
       let conv = csvToBinary (inFile args)
                              (outFile args)
                              matrixHeader

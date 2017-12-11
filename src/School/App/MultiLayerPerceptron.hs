@@ -97,7 +97,7 @@ multiLayerPerceptron (MLPOptions { nClasses = nC
                       path = do
   let header = MatrixHeader { cols = nF
                             , rows = nB
-                            , dataType = DBL
+                            , dataType = DBL64B
                             }
   let source = matrixDoubleSource header path
             .| mapC BatchActivation
