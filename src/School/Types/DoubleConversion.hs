@@ -4,12 +4,16 @@ module School.Types.DoubleConversion
 , getDouble
 , putDouble
 , toBinary
+, toMatrixDouble
 ) where
 
+import Control.Monad (replicateM)
 import Data.ByteString (ByteString)
 import Data.Serialize.Get (Get, runGet)
 import Data.Serialize.IEEE754 (getFloat64le, putFloat64le)
 import Data.Serialize.Put (Put, runPut)
+import Numeric.LinearAlgebra ((><), Matrix, R)
+import School.Types.TypeName (TypeName(..))
 
 putDouble :: Double -> Put
 putDouble = putFloat64le
@@ -36,3 +40,20 @@ doubleRange = let
   p = encodeFloat m n
   in (-p, p)
 
+toMatrixDouble :: TypeName
+               -> Int
+               -> Int
+               -> (ByteString -> Either String
+                                        (Matrix R))
+toMatrixDouble DBL64B nRows nCols =
+  runGet (getDoubleMatrixDouble nRows nCols)
+toMatrixDouble dType _ _ = const . Left $
+  "Conversion to Matrix Double undefined for " ++ (show dType)
+
+getDoubleMatrixDouble :: Int
+                      -> Int
+                      -> Get (Matrix Double)
+getDoubleMatrixDouble nRows nCols = do
+  let nElements = nRows * nCols
+  list <- replicateM (nElements) getDouble
+  return $ (nRows >< nCols) list

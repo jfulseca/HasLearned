@@ -10,18 +10,14 @@ module School.FileIO.MatrixSource
 
 import Conduit ((.|), ConduitM, mapC, mapMC, nullC,
                 sourceFileBS, takeCE, takeWhileCE)
-import Control.Monad (replicateM)
 import Data.ByteString (ByteString)
-import Data.Serialize.Get (Get, runGet)
 import School.App.AppS (AppS, liftAppS, throwConduit)
 import School.FileIO.AppIO (Confirmer, confirmAtom)
 import School.FileIO.MatrixHeader (MatrixHeader(..), compatibleHeaders)
-import School.Types.DoubleConversion (getDouble)
-import School.Types.Errors (errorContext)
+import School.Types.DoubleConversion (toMatrixDouble)
 import School.Types.PosInt (PosInt, getPosInt)
 import School.Types.TypeName (TypeName(..))
-import Numeric.LinearAlgebra (Element)
-import Numeric.LinearAlgebra.Data ((><), Matrix)
+import Numeric.LinearAlgebra (Element, Matrix)
 import System.FilePath (FilePath)
 import School.Utils.Constants (binSeparator, doubleSize, separator)
 
@@ -49,23 +45,14 @@ confirmMatrixHeader header = do
   takeCE 1 .| confirmAtom (==separator)
   mapC id
 
-toMatrixDouble :: Int -> Int -> Get (Matrix Double)
-toMatrixDouble nRows nCols = do
-  let nElements = nRows * nCols
-  list <- replicateM (nElements) getDouble
-  return $ (nRows >< nCols) list
-
 poolMatrixDouble :: PosInt
                  -> PosInt
                  -> MatrixConduit Double
 poolMatrixDouble nRows nCols =
   let r = getPosInt nRows
       c = getPosInt nCols
-      context = "Parsing matrix"
-      suggestion = Just "Does the data have the right shape?"
-      transformer bytes = do
-        let result = runGet (toMatrixDouble r c) bytes
-        liftAppS $ errorContext context suggestion result
+      transformer = liftAppS
+                  . (toMatrixDouble DBL64B r c)
   in poolMatrix (r * c * doubleSize) transformer
 
 type MatrixConduit a = ConduitM ByteString

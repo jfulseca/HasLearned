@@ -58,7 +58,6 @@ library
                      , School.Utils.LinearAlgebra
                      , School.Utils.Random
                      , School.Utils.SafeEncoding
-  other-modules:       School.Types.Errors
   build-depends:       QuickCheck
                      , attoparsec
                      , base >= 4.9
