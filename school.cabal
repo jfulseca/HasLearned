@@ -22,6 +22,7 @@ library
                      , School.FileIO.MatrixHeader
                      , School.FileIO.MatrixSink
                      , School.FileIO.MatrixSource
+                     , School.FileIO.SmSink
                      , School.FileIO.SmSource
                      , School.Train.AppTrain
                      , School.Train.BackwardPass
@@ -95,9 +96,9 @@ test-suite school-test
   default-language:    Haskell2010
   ghc-options:         -Wall
   other-modules:       School.App.Test.CSVReader
-                     , School.FileIO.Test.MatrixHeader
                      , School.Evaluate.Test.Evaluate
-                     , School.FileIO.Test.MatrixSink
+                     , School.FileIO.Test.MatrixHeader
+                     , School.FileIO.Test.SmSink
                      , School.FileIO.Test.SmSource
                      , School.TestUtils
                      , School.Types.Test.DoubleConversion

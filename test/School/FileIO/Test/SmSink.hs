@@ -1,12 +1,12 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module School.FileIO.Test.MatrixSink
-( matrixSinkTest ) where
+module School.FileIO.Test.SmSink
+( smSinkTest ) where
 
 import Conduit ((.|), yield, yieldMany)
 import Data.Either (isRight)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
-import School.FileIO.MatrixSink
+import School.FileIO.SmSink
 import School.TestUtils (dummyMatrix, testRun)
 import School.Types.TypeName (TypeName(..))
 import Test.QuickCheck.Monadic (assert, monadicIO)
@@ -20,7 +20,7 @@ prop_write_3x3_matrix = monadicIO $ do
   let header = MatrixHeader DBL64B p p
   let matrix = dummyMatrix 3 3
   let path = "test/data/matrix3x3.dat"
-  result <- testRun $ yield matrix .| matrixDoubleSink header path
+  result <- testRun $ yield matrix .| smSink header path
   assert $ isRight result
 
 prop_write_3x3_matrix_twice :: Property
@@ -30,8 +30,8 @@ prop_write_3x3_matrix_twice = monadicIO $ do
   let header = MatrixHeader DBL64B pr pc
   let matrix = dummyMatrix 3 3
   let path = "test/data/matrix3x3Twice.dat"
-  result <- testRun $ yieldMany [matrix, matrix] .| matrixDoubleSink header path
+  result <- testRun $ yieldMany [matrix, matrix] .| smSink header path
   assert $ isRight result
 
-matrixSinkTest :: TestTree
-matrixSinkTest = $(testGroupGenerator)
+smSinkTest :: TestTree
+smSinkTest = $(testGroupGenerator)

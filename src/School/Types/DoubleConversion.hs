@@ -4,6 +4,7 @@ module School.Types.DoubleConversion
 , getDouble
 , putDouble
 , toBinary
+, fromMatrixDouble
 , toMatrixDouble
 ) where
 
@@ -12,7 +13,7 @@ import Data.ByteString (ByteString, unpack)
 import Data.Serialize.Get (Get, runGet)
 import Data.Serialize.IEEE754 (getFloat64le, putFloat64le)
 import Data.Serialize.Put (Put, runPut)
-import Numeric.LinearAlgebra ((><), Matrix, R)
+import Numeric.LinearAlgebra ((><), Matrix, R, toLists)
 import School.Types.TypeName (TypeName(..))
 
 putDouble :: Double -> Put
@@ -62,3 +63,11 @@ getDoubleMatrixDouble nRows nCols = do
   let nElements = nRows * nCols
   list <- replicateM (nElements) getDouble
   return $ (nRows >< nCols) list
+
+fromMatrixDouble :: TypeName
+                 -> Matrix Double
+                 -> ByteString
+fromMatrixDouble DBL64B matrix = runPut $
+  mapM_ putDouble (concat . toLists $ matrix)
+fromMatrixDouble INT16B _ = undefined
+fromMatrixDouble INT08B _ = undefined

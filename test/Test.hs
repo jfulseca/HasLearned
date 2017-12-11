@@ -3,7 +3,7 @@ module Main where
 import School.App.Test.CSVReader (csvReaderTest)
 import School.Evaluate.Test.Evaluate (evaluateTest)
 import School.FileIO.Test.MatrixHeader (matrixHeaderTest)
-import School.FileIO.Test.MatrixSink (matrixSinkTest)
+import School.FileIO.Test.SmSink (smSinkTest)
 import School.FileIO.Test.SmSource (smSourceTest)
 import School.Train.Test.BackwardPass (backwardPassTest)
 import School.Train.Test.ForwardPass (forwardPassTest)
@@ -41,7 +41,7 @@ typeProps = testGroup "Types"
 fileIOProps :: TestTree
 fileIOProps = testGroup "FileIO"
   [ matrixHeaderTest
-  , matrixSinkTest
+  , smSinkTest
   , smSourceTest
   ]
 
