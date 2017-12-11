@@ -17,7 +17,7 @@ library
                      , School.App.CSVReader
                      , School.App.MultiLayerPerceptron 
                      , School.Evaluate.Evaluate
-                     , School.FileIO.AppIO
+                     , School.FileIO.Confirmer
                      , School.FileIO.IdxSource
                      , School.FileIO.MatrixHeader
                      , School.FileIO.MatrixSink

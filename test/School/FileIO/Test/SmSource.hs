@@ -8,12 +8,14 @@ import Data.ByteString (ByteString)
 import Data.ByteString.Conversion (toByteString')
 import Data.Either (isLeft, isRight)
 import Data.Monoid ((<>))
+import School.App.AppS (liftAppS)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
+import School.FileIO.MatrixSource (MatrixConduit, poolMatrix)
 import School.FileIO.SmSource
 import School.TestUtils (dummyHeader, dummyList, dummyMatrix, testRun)
-import School.Types.DoubleConversion (toBinary)
+import School.Types.DoubleConversion (toBinary, toMatrixDouble)
 import School.Types.PosInt (PosInt)
-import School.Types.TypeName (TypeName(..))
+import School.Types.TypeName (TypeName(..), getSize)
 import Numeric.LinearAlgebra.Data (Matrix)
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck hiding ((><))
@@ -25,8 +27,17 @@ testHeader :: MatrixHeader
            -> PropertyM IO (Either String [ByteString])
 testHeader header byteString = testRun $
     yield byteString 
- .| confirmMatrixHeader header
+ .| confirm header
  .| sinkList
+
+poolMatrixDouble :: PosInt
+                 -> PosInt
+                 -> MatrixConduit Double
+poolMatrixDouble (Positive r) (Positive c) =
+  let trans = liftAppS
+            . (toMatrixDouble DBL64B r c)
+      size = getSize DBL64B
+  in poolMatrix (r * c * size) trans
 
 testMatrix :: PosInt
            -> PosInt

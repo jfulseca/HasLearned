@@ -7,7 +7,7 @@ import Conduit ((.|), mapC, mapCE, mapM_C, takeCE)
 import Control.Monad (when)
 import Data.ByteString (unpack)
 import School.App.AppS (AppS, liftAppS, throw)
-import School.FileIO.AppIO (Confirmer)
+import School.FileIO.Confirmer (Confirmer)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.FileIO.MatrixSource (MatrixSource, matrixDoubleSource)
 import School.Types.TypeName (TypeName(..), fromIdxIndicator)
@@ -16,16 +16,7 @@ idxSource :: MatrixHeader
           -> FilePath
           -> MatrixSource Double
 idxSource = matrixDoubleSource confirm
-{-idxSource header path = do
-  let r = getPosInt . rows $ header
-  let c = getPosInt . cols $ header
-  let t = dataType header
-  let s = getSize t
-  let transformer = liftAppS
-                  . (toMatrixDouble t r c)
-  sourceFileBS path .| confirm t
-                    .| poolMatrix (r*c*s) transformer
--}
+
 confirm :: MatrixHeader -> Confirmer a
 confirm MatrixHeader { dataType } = do
   takeCE 4 .| checkHeader dataType

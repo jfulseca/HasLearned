@@ -1,4 +1,4 @@
-module School.FileIO.AppIO
+module School.FileIO.Confirmer
 ( Confirmer
 , confirmAtom
 ) where

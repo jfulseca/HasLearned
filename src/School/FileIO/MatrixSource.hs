@@ -10,7 +10,7 @@ module School.FileIO.MatrixSource
 import Conduit ((.|), ConduitM, mapMC, nullC, sourceFileBS, takeCE)
 import Data.ByteString (ByteString)
 import School.App.AppS (AppS, liftAppS)
-import School.FileIO.AppIO (Confirmer)
+import School.FileIO.Confirmer (Confirmer)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.DoubleConversion (toMatrixDouble)
 import School.Types.PosInt (getPosInt)
