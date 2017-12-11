@@ -8,7 +8,7 @@ module School.Types.DoubleConversion
 ) where
 
 import Control.Monad (replicateM)
-import Data.ByteString (ByteString)
+import Data.ByteString (ByteString, unpack)
 import Data.Serialize.Get (Get, runGet)
 import Data.Serialize.IEEE754 (getFloat64le, putFloat64le)
 import Data.Serialize.Put (Put, runPut)
@@ -47,6 +47,11 @@ toMatrixDouble :: TypeName
                                         (Matrix R))
 toMatrixDouble DBL64B nRows nCols =
   runGet (getDoubleMatrixDouble nRows nCols)
+toMatrixDouble INT08B nRows nCols =
+   Right
+ . (nRows >< nCols)
+ . map (fromIntegral . fromEnum)
+ . unpack
 toMatrixDouble dType _ _ = const . Left $
   "Conversion to Matrix Double undefined for " ++ (show dType)
 

@@ -16,10 +16,10 @@ import School.FileIO.AppIO (Confirmer, confirmAtom)
 import School.FileIO.MatrixHeader (MatrixHeader(..), compatibleHeaders)
 import School.Types.DoubleConversion (toMatrixDouble)
 import School.Types.PosInt (PosInt, getPosInt)
-import School.Types.TypeName (TypeName(..))
+import School.Types.TypeName (TypeName(..), getSize)
 import Numeric.LinearAlgebra (Element, Matrix)
 import System.FilePath (FilePath)
-import School.Utils.Constants (binSeparator, doubleSize, separator)
+import School.Utils.Constants (binSeparator, separator)
 
 type MatrixSource a =
   ConduitM () (Matrix a) (AppS a) ()
@@ -51,9 +51,10 @@ poolMatrixDouble :: PosInt
 poolMatrixDouble nRows nCols =
   let r = getPosInt nRows
       c = getPosInt nCols
+      s = getSize DBL64B
       transformer = liftAppS
                   . (toMatrixDouble DBL64B r c)
-  in poolMatrix (r * c * doubleSize) transformer
+  in poolMatrix (r * c * s) transformer
 
 type MatrixConduit a = ConduitM ByteString
                                 (Matrix a)
