@@ -7,8 +7,9 @@ module School.App.MultiLayerPerceptron
 
 import Conduit ((.|), mapC)
 import Numeric.LinearAlgebra (R)
+import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..))
-import School.FileIO.SmSource (smSource)
+import School.FileIO.MatrixSource (matrixDoubleSource)
 import School.Train.GradientDescent (gradientDescent)
 import School.Train.IterationHandler (logCost)
 import School.Train.SimpleDescentUpdate (simpleDescentUpdate)
@@ -99,7 +100,7 @@ multiLayerPerceptron (MLPOptions { nClasses = nC
                             , rows = nB
                             , dataType = DBL64B
                             }
-  let source = smSource header path
+  let source = matrixDoubleSource SM header path
             .| mapC BatchActivation
   let setup = setupUnits (getPosInt nF)
                          (getPosInt nC)

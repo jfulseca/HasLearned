@@ -10,7 +10,8 @@ module School.FileIO.MatrixSource
 import Conduit ((.|), ConduitM, mapMC, nullC, sourceFileBS, takeCE)
 import Data.ByteString (ByteString)
 import School.App.AppS (AppS, liftAppS)
-import School.FileIO.Confirmer (Confirmer)
+import School.FileIO.Confirmer (Confirmer, confirmer)
+import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.Decoding (binToMatrixDouble)
 import School.Types.PosInt (getPosInt)
@@ -37,17 +38,18 @@ poolMatrix chunkSize transformer = loop where
       then return ()
       else loop
 
-matrixDoubleSource :: (MatrixHeader -> Confirmer Double)
+matrixDoubleSource :: (FileType)
                    -> MatrixHeader
                    -> FilePath
                    -> MatrixSource Double
-matrixDoubleSource confirmer header path = do
+matrixDoubleSource fType header path = do
   let r = getPosInt . rows $ header
   let c = getPosInt . cols $ header
   let t = dataType header
   let s = getSize t
+  let confirm = confirmer fType header
   let trans = liftAppS
            . (binToMatrixDouble t r c)
-  sourceFileBS path .| confirmer header
+  sourceFileBS path .| confirm
                     .| poolMatrix (r * c * s) trans
 

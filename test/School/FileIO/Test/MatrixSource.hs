@@ -1,7 +1,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module School.FileIO.Test.SmSource
-( smSourceTest ) where
+module School.FileIO.Test.MatrixSource
+( matrixSourceTest ) where
 
 import Conduit ((.|), sinkList, yield)
 import Data.ByteString (ByteString)
@@ -9,9 +9,10 @@ import Data.ByteString.Conversion (toByteString')
 import Data.Either (isLeft, isRight)
 import Data.Monoid ((<>))
 import School.App.AppS (liftAppS)
+import School.FileIO.Confirmer (confirmer)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
-import School.FileIO.MatrixSource (MatrixConduit, poolMatrix)
-import School.FileIO.SmSource
+import School.FileIO.MatrixSource (MatrixConduit, matrixDoubleSource, poolMatrix)
+import School.FileIO.FileType (FileType(..)) 
 import School.TestUtils (dummyHeader, dummyList, dummyMatrix, testRun)
 import School.Types.Decoding (binToMatrixDouble)
 import School.Types.Encoding (doubleToBin)
@@ -28,7 +29,7 @@ testHeader :: MatrixHeader
            -> PropertyM IO (Either String [ByteString])
 testHeader header byteString = testRun $
     yield byteString 
- .| confirm header
+ .| confirmer SM header
  .| sinkList
 
 poolMatrixDouble :: PosInt
@@ -130,7 +131,7 @@ prop_read_3x3_matrix :: Property
 prop_read_3x3_matrix = monadicIO $ do
   let h = MatrixHeader DBL64B (Positive 3) (Positive 3)
   let path = "test/data/matrix3x3.dat"
-  matrix <- testRun $ smSource h path .| sinkList
+  matrix <- testRun $ matrixDoubleSource SM h path .| sinkList
   let check = Right $ [dummyMatrix 3 3]
   assert $ matrix == check
 
@@ -138,9 +139,9 @@ prop_read_3x3_matrix_twice :: Property
 prop_read_3x3_matrix_twice = monadicIO $ do
   let h = MatrixHeader DBL64B (Positive 3) (Positive 3)
   let path = "test/data/matrix3x3Twice.dat"
-  matrix <- testRun $ smSource h path .| sinkList
+  matrix <- testRun $ matrixDoubleSource SM h path .| sinkList
   let check = dummyMatrix 3 3
   assert $ matrix == Right [check, check]
 
-smSourceTest :: TestTree
-smSourceTest = $(testGroupGenerator)
+matrixSourceTest :: TestTree
+matrixSourceTest = $(testGroupGenerator)

@@ -17,13 +17,13 @@ library
                      , School.App.CSVReader
                      , School.App.MultiLayerPerceptron 
                      , School.Evaluate.Evaluate
+                     , School.FileIO.AppIO
                      , School.FileIO.Confirmer
-                     , School.FileIO.IdxSource
+                     , School.FileIO.FileType
                      , School.FileIO.MatrixHeader
                      , School.FileIO.MatrixSink
                      , School.FileIO.MatrixSource
                      , School.FileIO.SmSink
-                     , School.FileIO.SmSource
                      , School.Train.AppTrain
                      , School.Train.BackwardPass
                      , School.Train.ForwardPass
@@ -100,8 +100,8 @@ test-suite school-test
   other-modules:       School.App.Test.CSVReader
                      , School.Evaluate.Test.Evaluate
                      , School.FileIO.Test.MatrixHeader
+                     , School.FileIO.Test.MatrixSource
                      , School.FileIO.Test.SmSink
-                     , School.FileIO.Test.SmSource
                      , School.TestUtils
                      , School.Types.Test.Conversion
                      , School.Types.Test.FloatEq

@@ -9,7 +9,8 @@ import Data.Either (isRight)
 import Data.List.Split (chunksOf)
 import School.App.CSVReader
 import School.FileIO.MatrixHeader (MatrixHeader(..))
-import School.FileIO.SmSource (smSource)
+import School.FileIO.MatrixSource (matrixDoubleSource)
+import School.FileIO.FileType (FileType(..))
 import School.TestUtils (testRun)
 import School.Types.FloatEq (FloatEq(..))
 import School.Types.TypeName (TypeName(..))
@@ -46,7 +47,7 @@ prop_convert_csv_file = monadicIO $ do
                     .| csvToMatrixDouble header
                     .| sinkList
   let original = readRes >>= matrixConcat
-  written <- testRun $ smSource header bFileName
+  written <- testRun $ matrixDoubleSource SM header bFileName
                     .| sinkList
   liftIO $ removeFile bFileName
   assert $ original ~= written
