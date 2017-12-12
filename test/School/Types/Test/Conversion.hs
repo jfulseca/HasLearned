@@ -19,11 +19,26 @@ prop_double_isomorphic d =
          d'
   where d' = binToDouble . doubleToBin $ d
 
-prop_encode_isomorphic :: Double -> Bool
-prop_encode_isomorphic d = d == d' where
+prop_double_encode_isomorphic :: Double -> Bool
+prop_double_encode_isomorphic d = d == d' where
   binary = runPut $ putDouble d
   converted = runGet getDouble binary
   d' = either (\_ -> d + 1) id converted
+
+prop_int_isomorphic :: Int -> Bool
+prop_int_isomorphic i =
+  either (const False)
+         (==i')
+         i''
+  where i'' = binToInt . intToBin $ i'
+        i' = fromIntegral i
+
+prop_int_encode_isomorphic :: Int -> Bool
+prop_int_encode_isomorphic i = i' == i'' where
+  i' = fromIntegral i
+  binary = runPut $ putDouble i'
+  converted = runGet getDouble binary
+  i'' = either (\_ -> i' + 1) id converted
 
 conversionTest :: TestTree
 conversionTest = $(testGroupGenerator)
