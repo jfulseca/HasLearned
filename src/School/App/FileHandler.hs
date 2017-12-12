@@ -19,10 +19,10 @@ import System.FilePath (FilePath)
 data FileHandlerOptions =
   FileHandlerOptions { end :: Maybe Integer
                      , inHeader :: MatrixHeader
-                     , inFile :: FilePath
+                     , inputFile :: FilePath
                      , inType :: FileType
-                     , offset :: Maybe Integer
-                     , outFile :: FilePath
+                     , offset :: Integer
+                     , outputFile :: FilePath
                      , outHeader :: MatrixHeader
                      , outType :: FileType
                      }
@@ -30,11 +30,11 @@ data FileHandlerOptions =
 defFileHandlerOptions :: FileHandlerOptions
 defFileHandlerOptions =
   FileHandlerOptions { end = Nothing
-                     , inFile = ""
+                     , inputFile = ""
                      , inType = SM
                      , inHeader = defMatrixHeader
-                     , offset = Nothing
-                     , outFile = ""
+                     , offset = 0
+                     , outputFile = ""
                      , outType = SM
                      , outHeader = defMatrixHeader
                      }
@@ -65,29 +65,29 @@ run = runAppSConduitDefState
 fileHandler :: FileHandlerOptions -> IO ()
 fileHandler options@FileHandlerOptions { end
                                      , inHeader
-                                     , inFile
+                                     , inputFile
                                      , inType
                                      , offset
                                      , outHeader
-                                     , outFile
+                                     , outputFile
                                      , outType
                                      } = do
   confirmResult <- run $
-      sourceFile inFile
+      sourceFile inputFile
    .| confirmer inType inHeader
    .| await
   case confirmResult of
     Left e -> showE e
     Right confirmed -> case confirmed of
-      Nothing -> showE $ "no data in " ++ show inFile
+      Nothing -> showE $ "no data in " ++ show inputFile
       Just _ -> do
         let handler = getHandler options
         let addOffset = getHeaderBytes inType inHeader
-        let offset' = ((+) addOffset) <$> offset
-        let pipeline = sourceFileRange inFile offset' end
+        let offset' = Just $ addOffset + offset
+        let pipeline = sourceFileRange inputFile offset' end
                     .| putHeader outType outHeader
                     .| handler
-                    .| sinkFile outFile
+                    .| sinkFile outputFile
         result <- run $ pipeline
         either showE
                (const $ return ())
