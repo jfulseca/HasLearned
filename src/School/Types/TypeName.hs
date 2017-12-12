@@ -1,6 +1,7 @@
 module School.Types.TypeName
 ( TypeName(..)
 , fromIdxIndicator
+, toIdxIndicator
 , getSize
 ) where
 
@@ -52,6 +53,11 @@ fromIdxIndicator :: Int -> Either String TypeName
 fromIdxIndicator 8 = Right INT08B
 fromIdxIndicator k = Left $
   "Unknown IDX type indicator " ++ (show k)
+
+toIdxIndicator :: TypeName -> Int
+toIdxIndicator INT08B = 8
+toIdxIndicator DBL64B = 13
+toIdxIndicator INT32B = 11
 
 getSize :: TypeName -> Int
 getSize DBL64B = 8

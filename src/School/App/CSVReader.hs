@@ -14,8 +14,9 @@ import qualified Data.ByteString as BS
 import Data.ByteString.Conversion (fromByteString)
 import qualified Data.Conduit.Binary as CB
 import School.App.AppS (AppS, FullConduitAppS, maybeToAppS)
+import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..))
-import School.FileIO.SmSink (smSink)
+import School.FileIO.MatrixSink (matrixDoubleSink)
 import School.Types.PosInt (getPosInt)
 import School.Utils.Constants (binComma)
 import Numeric.LinearAlgebra ((><), Matrix)
@@ -48,4 +49,4 @@ csvToBinary :: FilePath
 csvToBinary inPath outPath header  = 
     readCSV inPath
  .| csvToMatrixDouble header 
- .| smSink header outPath
+ .| matrixDoubleSink SM header outPath

@@ -1,16 +1,20 @@
+{-# LANGUAGE NamedFieldPuns #-}
+
 module School.FileIO.MatrixHeader
 ( MatrixHeader(..)
 , compatibleHeaders
+, headerBuilder
 , stripSeparators
 ) where
 
 import Data.Attoparsec.ByteString (Parser, parseOnly)
 import Data.Attoparsec.ByteString.Char8 (char)
-import Data.ByteString (ByteString)
-import Data.ByteString.Conversion (FromByteString(..), ToByteString(..))
+import Data.ByteString (ByteString, pack)
+import Data.ByteString.Conversion (FromByteString(..), ToByteString(..), toByteString')
 import Data.Monoid ((<>))
+import School.FileIO.FileType (FileType(..))
 import School.Types.PosInt (PosInt)
-import School.Types.TypeName (TypeName)
+import School.Types.TypeName (TypeName, toIdxIndicator)
 import School.Utils.Constants (separator)
 
 data MatrixHeader = MatrixHeader
@@ -56,3 +60,12 @@ stripSeparators = parseOnly strip where
     header <- parseMatrixHeader
     _ <- char separator
     return header
+
+headerBuilder :: FileType
+              -> MatrixHeader
+              -> ByteString
+headerBuilder SM header = toByteString' header
+headerBuilder IDX MatrixHeader { dataType } =
+  let i = toIdxIndicator dataType
+  in pack $ toEnum <$> [0, 0, 2, i]
+headerBuilder _ _ = undefined

@@ -10,7 +10,7 @@ module School.FileIO.MatrixSource
 import Conduit ((.|), ConduitM, mapMC, nullC, sourceFileBS, takeCE)
 import Data.ByteString (ByteString)
 import School.App.AppS (AppS, liftAppS)
-import School.FileIO.Confirmer (Confirmer, confirmer)
+import School.FileIO.Confirmer (confirmer)
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.Decoding (binToMatrixDouble)
