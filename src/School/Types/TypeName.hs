@@ -10,17 +10,17 @@ import Data.Attoparsec.ByteString.Char8 (char)
 import Data.ByteString.Conversion (FromByteString(..), ToByteString(..))
 import Test.QuickCheck (Arbitrary(..), elements)
 
-data TypeName = INT16B | DBL64B | INT08B
+data TypeName = INT32B | DBL64B | INT08B
   deriving (Eq, Show)
 
 instance ToByteString TypeName where
   builder = builder . show
 
-parseINT16B :: Parser TypeName
-parseINT16B = do
+parseINT32B :: Parser TypeName
+parseINT32B = do
   _ <- char 'I' >> char 'N' >> char 'T'
-  _ <- char '1' >> char '6' >> char 'B'
-  return INT16B
+  _ <- char '3' >> char '2' >> char 'B'
+  return INT32B
 
 parseDBL64B :: Parser TypeName
 parseDBL64B = do
@@ -35,7 +35,7 @@ parseINT08B = do
   return INT08B
 
 parseTypeName :: Parser TypeName
-parseTypeName = parseINT16B
+parseTypeName = parseINT32B
             <|> parseDBL64B
             <|> parseINT08B
 
@@ -43,7 +43,7 @@ instance FromByteString TypeName where
   parser = parseTypeName
 
 instance Arbitrary TypeName where
-  arbitrary = elements [ INT16B
+  arbitrary = elements [ INT32B
                        , DBL64B
                        , INT08B
                        ]
@@ -55,5 +55,5 @@ fromIdxIndicator k = Left $
 
 getSize :: TypeName -> Int
 getSize DBL64B = 8
-getSize INT16B = 2
+getSize INT32B = 4
 getSize INT08B = 1

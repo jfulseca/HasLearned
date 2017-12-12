@@ -13,7 +13,8 @@ import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.FileIO.MatrixSource (MatrixConduit, poolMatrix)
 import School.FileIO.SmSource
 import School.TestUtils (dummyHeader, dummyList, dummyMatrix, testRun)
-import School.Types.DoubleConversion (toBinary, toMatrixDouble)
+import School.Types.Decoding (binToMatrixDouble)
+import School.Types.Encoding (doubleToBin)
 import School.Types.PosInt (PosInt)
 import School.Types.TypeName (TypeName(..), getSize)
 import Numeric.LinearAlgebra.Data (Matrix)
@@ -35,7 +36,7 @@ poolMatrixDouble :: PosInt
                  -> MatrixConduit Double
 poolMatrixDouble (Positive r) (Positive c) =
   let trans = liftAppS
-            . (toMatrixDouble DBL64B r c)
+            . (binToMatrixDouble DBL64B r c)
       size = getSize DBL64B
   in poolMatrix (r * c * size) trans
 
@@ -92,7 +93,7 @@ prop_rejects_wrong_header name1 name2 n1 n2 n3 n4 =
     assert $ isLeft result
 
 encodeDoubles :: [Double] -> ByteString
-encodeDoubles = foldMap toBinary
+encodeDoubles = foldMap doubleToBin
 
 prop_read_double_matrix :: Positive Int
                       -> Positive Int 

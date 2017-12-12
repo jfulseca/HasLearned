@@ -1,6 +1,7 @@
 module School.FileIO.MatrixSink
 ( MatrixSink
 , matrixDoubleSink
+, matrixIntSink
 ) where
 
 import Conduit ((.|), ConduitM, mapC, sinkFileBS, yield)
@@ -8,8 +9,8 @@ import Data.ByteString (ByteString)
 import Data.Void (Void)
 import School.App.AppS (AppS)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
-import School.Types.DoubleConversion (fromMatrixDouble)
-import Numeric.LinearAlgebra.Data (Matrix)
+import School.Types.Encoding (matrixDoubleToBin, matrixIntToBin)
+import Numeric.LinearAlgebra.Data (I, Matrix, R)
 
 type MatrixSink a = ConduitM (Matrix a)
                              Void
@@ -19,10 +20,21 @@ type MatrixSink a = ConduitM (Matrix a)
 matrixDoubleSink :: (MatrixHeader -> ByteString)
                  -> MatrixHeader
                  -> FilePath
-                 -> MatrixSink Double
+                 -> MatrixSink R
 matrixDoubleSink headerBuild header path =
   byteBuilder .| sinkFileBS path where
     dType = dataType header
     byteBuilder = do
       yield $ headerBuild header
-      mapC (fromMatrixDouble dType)
+      mapC (matrixDoubleToBin dType)
+
+matrixIntSink :: (MatrixHeader -> ByteString)
+              -> MatrixHeader
+              -> FilePath
+              -> MatrixSink I
+matrixIntSink headerBuild header path =
+  byteBuilder .| sinkFileBS path where
+    dType = dataType header
+    byteBuilder = do
+      yield $ headerBuild header
+      mapC (matrixIntToBin dType)

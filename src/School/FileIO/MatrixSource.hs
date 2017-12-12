@@ -12,7 +12,7 @@ import Data.ByteString (ByteString)
 import School.App.AppS (AppS, liftAppS)
 import School.FileIO.Confirmer (Confirmer)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
-import School.Types.DoubleConversion (toMatrixDouble)
+import School.Types.Decoding (binToMatrixDouble)
 import School.Types.PosInt (getPosInt)
 import School.Types.TypeName (getSize)
 import Numeric.LinearAlgebra (Element, Matrix)
@@ -47,7 +47,7 @@ matrixDoubleSource confirmer header path = do
   let t = dataType header
   let s = getSize t
   let trans = liftAppS
-           . (toMatrixDouble t r c)
+           . (binToMatrixDouble t r c)
   sourceFileBS path .| confirmer header
                     .| poolMatrix (r * c * s) trans
 

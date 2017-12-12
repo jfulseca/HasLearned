@@ -34,7 +34,8 @@ library
                      , School.Train.SimpleDescentUpdate
                      , School.Train.TrainState
                      , School.Train.UpdateParams
-                     , School.Types.DoubleConversion
+                     , School.Types.Decoding
+                     , School.Types.Encoding
                      , School.Types.FloatEq
                      , School.Types.TypeName
                      , School.Types.PingPong
@@ -56,6 +57,7 @@ library
                      , School.Unit.WeightDecay
                      , School.Utils.Constants
                      , School.Utils.Debug
+                     , School.Utils.Double
                      , School.Utils.Either
                      , School.Utils.LinearAlgebra
                      , School.Utils.Random
@@ -101,7 +103,7 @@ test-suite school-test
                      , School.FileIO.Test.SmSink
                      , School.FileIO.Test.SmSource
                      , School.TestUtils
-                     , School.Types.Test.DoubleConversion
+                     , School.Types.Test.Conversion
                      , School.Types.Test.FloatEq
                      , School.Types.Test.PosInt
                      , School.Types.Test.TypeName

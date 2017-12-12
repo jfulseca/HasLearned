@@ -39,9 +39,8 @@ import Numeric.LinearAlgebra ((><), (|>), Element, IndexOf, Matrix, R, Vector, a
 import School.App.AppS (AppS, runAppSConduit, runAppSConduitDefState)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Train.TrainState (TrainState)
-import School.Types.DoubleConversion (doubleRange)
 import School.Types.Slinky (Slinky)
-import School.Types.TypeName (TypeName(INT16B))
+import School.Types.TypeName (TypeName(..))
 import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.CostParams (CostParams)
 import School.Unit.Unit (Unit(..))
@@ -49,6 +48,7 @@ import School.Unit.UnitGradient (UnitGradient(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitParams (UnitParams(..))
 import School.Unit.WeightDecay (weightDecay)
+import School.Utils.Double (doubleRange)
 import System.Random (getStdRandom, randomR)
 import Test.QuickCheck.Modifiers (Positive(..))
 import Test.QuickCheck.Monadic (PropertyM, assert, run)
@@ -73,7 +73,7 @@ testRun :: ConduitM () Void (AppS R) b
 testRun = run . runAppSConduitDefState
 
 dummyHeader :: MatrixHeader
-dummyHeader = MatrixHeader INT16B n n where
+dummyHeader = MatrixHeader INT32B n n where
   n = Positive 1
 
 dummyList :: (Num a) => Int -> Int -> [a]
