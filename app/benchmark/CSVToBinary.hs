@@ -1,9 +1,9 @@
 import Criterion.Main
 import School.App.AppS (FullConduitAppS, runAppSConduitDefState)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
-import School.FileIO.CSVReader (csvToBinary)
+import School.App.CSVReader (csvToBinary)
 import School.Types.PosInt (PosInt)
-import School.Types.TypeName (TypeName(DBL))
+import School.Types.TypeName (TypeName(..))
 import School.Utils.SafeEncoding (safeStdEncodings)
 import System.Directory (removeFile)
 import System.FilePath (takeBaseName)
@@ -21,7 +21,7 @@ convert :: (  FilePath
         -> PosInt
         -> IO ()
 convert readWrite fName nRows nCols = do
-  let header = MatrixHeader DBL64B64B nRows nCols
+  let header = MatrixHeader DBL64B nRows nCols
   let outFile = (takeBaseName fName) ++ ".dat"
   let conversion = readWrite (dataDir ++ fName)
                              outFile
