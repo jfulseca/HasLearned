@@ -15,6 +15,7 @@ import School.FileIO.Confirmer (Confirmer, confirmer)
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..), defMatrixHeader, headerBuilder)
 import System.FilePath (FilePath)
+import System.Exit (die, exitSuccess)
 
 data FileHandlerOptions =
   FileHandlerOptions { end :: Maybe Integer
@@ -46,7 +47,7 @@ getHeaderBytes fType header =
   fromIntegral . B.length $ headerBuilder fType header
 
 showE :: String -> IO ()
-showE e = putStr "ERROR " >> putStrLn e
+showE e = die $ "ERROR " ++ e
 
 getHandler :: FileHandlerOptions -> Confirmer a
 getHandler _ = mapC id
@@ -90,5 +91,5 @@ fileHandler options@FileHandlerOptions { end
                     .| sinkFile outputFile
         result <- run $ pipeline
         either showE
-               (const $ return ())
+               (const exitSuccess)
                result
