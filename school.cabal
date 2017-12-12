@@ -15,9 +15,9 @@ cabal-version:       >=1.10
 library
   exposed-modules:     School.App.AppS
                      , School.App.CSVReader
+                     , School.App.FileHandler
                      , School.App.MultiLayerPerceptron 
                      , School.Evaluate.Evaluate
-                     , School.FileIO.AppIO
                      , School.FileIO.Confirmer
                      , School.FileIO.FileType
                      , School.FileIO.MatrixHeader
