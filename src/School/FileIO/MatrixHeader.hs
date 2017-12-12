@@ -67,5 +67,5 @@ headerBuilder :: FileType
 headerBuilder SM header = toByteString' header
 headerBuilder IDX MatrixHeader { dataType } =
   let i = toIdxIndicator dataType
-  in pack $ toEnum <$> [0, 0, 2, i]
+  in pack $ toEnum <$> [0, 0, i, 2]
 headerBuilder _ _ = undefined
