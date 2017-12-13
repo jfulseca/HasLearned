@@ -14,7 +14,6 @@ import School.FileIO.Confirmer (confirmer)
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.Decoding (binToMatrixDouble)
-import School.Types.PosInt (getPosInt)
 import School.Types.TypeName (getSize)
 import Numeric.LinearAlgebra (Element, Matrix)
 
@@ -42,14 +41,13 @@ matrixDoubleSource :: FileType
                    -> MatrixHeader
                    -> FilePath
                    -> MatrixSource Double
-matrixDoubleSource fType header path = do
-  let r = getPosInt . rows $ header
-  let c = getPosInt . cols $ header
-  let t = dataType header
-  let s = getSize t
+matrixDoubleSource fType
+                   header@MatrixHeader { cols, rows, dataType }
+                   path = do
+  let size = rows * cols * getSize dataType
   let confirm = confirmer fType header
   let trans = liftAppS
-           . (binToMatrixDouble t r c)
+           . (binToMatrixDouble dataType rows cols)
   sourceFileBS path .| confirm
-                    .| poolMatrix (r * c * s) trans
+                    .| poolMatrix size trans
 

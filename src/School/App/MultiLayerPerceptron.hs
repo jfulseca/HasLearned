@@ -17,7 +17,6 @@ import School.Train.StoppingCondition (maxIterations)
 import School.Train.TrainState (TrainState(..), def)
 import School.Types.FloatEq ((~=))
 import School.Types.PingPong (PingPong, toPingPong)
-import School.Types.PosInt (PosInt, getPosInt)
 import School.Types.TypeName (TypeName(..))
 import School.Unit.Affine (affine)
 import School.Unit.RecLin (recLin)
@@ -34,9 +33,9 @@ data MLPOptions =
   MLPOptions { hiddenDims :: [Int]
              , initRate :: R
              , maxIter :: Int
-             , nBatches :: PosInt
-             , nClasses :: PosInt
-             , nFeatures :: PosInt
+             , nBatches :: Int
+             , nClasses :: Int
+             , nFeatures :: Int
              , randomSeed :: Int
              , weightDecayCoeff :: R
              , writeCost :: Maybe FilePath
@@ -102,8 +101,8 @@ multiLayerPerceptron (MLPOptions { nClasses = nC
                             }
   let source = matrixDoubleSource SM header path
             .| mapC BatchActivation
-  let setup = setupUnits (getPosInt nF)
-                         (getPosInt nC)
+  let setup = setupUnits (nF)
+                         (nC)
                          hiddenDims
                          randomSeed
   case setup of

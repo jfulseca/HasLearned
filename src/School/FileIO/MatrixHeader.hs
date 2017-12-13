@@ -2,7 +2,6 @@
 
 module School.FileIO.MatrixHeader
 ( MatrixHeader(..)
-, defMatrixHeader
 , compatibleHeaders
 , headerBuilder
 , stripSeparators
@@ -12,24 +11,23 @@ import Data.Attoparsec.ByteString (Parser, parseOnly)
 import Data.Attoparsec.ByteString.Char8 (char)
 import Data.ByteString (ByteString, pack)
 import Data.ByteString.Conversion (FromByteString(..), ToByteString(..), toByteString')
+import Data.Default.Class (Default(..))
 import Data.Monoid ((<>))
 import School.FileIO.FileType (FileType(..))
-import School.Types.PosInt (PosInt)
 import School.Types.TypeName (TypeName(..), toIdxIndicator)
 import School.Utils.Constants (separator)
-import Test.QuickCheck (Positive(..))
 
 data MatrixHeader = MatrixHeader
   { dataType :: TypeName
-  , rows :: PosInt
-  , cols :: PosInt
+  , rows :: Int
+  , cols :: Int
   } deriving (Eq, Show)
 
-defMatrixHeader :: MatrixHeader
-defMatrixHeader = MatrixHeader { dataType = DBL64B
-                               , cols = Positive 1
-                               , rows = Positive 1
-                               }
+instance Default MatrixHeader where
+  def = MatrixHeader { dataType = DBL64B
+                     , cols = 1
+                     , rows = 1
+                     }
 
 compatibleHeaders :: MatrixHeader
                   -> MatrixHeader

@@ -80,7 +80,7 @@ prop_copy_add_extension = monadicIO $ do
 
 prop_skip_rows :: Property
 prop_skip_rows = monadicIO $ do
-  let outHeader = header3x3 { rows = Positive 1 }
+  let outHeader = header3x3 { rows = 1 }
   let options = def { inputFile = sm3x3File
                     , inHeader = header3x3
                     , inType = Just SM

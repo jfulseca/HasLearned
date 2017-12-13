@@ -39,7 +39,6 @@ library
                      , School.Types.FloatEq
                      , School.Types.TypeName
                      , School.Types.PingPong
-                     , School.Types.PosInt
                      , School.Types.Slinky
                      , School.Unit.Affine
                      , School.Unit.ApplyCost
@@ -107,7 +106,6 @@ test-suite school-test
                      , School.TestUtils
                      , School.Types.Test.Conversion
                      , School.Types.Test.FloatEq
-                     , School.Types.Test.PosInt
                      , School.Types.Test.TypeName
                      , School.Train.Test.BackwardPass
                      , School.Train.Test.ForwardPass

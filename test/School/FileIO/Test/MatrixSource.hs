@@ -13,10 +13,9 @@ import School.FileIO.Confirmer (confirmer)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.FileIO.MatrixSource (MatrixConduit, matrixDoubleSource, poolMatrix)
 import School.FileIO.FileType (FileType(..)) 
-import School.TestUtils (dummyHeader, dummyList, dummyMatrix, testRun)
+import School.TestUtils (def, dummyList, dummyMatrix, testRun)
 import School.Types.Decoding (binToMatrixDouble)
 import School.Types.Encoding (doubleToBin)
-import School.Types.PosInt (PosInt)
 import School.Types.TypeName (TypeName(..), getSize)
 import Numeric.LinearAlgebra.Data (Matrix)
 import Test.Tasty (TestTree)
@@ -32,8 +31,8 @@ testHeader header byteString = testRun $
  .| confirmer SM header
  .| sinkList
 
-poolMatrixDouble :: PosInt
-                 -> PosInt
+poolMatrixDouble :: Positive Int
+                 -> Positive Int
                  -> MatrixConduit Double
 poolMatrixDouble (Positive r) (Positive c) =
   let trans = liftAppS
@@ -41,8 +40,8 @@ poolMatrixDouble (Positive r) (Positive c) =
       size = getSize DBL64B
   in poolMatrix (r * c * size) trans
 
-testMatrix :: PosInt
-           -> PosInt
+testMatrix :: Positive Int
+           -> Positive Int
            -> ByteString
            -> PropertyM IO (Either String [Matrix Double])
 
@@ -52,7 +51,7 @@ testMatrix pr pc bytes = testRun $
  .| sinkList
 
 prop_accepts_header :: TypeName -> (Positive Int) -> Property
-prop_accepts_header name n =
+prop_accepts_header name (Positive n) =
   monadicIO $ do
     let h = MatrixHeader name n n
     result <- testHeader h (toByteString' h)
@@ -62,7 +61,7 @@ prop_preserves_rest :: String -> Property
 prop_preserves_rest content =
   monadicIO $ do
     pre $ content /= ""
-    let h = dummyHeader
+    let h = def
     let bContent = toByteString' content
     let bytes = (toByteString' h) <> bContent
     result <- testHeader h bytes
@@ -73,17 +72,22 @@ prop_rejects_wrong_separator separator content =
   monadicIO $ do
     pre $ separator /= '#'
     let bytes = (toByteString' separator) <> (toByteString' content)
-    result <- testHeader dummyHeader bytes
+    result <- testHeader def bytes
     assert $ isLeft result
 
 prop_rejects_wrong_header :: TypeName
-                        -> TypeName
-                        -> (Positive Int)
-                        -> (Positive Int)
-                        -> (Positive Int)
-                        -> (Positive Int)
-                        -> Property
-prop_rejects_wrong_header name1 name2 n1 n2 n3 n4 =
+                          -> TypeName
+                          -> (Positive Int)
+                          -> (Positive Int)
+                          -> (Positive Int)
+                          -> (Positive Int)
+                          -> Property
+prop_rejects_wrong_header name1
+                          name2
+                          (Positive n1)
+                          (Positive n2)
+                          (Positive n3)
+                          (Positive n4) =
   monadicIO $ do
     pre $ name1 /= name2
        || mod n3 n1 /= 0
@@ -129,7 +133,7 @@ prop_read_with_extra pr@(Positive r) pc@(Positive c) =
 
 prop_read_3x3_matrix :: Property
 prop_read_3x3_matrix = monadicIO $ do
-  let h = MatrixHeader DBL64B (Positive 3) (Positive 3)
+  let h = MatrixHeader DBL64B 3 3
   let path = "test/data/matrix3x3.sm"
   matrix <- testRun $ matrixDoubleSource SM h path .| sinkList
   let check = Right $ [dummyMatrix 3 3]
@@ -137,7 +141,7 @@ prop_read_3x3_matrix = monadicIO $ do
 
 prop_read_3x3_matrix_twice :: Property
 prop_read_3x3_matrix_twice = monadicIO $ do
-  let h = MatrixHeader DBL64B (Positive 3) (Positive 3)
+  let h = MatrixHeader DBL64B 3 3
   let path = "test/data/matrix3x3Twice.sm"
   matrix <- testRun $ matrixDoubleSource SM h path .| sinkList
   let check = dummyMatrix 3 3

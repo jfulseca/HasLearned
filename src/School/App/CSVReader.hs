@@ -17,7 +17,6 @@ import School.App.AppS (AppS, FullConduitAppS, maybeToAppS)
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.FileIO.MatrixSink (matrixDoubleSink)
-import School.Types.PosInt (getPosInt)
 import School.Utils.Constants (binComma)
 import Numeric.LinearAlgebra ((><), Matrix)
 
@@ -40,7 +39,7 @@ csvToMatrixDouble :: MatrixHeader
 csvToMatrixDouble MatrixHeader { cols } =
     mapC parseDoubles
  .| mapMC (maybeToAppS "Could not parse doubles")
- .| mapC (1 >< (getPosInt cols))
+ .| mapC (1 >< (cols))
 
 csvToBinary :: FilePath
             -> FilePath

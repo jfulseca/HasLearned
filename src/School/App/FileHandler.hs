@@ -16,8 +16,7 @@ import School.App.AppS (AppS, runAppSConduitDefState)
 import School.FileIO.Confirmer (Confirmer, confirmer)
 import School.FileIO.FilePath (FilePath, guessFileType)
 import School.FileIO.FileType (FileType(..))
-import School.FileIO.MatrixHeader (MatrixHeader(..), defMatrixHeader, headerBuilder)
-import School.Types.PosInt (getPosInt, posInt)
+import School.FileIO.MatrixHeader (MatrixHeader(..), headerBuilder)
 import School.Types.TypeName (getSize)
 import School.Utils.Either (fromLeft, fromRight, isLeft)
 import System.Exit (die, exitSuccess)
@@ -36,7 +35,7 @@ instance Default FileHandlerOptions where
   def = FileHandlerOptions { end = Nothing
                            , inputFile = ""
                            , inType = Just SM
-                           , inHeader = defMatrixHeader
+                           , inHeader = def
                            , outputFile = ""
                            , outType = Just SM
                            , skipRows = Nothing
@@ -78,7 +77,7 @@ optionPass options@FileHandlerOptions { inputFile
   let (inType', inputFile') = guessFileType False (inType, inputFile)
   let enough = if inType' == SM
                  then let skip = maybe 0 id skipRows
-                      in getPosInt rows >= skip
+                      in rows >= skip
                  else True
   when (not enough) $ Left $ "Not enough data in "
                           ++ (show inputFile')
@@ -100,7 +99,7 @@ getOffset fType
           skipRows = let
   offset = maybe 0
                  (\n -> fromIntegral $ n
-                                     * getPosInt rows
+                                     * rows
                                      * getSize dataType)
                  skipRows
   addOffset = getHeaderBytes (fromJust fType) header
@@ -111,9 +110,7 @@ getHeader :: MatrixHeader
           -> MatrixHeader
 getHeader header@MatrixHeader{ rows } skipRows =
   let subRows = maybe 0 id skipRows
-      outRows = fromJust . posInt $
-        getPosInt rows - subRows
-  in header { rows = outRows }
+  in header { rows = rows - subRows }
 
 fileHandler :: FileHandlerOptions -> IO ()
 fileHandler inOptions = do

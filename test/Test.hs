@@ -12,7 +12,6 @@ import School.Train.Test.GradientDescent (gradientDescentTest)
 import School.Train.Test.GradientDescentPass (gradientDescentPassTest)
 import School.Types.Test.Conversion (conversionTest)
 import School.Types.Test.FloatEq (floatEqTest)
-import School.Types.Test.PosInt (posIntTest)
 import School.Types.Test.TypeName (typeNameTest)
 import School.Unit.Test.Affine (affineTest)
 import School.Unit.Test.LogSoftMax (logSoftMaxTest)
@@ -36,7 +35,6 @@ typeProps :: TestTree
 typeProps = testGroup "Types"
   [ conversionTest
   , floatEqTest
-  , posIntTest
   , typeNameTest
   ]
 

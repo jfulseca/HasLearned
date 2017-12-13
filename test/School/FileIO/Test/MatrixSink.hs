@@ -18,8 +18,7 @@ import Test.Tasty.TH
 
 prop_write_3x3_matrix :: Property
 prop_write_3x3_matrix = monadicIO $ do
-  let p = Positive 3
-  let header = MatrixHeader DBL64B p p
+  let header = MatrixHeader DBL64B 3 3
   let matrix = dummyMatrix 3 3
   let path = "test/data/matrix3x3.sm"
   result <- testRun $ yield matrix
@@ -28,9 +27,7 @@ prop_write_3x3_matrix = monadicIO $ do
 
 prop_write_3x3_matrix_twice :: Property
 prop_write_3x3_matrix_twice = monadicIO $ do
-  let pr = Positive 6
-  let pc = Positive 3
-  let header = MatrixHeader DBL64B pr pc
+  let header = MatrixHeader DBL64B 6 3
   let matrix = dummyMatrix 3 3
   let path = "test/data/matrix3x3Twice.sm"
   result <- testRun $ yieldMany [matrix, matrix]

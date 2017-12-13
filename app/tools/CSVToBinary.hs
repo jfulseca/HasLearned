@@ -5,7 +5,6 @@ import Data.Void (Void)
 import School.App.AppS (AppS, runAppSConduitDefState)
 import School.App.CSVReader
 import School.FileIO.MatrixHeader (MatrixHeader(..))
-import School.Types.PosInt (extractPosInts)
 import School.Types.TypeName (TypeName(..))
 import Options.Applicative
 
@@ -41,24 +40,15 @@ description = "Converts a csv file of numbers "
 title :: String
 title = "CSVToBinary"
 
-failPosInt :: IO ()
-failPosInt =
-  putStrLn $ "ERROR: both rows and columns "
-          ++ "must be positive integers"
-
 convert :: Conversion -> IO ()
 convert args = do
-  let mDims = extractPosInts [nRows, nCols] args
-  case mDims of
-    Nothing -> failPosInt
-    Just dims -> do
-      let matrixHeader = MatrixHeader DBL64B (dims!!0) (dims!!1)
-      let conv = csvToBinary (inFile args)
-                             (outFile args)
-                             matrixHeader
-                   :: ConduitM () Void (AppS Double) ()
-      result <- runAppSConduitDefState conv
-      either putStrLn return result
+  let matrixHeader = MatrixHeader DBL64B (nRows args) (nCols args)
+  let conv = csvToBinary (inFile args)
+                         (outFile args)
+                         matrixHeader
+               :: ConduitM () Void (AppS Double) ()
+  result <- runAppSConduitDefState conv
+  either putStrLn return result
 
 main :: IO ()
 main = convert =<< execParser opts

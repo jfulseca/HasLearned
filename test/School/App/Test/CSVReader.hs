@@ -38,7 +38,7 @@ prop_convert_csv_file :: Property
 prop_convert_csv_file = monadicIO $ do
   let filePath = "test/data/csvTest.csv"
   let bFileName = "test.dat"
-  let header = MatrixHeader DBL64B (Positive 51) (Positive 3)
+  let header = MatrixHeader DBL64B 51 3
   writeRes <- testRun $ csvToBinary filePath
                                     bFileName
                                     header

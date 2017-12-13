@@ -11,15 +11,15 @@ import Test.Tasty.QuickCheck (testProperty)
 import Test.Tasty.TH
 
 prop_parse_equal :: TypeName -> Positive Int -> Positive Int -> Bool
-prop_parse_equal name nRows nCols =
+prop_parse_equal name (Positive r) (Positive c) =
   Right header == parsedHeader where
-    header = MatrixHeader name nRows nCols
+    header = MatrixHeader name r c
     parsedHeader = (stripSeparators . toByteString') header
 
 prop_compatible_check :: TypeName -> Positive Int -> Positive Int -> Positive Int -> Bool
-prop_compatible_check name nCols nRows1@(Positive r1) nRows2@(Positive r2) =
-  let h1 = MatrixHeader name nRows1 nCols
-      h2 = MatrixHeader name nRows2  nCols
+prop_compatible_check name (Positive c) (Positive r1) (Positive r2) =
+  let h1 = MatrixHeader name r1 c
+      h2 = MatrixHeader name r2 c
       comp = r2 `mod` r1 == 0 in
   comp == compatibleHeaders h1 h2
 
