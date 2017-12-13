@@ -19,6 +19,7 @@ library
                      , School.App.MultiLayerPerceptron 
                      , School.Evaluate.Evaluate
                      , School.FileIO.Confirmer
+                     , School.FileIO.FilePath
                      , School.FileIO.FileType
                      , School.FileIO.MatrixHeader
                      , School.FileIO.MatrixSink
@@ -69,6 +70,7 @@ library
                      , cereal
                      , conduit-combinators
                      , conduit-extra
+                     , data-default-class
                      , filepath
                      , hmatrix
                      , mtl

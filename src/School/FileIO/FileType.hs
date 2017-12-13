@@ -5,6 +5,7 @@ module School.FileIO.FileType
 ) where
 
 import Data.Char (toLower, toUpper)
+import Data.Default.Class (Default(..))
 
 data FileType = CSV | IDX | SM
   deriving (Read, Show)
@@ -14,3 +15,6 @@ fromExtension = read . (map toUpper)
 
 toExtension :: FileType -> String
 toExtension = (map toLower) . show
+
+instance Default FileType where
+  def = SM

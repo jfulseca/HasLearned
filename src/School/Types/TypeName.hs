@@ -9,6 +9,7 @@ import Control.Applicative ((<|>))
 import Data.Attoparsec.ByteString (Parser)
 import Data.Attoparsec.ByteString.Char8 (char)
 import Data.ByteString.Conversion (FromByteString(..), ToByteString(..))
+import Data.Default.Class (Default(..))
 import Test.QuickCheck (Arbitrary(..), elements)
 
 data TypeName = INT32B | DBL64B | INT08B
@@ -63,3 +64,6 @@ getSize :: TypeName -> Int
 getSize DBL64B = 8
 getSize INT32B = 4
 getSize INT08B = 1
+
+instance Default TypeName where
+  def = DBL64B
