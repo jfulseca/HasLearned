@@ -21,7 +21,7 @@ prop_write_3x3_matrix = monadicIO $ do
   let p = Positive 3
   let header = MatrixHeader DBL64B p p
   let matrix = dummyMatrix 3 3
-  let path = "test/data/matrix3x3.dat"
+  let path = "test/data/matrix3x3.sm"
   result <- testRun $ yield matrix
                    .| matrixDoubleSink SM header path
   assert $ isRight result
@@ -32,7 +32,7 @@ prop_write_3x3_matrix_twice = monadicIO $ do
   let pc = Positive 3
   let header = MatrixHeader DBL64B pr pc
   let matrix = dummyMatrix 3 3
-  let path = "test/data/matrix3x3Twice.dat"
+  let path = "test/data/matrix3x3Twice.sm"
   result <- testRun $ yieldMany [matrix, matrix]
                    .| matrixDoubleSink SM header path
   assert $ isRight result

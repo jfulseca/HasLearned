@@ -99,6 +99,7 @@ test-suite school-test
   default-language:    Haskell2010
   ghc-options:         -Wall
   other-modules:       School.App.Test.CSVReader
+                     , School.App.Test.FileHandler
                      , School.Evaluate.Test.Evaluate
                      , School.FileIO.Test.MatrixHeader
                      , School.FileIO.Test.MatrixSink
@@ -125,6 +126,7 @@ test-suite school-test
                      , bytestring-conversion
                      , cereal
                      , conduit-combinators
+                     , data-default-class
                      , directory
                      , school
                      , hmatrix

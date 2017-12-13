@@ -23,6 +23,7 @@ module School.TestUtils
 , randomNNInts
 , randomVector
 , singleClassOutput
+, testIOCatch
 , testRun
 , testState
 , unitCorrect
@@ -31,6 +32,7 @@ module School.TestUtils
 ) where
 
 import Conduit (ConduitM, liftIO)
+import Control.Exception (SomeException, catch)
 import Control.Monad (when)
 import Data.Either (either)
 import Data.List (sort)
@@ -52,6 +54,11 @@ import School.Utils.Double (doubleRange)
 import System.Random (getStdRandom, randomR)
 import Test.QuickCheck.Modifiers (Positive(..))
 import Test.QuickCheck.Monadic (PropertyM, assert, run)
+
+testIOCatch :: IO () -> PropertyM IO ()
+testIOCatch action = liftIO $
+  catch action (const $ return () :: SomeException -> IO ())
+
 
 assertRight :: (b -> Bool)
             -> Either a b

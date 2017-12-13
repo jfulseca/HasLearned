@@ -1,6 +1,7 @@
 module Main where
 
 import School.App.Test.CSVReader (csvReaderTest)
+import School.App.Test.FileHandler (fileHandlerTest)
 import School.Evaluate.Test.Evaluate (evaluateTest)
 import School.FileIO.Test.MatrixHeader (matrixHeaderTest)
 import School.FileIO.Test.MatrixSink (matrixSinkTest)
@@ -24,7 +25,8 @@ import Test.Tasty
 
 appProps :: TestTree
 appProps = testGroup "App"
-  [ csvReaderTest ]
+  [ csvReaderTest
+  , fileHandlerTest ]
 
 evaluateProps :: TestTree
 evaluateProps = testGroup "Evaluate"

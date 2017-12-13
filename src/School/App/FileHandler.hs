@@ -27,7 +27,7 @@ data FileHandlerOptions =
                      , outputFile :: FilePath
                      , outHeader :: MatrixHeader
                      , outType :: Maybe FileType
-                     }
+                     } deriving (Eq, Show)
 
 instance Default FileHandlerOptions where
   def = FileHandlerOptions { end = Nothing

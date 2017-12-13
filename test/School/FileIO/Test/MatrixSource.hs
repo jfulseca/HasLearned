@@ -130,7 +130,7 @@ prop_read_with_extra pr@(Positive r) pc@(Positive c) =
 prop_read_3x3_matrix :: Property
 prop_read_3x3_matrix = monadicIO $ do
   let h = MatrixHeader DBL64B (Positive 3) (Positive 3)
-  let path = "test/data/matrix3x3.dat"
+  let path = "test/data/matrix3x3.sm"
   matrix <- testRun $ matrixDoubleSource SM h path .| sinkList
   let check = Right $ [dummyMatrix 3 3]
   assert $ matrix == check
@@ -138,7 +138,7 @@ prop_read_3x3_matrix = monadicIO $ do
 prop_read_3x3_matrix_twice :: Property
 prop_read_3x3_matrix_twice = monadicIO $ do
   let h = MatrixHeader DBL64B (Positive 3) (Positive 3)
-  let path = "test/data/matrix3x3Twice.dat"
+  let path = "test/data/matrix3x3Twice.sm"
   matrix <- testRun $ matrixDoubleSource SM h path .| sinkList
   let check = dummyMatrix 3 3
   assert $ matrix == Right [check, check]

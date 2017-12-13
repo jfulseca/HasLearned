@@ -8,7 +8,7 @@ import Data.Char (toLower, toUpper)
 import Data.Default.Class (Default(..))
 
 data FileType = CSV | IDX | SM
-  deriving (Read, Show)
+  deriving (Eq, Read, Show)
 
 fromExtension :: String -> FileType
 fromExtension = read . (map toUpper)
