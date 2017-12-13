@@ -9,19 +9,22 @@ import Control.Applicative (liftA2)
 import Data.Default.Class (def)
 import Data.Function (on)
 import Numeric.LinearAlgebra ((?))
+import School.App.AppIO (AppIO, runAppIO)
 import School.App.FileHandler
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.FileIO.MatrixSource (matrixDoubleSource)
-import School.TestUtils (assertRight, dummyMatrix, testIOCatch, testRun)
+import School.TestUtils (assertRight, dummyMatrix, testRun)
 import School.Types.TypeName (TypeName(..))
-import System.Posix.Redirect (redirectStderr)
+import School.Utils.Either (isLeft, isRight)
 import System.Directory (removeFile)
-import System.Exit (ExitCode(..))
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck hiding ((><))
 import Test.Tasty.TH
-import Test.QuickCheck.Monadic (assert, monadicIO)
+import Test.QuickCheck.Monadic (PropertyM, assert, monadicIO)
+
+run :: AppIO a -> PropertyM IO (Either String a)
+run = liftIO . runAppIO
 
 sm3x3File :: String
 sm3x3File = "test/data/matrix3x3.sm"
@@ -46,8 +49,8 @@ prop_copy = monadicIO $ do
                     , outputFile = testFile
                     , outType = Just SM
                     }
-  result <- testIOCatch $ fileHandler options
-  assert $ result == ExitSuccess
+  result <- run $ fileHandler options
+  assert $ isRight result
   equal <- liftIO $ fileEq sm3x3File testFile
   liftIO $ removeFile testFile
   assert equal
@@ -58,8 +61,8 @@ prop_copy_guess_filetypes = monadicIO $ do
                     , inHeader = header3x3
                     , outputFile = testFile
                     }
-  result <- testIOCatch $ fileHandler options
-  assert $ result == ExitSuccess
+  result <- run $ fileHandler options
+  assert $ isRight result
   equal <- liftIO $ fileEq sm3x3File testFile
   liftIO $ removeFile testFile
   assert equal
@@ -72,8 +75,8 @@ prop_copy_add_extension = monadicIO $ do
                     , outputFile = "test"
                     , outType = Just SM
                     }
-  result <- testIOCatch $ fileHandler options
-  assert $ result == ExitSuccess
+  result <- run $ fileHandler options
+  assert $ isRight result
   equal <- liftIO $ fileEq sm3x3File testFile
   liftIO $ removeFile testFile
   assert equal
@@ -88,8 +91,8 @@ prop_skip_rows = monadicIO $ do
                     , outType = Just SM
                     , skipRows = Just 2
                     }
-  result <- testIOCatch $ fileHandler options
-  assert $ result == ExitSuccess
+  result <- run $ fileHandler options
+  assert $ isRight result
   let check = Just $ dummyMatrix 3 3 ? [2]
   readRes <- testRun $ matrixDoubleSource SM
                                           outHeader
@@ -104,9 +107,8 @@ prop_skip_too_many_rows = monadicIO $ do
                     , inType = Just SM
                     , skipRows = Just 4
                     }
-  let handler = redirectStderr $ fileHandler options
-  result <- testIOCatch $ handler
-  assert $ result == ExitFailure 1
+  result <- run $ fileHandler options
+  assert $ isLeft result
 
 fileHandlerTest :: TestTree
 fileHandlerTest = $(testGroupGenerator)

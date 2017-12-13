@@ -5,21 +5,19 @@ module School.App.FileHandler
 , fileHandler
 ) where
 
-import Conduit ((.|), ConduitM, await, mapC, yield)
+import Conduit ((.|), await, mapC, yield)
 import Control.Monad (when)
+import Control.Monad.Trans.Except (throwE)
 import qualified Data.ByteString as B
 import Data.Conduit.Binary (sinkFile, sourceFile, sourceFileRange)
 import Data.Default.Class (Default(..))
 import Data.Maybe (fromJust)
-import Data.Void (Void)
-import School.App.AppS (AppS, runAppSConduitDefState)
+import School.App.AppIO (AppIO, liftAppIO, runConduitInAppIO)
 import School.FileIO.Confirmer (Confirmer, confirmer)
 import School.FileIO.FilePath (FilePath, guessFileType)
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..), headerBuilder)
 import School.Types.TypeName (getSize)
-import School.Utils.Either (fromLeft, fromRight, isLeft)
-import System.Exit (die, exitSuccess)
 
 data FileHandlerOptions =
   FileHandlerOptions { end :: Maybe Integer
@@ -47,9 +45,6 @@ getHeaderBytes :: FileType
 getHeaderBytes fType header =
   fromIntegral . B.length $ headerBuilder fType header
 
-showE :: String -> IO ()
-showE e = die $ "ERROR " ++ e
-
 getHandler :: FileHandlerOptions -> Confirmer a
 getHandler _ = mapC id
 
@@ -59,10 +54,6 @@ putHeader :: FileType
 putHeader fType header = do
   yield $ headerBuilder fType header
   mapC id
-
-run :: ConduitM () Void (AppS Int) b
-    -> IO (Either String b)
-run = runAppSConduitDefState
 
 optionPass :: FileHandlerOptions
            -> Either String FileHandlerOptions
@@ -112,37 +103,30 @@ getHeader header@MatrixHeader{ rows } skipRows =
   let subRows = maybe 0 id skipRows
   in header { rows = rows - subRows }
 
-fileHandler :: FileHandlerOptions -> IO ()
+fileHandler :: FileHandlerOptions -> AppIO ()
 fileHandler inOptions = do
-  let checkOptions = optionPass inOptions
-  when (isLeft checkOptions)
-       (showE $ fromLeft "" checkOptions)
-  let passOptions = fromRight def checkOptions
-  let options@FileHandlerOptions { end
-                                 , inHeader
-                                 , inputFile
-                                 , inType
-                                 , outputFile
-                                 , outType
-                                 , skipRows
-                                 } = passOptions
-  confirmResult <- run $
+  options@FileHandlerOptions { end
+                             , inHeader
+                             , inputFile
+                             , inType
+                             , outputFile
+                             , outType
+                             , skipRows
+                             } <- liftAppIO $
+    optionPass inOptions
+  confirmResult <- runConduitInAppIO $
       sourceFile inputFile
    .| confirmer (fromJust inType) inHeader
    .| await
-  case confirmResult of
-    Left e -> showE e
-    Right confirmed -> case confirmed of
-      Nothing -> showE $ "no data in " ++ show inputFile
-      Just _ -> do
-        let handler = getHandler options
-        let offset = getOffset inType inHeader skipRows
-        let outHeader = getHeader inHeader skipRows
-        let pipeline = sourceFileRange inputFile offset end
-                    .| putHeader (fromJust outType) outHeader
-                    .| handler
-                    .| sinkFile outputFile
-        result <- run $ pipeline
-        either showE
-               (const exitSuccess)
-               result
+  case confirmResult of  
+    Nothing -> throwE $ "no data in " ++ show inputFile
+    Just _ -> do
+      let handler = getHandler options
+      let offset = getOffset inType inHeader skipRows
+      let outHeader = getHeader inHeader skipRows
+      let pipeline = sourceFileRange inputFile offset end
+                  .| putHeader (fromJust outType) outHeader
+                  .| handler
+                  .| sinkFile outputFile
+      runConduitInAppIO pipeline
+      return ()
