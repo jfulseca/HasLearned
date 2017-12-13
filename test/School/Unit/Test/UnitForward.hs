@@ -7,7 +7,7 @@ import Conduit ((.|), sinkList, yield)
 import Control.Monad.IO.Class (liftIO)
 import Data.Either (isLeft)
 import School.TestUtils (assertRight, fromRight, randomAffineParams, randomMatrix, testState)
-import School.Train.TrainState (TrainState(..), defTrainState)
+import School.Train.TrainState (TrainState(..), def)
 import School.Types.FloatEq ((~=))
 import School.Types.PingPong (pingPongSingleton, toPingPong)
 import School.Unit.Affine (affine)
@@ -28,7 +28,7 @@ prop_affine_input_fail = monadicIO $ do
   let network =  yield acts
               .| forward
               .| sinkList
-  result <- testState network defTrainState
+  result <- testState network def
   assert $ isLeft result
 
 prop_affine_param_fail :: Positive Int -> Positive Int -> Property
@@ -39,7 +39,7 @@ prop_affine_param_fail (Positive fSize) (Positive oSize) = monadicIO $ do
   let network =  yield acts
               .| forward
               .| sinkList
-  result <- testState network defTrainState
+  result <- testState network def
   assertRight (isApplyFail . head . head . fst)
               result
 
@@ -58,7 +58,7 @@ prop_affine_apply_single (Positive bSize)
               .| sinkList
   params <- liftIO $ randomAffineParams fSize oSize
   let paramList = pingPongSingleton params
-  let initState = defTrainState { paramList }
+  let initState = def { paramList }
   result <- testState network initState
   let check = apply affine params (head acts)
   assertRight (((~=) check) . head . head . fst)
@@ -89,7 +89,7 @@ prop_apply_aff_rl_aff_rl (Positive b)
                              , EmptyParams
                              ]
   let paramList = fromRight (pingPongSingleton EmptyParams) allParams
-  let initState = defTrainState { paramList }
+  let initState = def { paramList }
   result <- testState network initState
   let out1 = apply affine params1 (head acts)
   let out2 = apply recLin EmptyParams out1

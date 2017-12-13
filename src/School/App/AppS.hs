@@ -14,7 +14,7 @@ import Control.Monad.State.Lazy (StateT, runStateT)
 import Control.Monad.Trans.Class (lift)
 import Control.Monad.Trans.Except (ExceptT(..), runExceptT)
 import Data.Void (Void)
-import School.Train.TrainState (TrainState, defTrainState)
+import School.Train.TrainState (TrainState, def)
 import School.Utils.Either (mapRight)
 
 type AppS a = ResourceT (StateT (TrainState a)
@@ -46,7 +46,7 @@ runAppSConduitDefState :: (Num a)
                        -> IO (Either String b)
 runAppSConduitDefState conduit = do
   result <- runAppSConduit conduit
-                           defTrainState
+                           def
   return $ mapRight fst result
 
 throw :: String -> AppS a b

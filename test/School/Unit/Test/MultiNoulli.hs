@@ -8,7 +8,7 @@ import Numeric.LinearAlgebra ((><))
 import School.TestUtils (addClasses, assertRight, diffCost, randomMatrix,
                          randomNNInts, singleClassOutput, testState, unitCorrect)
 import School.Train.ForwardPass (forwardPass)
-import School.Train.TrainState (TrainState(..), defTrainState)
+import School.Train.TrainState (TrainState(..), def)
 import School.Types.Slinky (slinkySingleton)
 import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.CostParams (CostParams(..))
@@ -82,7 +82,7 @@ prop_correct_forward_pass (Positive c) (Positive b) = monadicIO $ do
   let pass = yield input
           .| forward
           .| await
-  result <- testState pass defTrainState
+  result <- testState pass def
   assertRight ((== (-1)) . cost . snd) result
 
 multiNoulliTest :: TestTree

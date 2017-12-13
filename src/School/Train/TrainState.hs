@@ -3,9 +3,10 @@
 module School.Train.TrainState
 ( HandlerStore(..)
 , TrainState(..)
-, defTrainState
+, def
 ) where
 
+import Data.Default.Class (Default(..))
 import Numeric.LinearAlgebra (Container, Vector)
 import School.Types.PingPong (PingPong, pingPongSingleton)
 import School.Types.Slinky (Slinky(..))
@@ -32,13 +33,12 @@ instance (Container Vector a, Eq a, Num a) => Eq (TrainState a) where
           && paramDerivs s1 == paramDerivs s2
           && paramList s1 == paramList s2
 
-defTrainState :: (Num a) => TrainState a
-defTrainState =
-  TrainState { cost = 0
-             , costParams = SNil
-             , handlerStore = NoStore
-             , iterationCount = 0
-             , learningRate = 0
-             , paramDerivs = []
-             , paramList = pingPongSingleton EmptyParams
-             }
+instance (Num a) => Default (TrainState a) where
+  def = TrainState { cost = 0
+                   , costParams = SNil
+                   , handlerStore = NoStore
+                   , iterationCount = 0
+                   , learningRate = 0
+                   , paramDerivs = []
+                   , paramList = pingPongSingleton EmptyParams
+                   }

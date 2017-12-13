@@ -9,7 +9,7 @@ import School.TestUtils (assertRight, doCost, empty, fromRight, randomAffinePara
                          randomMatrix, testState, weight1)
 import School.Train.GradientDescentPass
 import School.Train.SimpleDescentUpdate (simpleDescentUpdate)
-import School.Train.TrainState (TrainState(..), defTrainState)
+import School.Train.TrainState (TrainState(..), def)
 import School.Types.PingPong (pingPongSingleton, toPingPong)
 import School.Types.Slinky (Slinky(..))
 import School.Unit.Affine (affine)
@@ -28,7 +28,7 @@ prop_no_units = monadicIO $ do
   let pass = yield (BatchActivation empty)
           .| descent
           .| await
-  result <- testState pass defTrainState
+  result <- testState pass def
   assert $ isLeft result
 
 prop_single_reclin :: Positive Int -> Positive Int -> Property
@@ -38,10 +38,10 @@ prop_single_reclin (Positive b) (Positive f) = monadicIO $ do
   let pass = yield input
           .| descent
           .| await
-  result <- testState pass defTrainState
+  result <- testState pass def
   let out = apply recLin EmptyParams input
   let (cost, grad) = doCost weight1 out SNil
-  let state = defTrainState { cost
+  let state = def { cost
                               , iterationCount = 1
                               }
   let check = Right (Just grad, state)
@@ -59,7 +59,7 @@ prop_affine_reclin (Positive b) (Positive f) (Positive o) = monadicIO $ do
   let paramList = fromRight (pingPongSingleton EmptyParams)
                             (toPingPong [params, EmptyParams])
   let learningRate = 1 :: Double
-  let initState = defTrainState { learningRate, paramList }
+  let initState = def { learningRate, paramList }
   result <- testState pass initState
   let out1 = apply affine params input
   let out2 = apply recLin EmptyParams out1
@@ -67,13 +67,13 @@ prop_affine_reclin (Positive b) (Positive f) (Positive o) = monadicIO $ do
   let (grad2, deriv2) = deriv recLin EmptyParams grad1 out1
   let (grad3, deriv1) = deriv affine params grad2 input
   let paramDerivs = [deriv1, deriv2]
-  let state = defTrainState { cost
+  let state = def { cost
                               , iterationCount = 1
                               , learningRate
                               , paramDerivs
                               , paramList
                               } :: TrainState Double
-  let newState = either (const defTrainState)
+  let newState = either (const def)
                         id
                         (simpleDescentUpdate state)
   let check = Right (Just grad3, newState { paramDerivs = [] })
@@ -87,7 +87,7 @@ prop_stream_several (Positive n) (Positive b) (Positive f) = monadicIO $ do
   let pass = source
           .| descent
           .| sinkList
-  result <- testState pass defTrainState
+  result <- testState pass def
   assertRight ((\g -> length g == n) . fst) result
 
 gradientDescentPassTest :: TestTree

@@ -14,7 +14,7 @@ import School.Train.GradientDescent (gradientDescent)
 import School.Train.IterationHandler (logCost)
 import School.Train.SimpleDescentUpdate (simpleDescentUpdate)
 import School.Train.StoppingCondition (maxIterations)
-import School.Train.TrainState (TrainState(..), defTrainState)
+import School.Train.TrainState (TrainState(..), def)
 import School.Types.FloatEq ((~=))
 import School.Types.PingPong (PingPong, toPingPong)
 import School.Types.PosInt (PosInt, getPosInt)
@@ -117,7 +117,7 @@ multiLayerPerceptron (MLPOptions { nClasses = nC
       let handler = case writeCost of
                       Nothing -> mempty
                       Just p -> logCost p
-      let initState = defTrainState { paramList
+      let initState = def { paramList
                                     , learningRate
                                     }
       endState <- gradientDescent source
