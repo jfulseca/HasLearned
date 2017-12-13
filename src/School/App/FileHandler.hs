@@ -16,7 +16,7 @@ import School.FileIO.Confirmer (Confirmer, confirmer)
 import School.FileIO.FilePath (FilePath, guessFileType)
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..), defMatrixHeader, headerBuilder)
-import School.Types.PosInt (getPosInt)
+import School.Types.PosInt (getPosInt, posInt)
 import School.Types.TypeName (getSize)
 import System.Exit (die, exitSuccess)
 
@@ -26,7 +26,6 @@ data FileHandlerOptions =
                      , inputFile :: FilePath
                      , inType :: Maybe FileType
                      , outputFile :: FilePath
-                     , outHeader :: MatrixHeader
                      , outType :: Maybe FileType
                      , skipRows :: Maybe Int
                      } deriving (Eq, Show)
@@ -38,7 +37,6 @@ instance Default FileHandlerOptions where
                            , inHeader = defMatrixHeader
                            , outputFile = ""
                            , outType = Just SM
-                           , outHeader = defMatrixHeader
                            , skipRows = Nothing
                            }
 
@@ -95,13 +93,21 @@ getOffset fType
   addOffset = getHeaderBytes (fromJust fType) header
   in Just $ addOffset + offset
 
+getHeader :: MatrixHeader
+          -> Maybe Int
+          -> MatrixHeader
+getHeader header@MatrixHeader{ rows } skipRows =
+  let subRows = maybe 0 id skipRows
+      outRows = fromJust . posInt $
+        getPosInt rows - subRows
+  in header { rows = outRows }
+
 fileHandler :: FileHandlerOptions -> IO ()
 fileHandler inOptions = do
   let options@FileHandlerOptions { end
                                  , inHeader
                                  , inputFile
                                  , inType
-                                 , outHeader
                                  , outputFile
                                  , outType
                                  , skipRows
@@ -117,6 +123,7 @@ fileHandler inOptions = do
       Just _ -> do
         let handler = getHandler options
         let offset = getOffset inType inHeader skipRows
+        let outHeader = getHeader inHeader skipRows
         let pipeline = sourceFileRange inputFile offset end
                     .| putHeader (fromJust outType) outHeader
                     .| handler

@@ -42,7 +42,6 @@ prop_copy = monadicIO $ do
                     , inHeader = header3x3
                     , inType = Just SM
                     , outputFile = testFile
-                    , outHeader = header3x3
                     , outType = Just SM
                     }
   _ <- testIOCatch $ fileHandler options
@@ -55,7 +54,6 @@ prop_copy_guess_filetypes = monadicIO $ do
   let options = def { inputFile = sm3x3File
                     , inHeader = header3x3
                     , outputFile = testFile
-                    , outHeader = header3x3
                     }
   _ <- testIOCatch $ fileHandler options
   equal <- liftIO $ fileEq sm3x3File testFile
@@ -68,7 +66,6 @@ prop_copy_add_extension = monadicIO $ do
                     , inHeader = header3x3
                     , inType = Just SM
                     , outputFile = "test"
-                    , outHeader = header3x3
                     , outType = Just SM
                     }
   _ <- testIOCatch $ fileHandler options
@@ -83,7 +80,6 @@ prop_skip_rows = monadicIO $ do
                     , inHeader = header3x3
                     , inType = Just SM
                     , outputFile = testFile
-                    , outHeader
                     , outType = Just SM
                     , skipRows = Just 2
                     }
