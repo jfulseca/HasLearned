@@ -11,7 +11,7 @@ import Control.Monad.Trans.Except (throwE)
 import qualified Data.ByteString as B
 import Data.Conduit.Binary (sinkFile, sourceFile, sourceFileRange)
 import Data.Default.Class (Default(..))
-import Data.Maybe (fromJust)
+import Data.Maybe (fromJust, isNothing)
 import School.App.AppIO (AppIO, liftAppIO, runConduitInAppIO)
 import School.FileIO.Confirmer (Confirmer, confirmer)
 import School.FileIO.FilePath (FilePath, guessFileType)
@@ -118,15 +118,14 @@ fileHandler inOptions = do
       sourceFile inputFile
    .| confirmer (fromJust inType) inHeader
    .| await
-  case confirmResult of  
-    Nothing -> throwE $ "no data in " ++ show inputFile
-    Just _ -> do
-      let handler = getHandler options
-      let offset = getOffset inType inHeader skipRows
-      let outHeader = getHeader inHeader skipRows
-      let pipeline = sourceFileRange inputFile offset end
-                  .| putHeader (fromJust outType) outHeader
-                  .| handler
-                  .| sinkFile outputFile
-      runConduitInAppIO pipeline
-      return ()
+  when (isNothing confirmResult) $
+    throwE $ "no data in " ++ show inputFile
+  let handler = getHandler options
+  let offset = getOffset inType inHeader skipRows
+  let outHeader = getHeader inHeader skipRows
+  runConduitInAppIO $
+      sourceFileRange inputFile offset end
+   .| putHeader (fromJust outType) outHeader
+   .| handler
+   .| sinkFile outputFile
+  return ()
