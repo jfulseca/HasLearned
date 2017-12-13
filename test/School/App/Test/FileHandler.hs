@@ -1,17 +1,19 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE NamedFieldPuns, TemplateHaskell #-}
 
 module School.App.Test.FileHandler
 ( fileHandlerTest ) where
 
-import Conduit (liftIO)
+import Conduit ((.|), await, liftIO)
 import qualified Data.ByteString.Lazy as BL
 import Control.Applicative (liftA2)
 import Data.Default.Class (def)
 import Data.Function (on)
+import Numeric.LinearAlgebra ((?))
 import School.App.FileHandler
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..))
-import School.TestUtils (testIOCatch)
+import School.FileIO.MatrixSource (matrixDoubleSource)
+import School.TestUtils (assertRight, dummyMatrix, testIOCatch, testRun)
 import School.Types.TypeName (TypeName(..))
 import System.Directory (removeFile)
 import Test.Tasty (TestTree)
@@ -73,6 +75,26 @@ prop_copy_add_extension = monadicIO $ do
   equal <- liftIO $ fileEq sm3x3File testFile
   liftIO $ removeFile testFile
   assert equal
+
+prop_skip_rows :: Property
+prop_skip_rows = monadicIO $ do
+  let outHeader = header3x3 { rows = Positive 1 }
+  let options = def { inputFile = sm3x3File
+                    , inHeader = header3x3
+                    , inType = Just SM
+                    , outputFile = testFile
+                    , outHeader
+                    , outType = Just SM
+                    , skipRows = Just 2
+                    }
+  _ <- testIOCatch $ fileHandler options
+  let check = Just $ dummyMatrix 3 3 ? [2]
+  result <- testRun $ matrixDoubleSource SM
+                                         outHeader
+                                         testFile
+                   .| await
+  liftIO $ removeFile testFile
+  assertRight (== check) result
 
 fileHandlerTest :: TestTree
 fileHandlerTest = $(testGroupGenerator)

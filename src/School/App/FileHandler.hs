@@ -16,6 +16,8 @@ import School.FileIO.Confirmer (Confirmer, confirmer)
 import School.FileIO.FilePath (FilePath, guessFileType)
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..), defMatrixHeader, headerBuilder)
+import School.Types.PosInt (getPosInt)
+import School.Types.TypeName (getSize)
 import System.Exit (die, exitSuccess)
 
 data FileHandlerOptions =
@@ -23,10 +25,10 @@ data FileHandlerOptions =
                      , inHeader :: MatrixHeader
                      , inputFile :: FilePath
                      , inType :: Maybe FileType
-                     , offset :: Integer
                      , outputFile :: FilePath
                      , outHeader :: MatrixHeader
                      , outType :: Maybe FileType
+                     , skipRows :: Maybe Int
                      } deriving (Eq, Show)
 
 instance Default FileHandlerOptions where
@@ -34,10 +36,10 @@ instance Default FileHandlerOptions where
                            , inputFile = ""
                            , inType = Just SM
                            , inHeader = defMatrixHeader
-                           , offset = 0
                            , outputFile = ""
                            , outType = Just SM
                            , outHeader = defMatrixHeader
+                           , skipRows = Nothing
                            }
 
 getHeaderBytes :: FileType
@@ -78,16 +80,31 @@ optionPass options@FileHandlerOptions { inputFile
              , outType = Just outType'
              }
 
+getOffset :: Maybe FileType
+          -> MatrixHeader
+          -> Maybe Int
+          -> Maybe Integer
+getOffset fType
+          header@MatrixHeader { dataType, rows }
+          skipRows = let
+  offset = maybe 0
+                 (\n -> fromIntegral $ n
+                                     * getPosInt rows
+                                     * getSize dataType)
+                 skipRows
+  addOffset = getHeaderBytes (fromJust fType) header
+  in Just $ addOffset + offset
+
 fileHandler :: FileHandlerOptions -> IO ()
 fileHandler inOptions = do
   let options@FileHandlerOptions { end
                                  , inHeader
                                  , inputFile
                                  , inType
-                                 , offset
                                  , outHeader
                                  , outputFile
                                  , outType
+                                 , skipRows
                                  } = optionPass inOptions
   confirmResult <- run $
       sourceFile inputFile
@@ -99,9 +116,8 @@ fileHandler inOptions = do
       Nothing -> showE $ "no data in " ++ show inputFile
       Just _ -> do
         let handler = getHandler options
-        let addOffset = getHeaderBytes (fromJust inType) inHeader
-        let offset' = Just $ addOffset + offset
-        let pipeline = sourceFileRange inputFile offset' end
+        let offset = getOffset inType inHeader skipRows
+        let pipeline = sourceFileRange inputFile offset end
                     .| putHeader (fromJust outType) outHeader
                     .| handler
                     .| sinkFile outputFile

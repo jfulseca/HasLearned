@@ -38,7 +38,7 @@ poolMatrix chunkSize transformer = loop where
       then return ()
       else loop
 
-matrixDoubleSource :: (FileType)
+matrixDoubleSource :: FileType
                    -> MatrixHeader
                    -> FilePath
                    -> MatrixSource Double
