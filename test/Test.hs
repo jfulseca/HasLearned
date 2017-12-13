@@ -3,6 +3,7 @@ module Main where
 import School.App.Test.CSVReader (csvReaderTest)
 import School.App.Test.FileHandler (fileHandlerTest)
 import School.Evaluate.Test.Evaluate (evaluateTest)
+import School.FileIO.Test.BinConversion (binConversionTest)
 import School.FileIO.Test.MatrixHeader (matrixHeaderTest)
 import School.FileIO.Test.MatrixSink (matrixSinkTest)
 import School.FileIO.Test.MatrixSource (matrixSourceTest)
@@ -40,7 +41,8 @@ typeProps = testGroup "Types"
 
 fileIOProps :: TestTree
 fileIOProps = testGroup "FileIO"
-  [ matrixHeaderTest
+  [ binConversionTest
+  , matrixHeaderTest
   , matrixSinkTest
   , matrixSourceTest
   ]

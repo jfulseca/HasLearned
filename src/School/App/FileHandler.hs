@@ -128,4 +128,3 @@ fileHandler inOptions = do
    .| putHeader (fromJust outType) outHeader
    .| handler
    .| sinkFile outputFile
-  return ()

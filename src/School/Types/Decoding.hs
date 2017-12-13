@@ -5,6 +5,7 @@ module School.Types.Decoding
 , getInt
 , binToMatrixDouble
 , binToMatrixInt
+, runGet
 ) where
 
 import Control.Monad (replicateM)

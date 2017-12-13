@@ -1,8 +1,8 @@
 module School.Types.TypeName
 ( TypeName(..)
 , fromIdxIndicator
-, toIdxIndicator
 , getSize
+, toIdxIndicator
 ) where
 
 import Control.Applicative ((<|>))

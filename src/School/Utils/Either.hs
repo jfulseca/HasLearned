@@ -1,5 +1,6 @@
 module School.Utils.Either
-( fromLeft
+( eitherToBool
+, fromLeft
 , fromRight
 , isLeft
 , isRight
@@ -17,3 +18,9 @@ fromLeft x _ = x
 fromRight :: b -> Either a b -> b
 fromRight _ (Right x) = x
 fromRight x _ = x
+
+eitherToBool :: (b -> Bool)
+             -> Either a b
+             -> Bool 
+eitherToBool _ (Left _) = False
+eitherToBool f (Right x) = f x

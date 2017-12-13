@@ -1,10 +1,12 @@
 module School.Types.Encoding
-( putDouble
+( Put
+, putDouble
 , putInt
 , doubleToBin
 , intToBin
 , matrixDoubleToBin
 , matrixIntToBin
+, runPut
 ) where
 
 import Data.ByteString (ByteString)

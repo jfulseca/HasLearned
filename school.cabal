@@ -20,6 +20,7 @@ library
                      , School.App.MultiLayerPerceptron 
                      , School.Evaluate.Evaluate
                      , School.FileIO.Confirmer
+                     , School.FileIO.BinConversion
                      , School.FileIO.FilePath
                      , School.FileIO.FileType
                      , School.FileIO.MatrixHeader
@@ -101,6 +102,7 @@ test-suite school-test
   other-modules:       School.App.Test.CSVReader
                      , School.App.Test.FileHandler
                      , School.Evaluate.Test.Evaluate
+                     , School.FileIO.Test.BinConversion
                      , School.FileIO.Test.MatrixHeader
                      , School.FileIO.Test.MatrixSink
                      , School.FileIO.Test.MatrixSource
