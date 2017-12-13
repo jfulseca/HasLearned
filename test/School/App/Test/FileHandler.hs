@@ -15,7 +15,9 @@ import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.FileIO.MatrixSource (matrixDoubleSource)
 import School.TestUtils (assertRight, dummyMatrix, testIOCatch, testRun)
 import School.Types.TypeName (TypeName(..))
+import System.Posix.Redirect (redirectStderr)
 import System.Directory (removeFile)
+import System.Exit (ExitCode(..))
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck hiding ((><))
 import Test.Tasty.TH
@@ -44,7 +46,8 @@ prop_copy = monadicIO $ do
                     , outputFile = testFile
                     , outType = Just SM
                     }
-  _ <- testIOCatch $ fileHandler options
+  result <- testIOCatch $ fileHandler options
+  assert $ result == ExitSuccess
   equal <- liftIO $ fileEq sm3x3File testFile
   liftIO $ removeFile testFile
   assert equal
@@ -55,7 +58,8 @@ prop_copy_guess_filetypes = monadicIO $ do
                     , inHeader = header3x3
                     , outputFile = testFile
                     }
-  _ <- testIOCatch $ fileHandler options
+  result <- testIOCatch $ fileHandler options
+  assert $ result == ExitSuccess
   equal <- liftIO $ fileEq sm3x3File testFile
   liftIO $ removeFile testFile
   assert equal
@@ -68,7 +72,8 @@ prop_copy_add_extension = monadicIO $ do
                     , outputFile = "test"
                     , outType = Just SM
                     }
-  _ <- testIOCatch $ fileHandler options
+  result <- testIOCatch $ fileHandler options
+  assert $ result == ExitSuccess
   equal <- liftIO $ fileEq sm3x3File testFile
   liftIO $ removeFile testFile
   assert equal
@@ -83,14 +88,25 @@ prop_skip_rows = monadicIO $ do
                     , outType = Just SM
                     , skipRows = Just 2
                     }
-  _ <- testIOCatch $ fileHandler options
+  result <- testIOCatch $ fileHandler options
+  assert $ result == ExitSuccess
   let check = Just $ dummyMatrix 3 3 ? [2]
-  result <- testRun $ matrixDoubleSource SM
-                                         outHeader
-                                         testFile
+  readRes <- testRun $ matrixDoubleSource SM
+                                          outHeader
+                                          testFile
                    .| await
   liftIO $ removeFile testFile
-  assertRight (== check) result
+  assertRight (== check) readRes
+
+prop_skip_too_many_rows :: Property
+prop_skip_too_many_rows = monadicIO $ do
+  let options = def { inHeader = header3x3
+                    , inType = Just SM
+                    , skipRows = Just 4
+                    }
+  let handler = redirectStderr $ fileHandler options
+  result <- testIOCatch $ handler
+  assert $ result == ExitFailure 1
 
 fileHandlerTest :: TestTree
 fileHandlerTest = $(testGroupGenerator)

@@ -6,6 +6,7 @@ module School.App.FileHandler
 ) where
 
 import Conduit ((.|), ConduitM, await, mapC, yield)
+import Control.Monad (when)
 import qualified Data.ByteString as B
 import Data.Conduit.Binary (sinkFile, sourceFile, sourceFileRange)
 import Data.Default.Class (Default(..))
@@ -18,6 +19,7 @@ import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..), defMatrixHeader, headerBuilder)
 import School.Types.PosInt (getPosInt, posInt)
 import School.Types.TypeName (getSize)
+import School.Utils.Either (fromLeft, fromRight, isLeft)
 import System.Exit (die, exitSuccess)
 
 data FileHandlerOptions =
@@ -64,19 +66,30 @@ run :: ConduitM () Void (AppS Int) b
 run = runAppSConduitDefState
 
 optionPass :: FileHandlerOptions
-           -> FileHandlerOptions
+           -> Either String FileHandlerOptions
 optionPass options@FileHandlerOptions { inputFile
+                                      , inHeader
                                       , inType
                                       , outputFile
                                       , outType
-                                      } = let
-  (inType', inputFile') = guessFileType False (inType, inputFile)
-  (outType', outputFile') = guessFileType True (outType, outputFile)
-  in options { inputFile = inputFile'
-             , inType = Just inType'
-             , outputFile = outputFile'
-             , outType = Just outType'
-             }
+                                      , skipRows
+                                      } = do
+  let MatrixHeader{ rows } = inHeader
+  let (inType', inputFile') = guessFileType False (inType, inputFile)
+  let enough = if inType' == SM
+                 then let skip = maybe 0 id skipRows
+                      in getPosInt rows >= skip
+                 else True
+  when (not enough) $ Left $ "Not enough data in "
+                          ++ (show inputFile')
+                          ++ " for skip "
+                          ++ (show skipRows)
+  let (outType', outputFile') = guessFileType True (outType, outputFile)
+  return options { inputFile = inputFile'
+                 , inType = Just inType'
+                 , outputFile = outputFile'
+                 , outType = Just outType'
+                 }
 
 getOffset :: Maybe FileType
           -> MatrixHeader
@@ -104,6 +117,10 @@ getHeader header@MatrixHeader{ rows } skipRows =
 
 fileHandler :: FileHandlerOptions -> IO ()
 fileHandler inOptions = do
+  let checkOptions = optionPass inOptions
+  when (isLeft checkOptions)
+       (showE $ fromLeft "" checkOptions)
+  let passOptions = fromRight def checkOptions
   let options@FileHandlerOptions { end
                                  , inHeader
                                  , inputFile
@@ -111,7 +128,7 @@ fileHandler inOptions = do
                                  , outputFile
                                  , outType
                                  , skipRows
-                                 } = optionPass inOptions
+                                 } = passOptions
   confirmResult <- run $
       sourceFile inputFile
    .| confirmer (fromJust inType) inHeader

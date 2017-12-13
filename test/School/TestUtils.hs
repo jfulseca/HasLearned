@@ -1,4 +1,4 @@
-{-# LANGUAGE FlexibleContexts, NamedFieldPuns #-}
+{-# LANGUAGE AllowAmbiguousTypes, FlexibleContexts, NamedFieldPuns #-}
 
 module School.TestUtils
 ( CostFunc
@@ -32,7 +32,7 @@ module School.TestUtils
 ) where
 
 import Conduit (ConduitM, liftIO)
-import Control.Exception (SomeException, catch)
+import Control.Exception (catch)
 import Control.Monad (when)
 import Data.Either (either)
 import Data.List (sort)
@@ -51,13 +51,15 @@ import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitParams (UnitParams(..))
 import School.Unit.WeightDecay (weightDecay)
 import School.Utils.Double (doubleRange)
+import System.Exit (ExitCode(..))
 import System.Random (getStdRandom, randomR)
 import Test.QuickCheck.Modifiers (Positive(..))
 import Test.QuickCheck.Monadic (PropertyM, assert, run)
 
-testIOCatch :: IO () -> PropertyM IO ()
+testIOCatch :: IO a -> PropertyM IO ExitCode
 testIOCatch action = liftIO $
-  catch action (const $ return () :: SomeException -> IO ())
+  catch (action >> (return ExitSuccess))
+        return
 
 
 assertRight :: (b -> Bool)
