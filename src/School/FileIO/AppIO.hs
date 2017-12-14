@@ -1,4 +1,4 @@
-module School.App.AppIO
+module School.FileIO.AppIO
 ( AppIO
 , liftAppIO
 , runAppIO

@@ -5,7 +5,7 @@ import Data.Void (Void)
 import School.App.AppS (AppS, runAppSConduitDefState)
 import School.App.CSVReader
 import School.FileIO.MatrixHeader (MatrixHeader(..))
-import School.Types.TypeName (TypeName(..))
+import School.Types.DataType (DataType(..))
 import Options.Applicative
 
 data Conversion = Conversion { inFile :: String

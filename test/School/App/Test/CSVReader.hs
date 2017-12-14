@@ -13,7 +13,7 @@ import School.FileIO.MatrixSource (matrixDoubleSource)
 import School.FileIO.FileType (FileType(..))
 import School.TestUtils (testRun)
 import School.Types.FloatEq (FloatEq(..))
-import School.Types.TypeName (TypeName(..))
+import School.Types.DataType (DataType(..))
 import qualified Numeric.LinearAlgebra as NL
 import Prelude hiding (appendFile, writeFile)
 import System.Directory (removeFile)

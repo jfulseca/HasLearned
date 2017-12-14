@@ -16,12 +16,12 @@ import Data.ByteString.Conversion (FromByteString(..), ToByteString(..), fromByt
 import Data.Default.Class (Default(..))
 import Data.Monoid ((<>))
 import School.FileIO.FileType (FileType(..))
-import School.Types.TypeName (TypeName(..), fromIdxIndicator, toIdxIndicator)
+import School.Types.DataType (DataType(..), fromIdxIndicator, toIdxIndicator)
 import School.Utils.Constants (separator)
 import School.Utils.Either (maybeToEither)
 
 data MatrixHeader = MatrixHeader
-  { dataType :: TypeName
+  { dataType :: DataType
   , rows :: Int
   , cols :: Int
   } deriving (Eq, Show)

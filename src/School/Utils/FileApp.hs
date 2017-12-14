@@ -15,12 +15,12 @@ import Control.Monad.Trans.Except (throwE)
 import qualified Data.ByteString as B
 import Data.Conduit.Binary (sourceFile, sourceFileRange)
 import Data.Maybe (isNothing)
-import School.App.AppIO (AppIO, liftAppIO, runConduitInAppIO)
+import School.FileIO.AppIO (AppIO, liftAppIO, runConduitInAppIO)
 import School.FileIO.Confirmer (Confirmer, confirmer)
 import School.FileIO.FilePath (FilePath)
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..), headerBuilder)
-import School.Types.TypeName (TypeName, getSize)
+import School.Types.DataType (DataType, getSize)
 import School.Utils.Constants (binSeparator)
 import School.Utils.IO (getFileSize)
 import System.Directory (doesFileExist)
@@ -80,7 +80,7 @@ getFileHeaderLength SM hBytes =
 getFileHeaderLength _ hBytes =
   B.length hBytes
 
-getNElements :: TypeName
+getNElements :: DataType
              -> FilePath
              -> Int
              -> AppIO Integer

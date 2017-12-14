@@ -2,7 +2,7 @@ import Criterion.Main
 import School.App.AppS (FullConduitAppS, runAppSConduitDefState)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.App.CSVReader (csvToBinary)
-import School.Types.TypeName (TypeName(..))
+import School.Types.DataType (DataType(..))
 import School.Utils.SafeEncoding (safeStdEncodings)
 import System.Directory (removeFile)
 import System.FilePath (takeBaseName)

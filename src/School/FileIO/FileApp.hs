@@ -7,7 +7,7 @@ module School.FileIO.FileApp
 
 import Conduit (ConduitM)
 import Data.Void (Void)
-import School.App.AppIO (AppIO, runConduitInAppIO)
+import School.FileIO.AppIO (AppIO, runConduitInAppIO)
 import School.App.AppS (AppS)
 
 class FileApp options where

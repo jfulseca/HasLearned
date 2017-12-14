@@ -14,7 +14,7 @@ import School.FileIO.Confirmer (confirmer)
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.Decoding (binToMatrixDouble)
-import School.Types.TypeName (getSize)
+import School.Types.DataType (getSize)
 import Numeric.LinearAlgebra (Element, Matrix)
 
 type MatrixSource a =

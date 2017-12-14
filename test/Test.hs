@@ -1,7 +1,7 @@
 module Main where
 
 import School.App.Test.CSVReader (csvReaderTest)
-import School.App.Test.FileHandler (fileHandlerTest)
+import School.App.Test.FileTransformer (fileTransformerTest)
 import School.Evaluate.Test.Evaluate (evaluateTest)
 import School.FileIO.Test.BinConversion (binConversionTest)
 import School.FileIO.Test.MatrixHeader (matrixHeaderTest)
@@ -13,7 +13,7 @@ import School.Train.Test.GradientDescent (gradientDescentTest)
 import School.Train.Test.GradientDescentPass (gradientDescentPassTest)
 import School.Types.Test.Conversion (conversionTest)
 import School.Types.Test.FloatEq (floatEqTest)
-import School.Types.Test.TypeName (typeNameTest)
+import School.Types.Test.DataType (typeNameTest)
 import School.Unit.Test.Affine (affineTest)
 import School.Unit.Test.LogSoftMax (logSoftMaxTest)
 import School.Unit.Test.RecLin (recLinTest)
@@ -26,7 +26,7 @@ import Test.Tasty
 appProps :: TestTree
 appProps = testGroup "App"
   [ csvReaderTest
-  , fileHandlerTest ]
+  , fileTransformerTest ]
 
 evaluateProps :: TestTree
 evaluateProps = testGroup "Evaluate"

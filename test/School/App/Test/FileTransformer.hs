@@ -1,7 +1,7 @@
 {-# LANGUAGE NamedFieldPuns, TemplateHaskell #-}
 
-module School.App.Test.FileHandler
-( fileHandlerTest ) where
+module School.App.Test.FileTransformer
+( fileTransformerTest ) where
 
 import Conduit ((.|), await, liftIO)
 import qualified Data.ByteString.Lazy as BL
@@ -9,14 +9,14 @@ import Control.Applicative (liftA2)
 import Data.Default.Class (def)
 import Data.Function (on)
 import Numeric.LinearAlgebra ((?))
-import School.App.AppIO (AppIO, runAppIO)
-import School.App.FileHandler
+import School.FileIO.AppIO (AppIO, runAppIO)
+import School.App.FileTransformer
 import School.FileIO.FileApp (fileApp)
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.FileIO.MatrixSource (matrixDoubleSource)
 import School.TestUtils (assertRight, dummyMatrix, testRun)
-import School.Types.TypeName (TypeName(..))
+import School.Types.DataType (DataType(..))
 import School.Utils.Either (isLeft, isRight)
 import System.Directory (removeFile)
 import Test.Tasty (TestTree)
@@ -45,9 +45,9 @@ fileEq = liftA2 (==) `on` BL.readFile
 prop_copy :: Property
 prop_copy = monadicIO $ do
   let options = def { inFileOpt = sm3x3File
-                    , inTypeOpt = Just SM
+                    , inFileTypeOpt = Just SM
                     , outFileOpt = testFile
-                    , outTypeOpt = Just SM
+                    , outFileTypeOpt = Just SM
                     }
   result <- run $ fileApp options
   assert $ isRight result
@@ -69,9 +69,9 @@ prop_copy_guess_filetypes = monadicIO $ do
 prop_copy_add_extension :: Property
 prop_copy_add_extension = monadicIO $ do
   let options = def { inFileOpt = sm3x3File
-                    , inTypeOpt = Just SM
+                    , inFileTypeOpt = Just SM
                     , outFileOpt = "test"
-                    , outTypeOpt = Just SM
+                    , outFileTypeOpt = Just SM
                     }
   result <- run $ fileApp options
   assert $ isRight result
@@ -84,9 +84,9 @@ prop_skip_rows = monadicIO $ do
   let outHeader = header3x3 { rows = 1 }
   let options = def { columnsOpt = Just 3
                     , inFileOpt = sm3x3File
-                    , inTypeOpt = Just SM
+                    , inFileTypeOpt = Just SM
                     , outFileOpt = testFile
-                    , outTypeOpt = Just SM
+                    , outFileTypeOpt = Just SM
                     , skipRowsOpt = 2
                     }
   result <- run $ fileApp options
@@ -103,11 +103,11 @@ prop_skip_too_many_rows :: Property
 prop_skip_too_many_rows = monadicIO $ do
   let options = def { inFileOpt = sm3x3File
                     , columnsOpt = Just 3
-                    , inTypeOpt = Just SM
+                    , inFileTypeOpt = Just SM
                     , skipRowsOpt = 4
                     }
   result <- run $ fileApp options
   assert $ isLeft result
 
-fileHandlerTest :: TestTree
-fileHandlerTest = $(testGroupGenerator)
+fileTransformerTest :: TestTree
+fileTransformerTest = $(testGroupGenerator)

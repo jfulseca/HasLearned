@@ -10,7 +10,7 @@ import Numeric.LinearAlgebra (I, R)
 import Prelude hiding (drop, length, take)
 import School.Types.Decoding (binToInt)
 import School.Types.Encoding (Put, putInt, putDouble, runPut)
-import School.Types.TypeName (TypeName(..))
+import School.Types.DataType (DataType(..))
 
 type Converter = ByteString
               -> Either String ByteString
@@ -46,8 +46,8 @@ decodeList s convert decode bytes = reverse <$>
                      go n (drop n b) (e':acc)
 
 
-binConversion :: TypeName
-              -> TypeName
+binConversion :: DataType
+              -> DataType
               -> Converter
 binConversion INT08B INT32B =
   convertWords (fromIntegral :: Int -> I) putInt

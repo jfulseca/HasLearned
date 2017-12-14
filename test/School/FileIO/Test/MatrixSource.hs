@@ -16,7 +16,7 @@ import School.FileIO.FileType (FileType(..))
 import School.TestUtils (def, dummyList, dummyMatrix, testRun)
 import School.Types.Decoding (binToMatrixDouble)
 import School.Types.Encoding (doubleToBin)
-import School.Types.TypeName (TypeName(..), getSize)
+import School.Types.DataType (DataType(..), getSize)
 import Numeric.LinearAlgebra.Data (Matrix)
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck hiding ((><))
@@ -50,7 +50,7 @@ testMatrix pr pc bytes = testRun $
  .| poolMatrixDouble pr pc
  .| sinkList
 
-prop_accepts_header :: TypeName -> (Positive Int) -> Property
+prop_accepts_header :: DataType -> (Positive Int) -> Property
 prop_accepts_header name (Positive n) =
   monadicIO $ do
     let h = MatrixHeader name n n
@@ -75,8 +75,8 @@ prop_rejects_wrong_separator separator content =
     result <- testHeader def bytes
     assert $ isLeft result
 
-prop_rejects_wrong_header :: TypeName
-                          -> TypeName
+prop_rejects_wrong_header :: DataType
+                          -> DataType
                           -> (Positive Int)
                           -> (Positive Int)
                           -> (Positive Int)

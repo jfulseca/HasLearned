@@ -13,12 +13,12 @@ extra-source-files:  ChangeLog.md
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     School.App.AppIO
-                     , School.App.AppS
+  exposed-modules:     School.App.AppS
                      , School.App.CSVReader
-                     , School.App.FileHandler
+                     , School.App.FileTransformer
                      , School.App.MultiLayerPerceptron 
                      , School.Evaluate.Evaluate
+                     , School.FileIO.AppIO
                      , School.FileIO.Confirmer
                      , School.FileIO.BinConversion
                      , School.FileIO.FileApp
@@ -40,7 +40,7 @@ library
                      , School.Types.Decoding
                      , School.Types.Encoding
                      , School.Types.FloatEq
-                     , School.Types.TypeName
+                     , School.Types.DataType
                      , School.Types.PingPong
                      , School.Types.Slinky
                      , School.Unit.Affine
@@ -104,7 +104,7 @@ test-suite school-test
   default-language:    Haskell2010
   ghc-options:         -Wall
   other-modules:       School.App.Test.CSVReader
-                     , School.App.Test.FileHandler
+                     , School.App.Test.FileTransformer
                      , School.Evaluate.Test.Evaluate
                      , School.FileIO.Test.BinConversion
                      , School.FileIO.Test.MatrixHeader
@@ -113,7 +113,7 @@ test-suite school-test
                      , School.TestUtils
                      , School.Types.Test.Conversion
                      , School.Types.Test.FloatEq
-                     , School.Types.Test.TypeName
+                     , School.Types.Test.DataType
                      , School.Train.Test.BackwardPass
                      , School.Train.Test.ForwardPass
                      , School.Train.Test.GradientDescent

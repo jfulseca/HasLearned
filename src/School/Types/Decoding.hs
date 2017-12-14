@@ -14,7 +14,7 @@ import Data.Int (Int32)
 import Data.Serialize.Get (Get, getInt32be, runGet)
 import Data.Serialize.IEEE754 (getFloat64be)
 import Numeric.LinearAlgebra ((><), Matrix, I, R)
-import School.Types.TypeName (TypeName(..))
+import School.Types.DataType (DataType(..))
 import School.Utils.Either (mapRight)
 
 getDouble :: Get R
@@ -23,7 +23,7 @@ getDouble = getFloat64be
 binToDouble :: ByteString -> Either String R
 binToDouble = runGet getDouble
 
-binToMatrixDouble :: TypeName
+binToMatrixDouble :: DataType
                   -> Int
                   -> Int
                   -> (ByteString -> Either String
@@ -53,7 +53,7 @@ binToInt :: ByteString -> Either String I
 binToInt = (mapRight fromIntegral)
          . (runGet getInt)
 
-binToMatrixInt :: TypeName
+binToMatrixInt :: DataType
                -> Int
                -> Int
                -> (ByteString -> Either String

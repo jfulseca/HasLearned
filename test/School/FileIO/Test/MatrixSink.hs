@@ -10,7 +10,7 @@ import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.FileIO.MatrixSink
 import School.TestUtils (dummyMatrix, testRun)
-import School.Types.TypeName (TypeName(..))
+import School.Types.DataType (DataType(..))
 import Test.QuickCheck.Monadic (assert, monadicIO)
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck hiding ((><))

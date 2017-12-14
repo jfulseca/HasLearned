@@ -13,7 +13,7 @@ import Data.ByteString (ByteString)
 import Data.Serialize.IEEE754 (putFloat64be)
 import Data.Serialize.Put (Put, putInt32be, runPut)
 import Numeric.LinearAlgebra (Element, I, Matrix, R, toLists)
-import School.Types.TypeName (TypeName(..))
+import School.Types.DataType (DataType(..))
 
 putDouble :: R -> Put
 putDouble = putFloat64be
@@ -38,14 +38,14 @@ writer put trans matrix = runPut $
             $ matrix
             )
 
-matrixDoubleToBin :: TypeName
+matrixDoubleToBin :: DataType
                   -> Matrix R
                   -> ByteString
 matrixDoubleToBin DBL64B = writer putDouble id
 matrixDoubleToBin INT32B = undefined
 matrixDoubleToBin INT08B = undefined
 
-matrixIntToBin :: TypeName
+matrixIntToBin :: DataType
                -> Matrix I
                -> ByteString
 matrixIntToBin DBL64B =

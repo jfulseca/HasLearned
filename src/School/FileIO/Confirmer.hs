@@ -16,7 +16,7 @@ import Data.ByteString.Conversion (FromByteString, parser)
 import School.App.AppS (AppS, liftAppS, throw)
 import School.FileIO.MatrixHeader (MatrixHeader(..), compatibleHeaders)
 import School.FileIO.FileType (FileType(..))
-import School.Types.TypeName (TypeName, fromIdxIndicator)
+import School.Types.DataType (DataType, fromIdxIndicator)
 import School.Utils.Constants (separator, binSeparator)
 
 type Confirmer a = ConduitM ByteString
@@ -52,11 +52,11 @@ idxConfirm MatrixHeader { dataType } = do
   takeCE 4 .| checkHeader dataType
   mapC id
 
-errorMsg :: Int -> TypeName -> String
+errorMsg :: Int -> DataType -> String
 errorMsg i t = "Type indicator " ++ (show i)
             ++ " does not correspond to " ++ (show t)
 
-compat :: TypeName -> [Int] -> AppS a ()
+compat :: DataType -> [Int] -> AppS a ()
 compat dType ints = do
   let check = length ints == 4
            && ints!!0 == 0
@@ -71,7 +71,7 @@ compat dType ints = do
                             else Left $ errorMsg coeff dType)
                     dType'
 
-checkHeader :: TypeName -> Confirmer a
+checkHeader :: DataType -> Confirmer a
 checkHeader dType =
     mapC unpack
  .| mapCE fromEnum

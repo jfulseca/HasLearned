@@ -9,7 +9,7 @@ import Data.Word (Word8)
 import School.FileIO.BinConversion
 import School.Types.Encoding (runPut, putDouble, putInt)
 import School.Types.Decoding (binToDouble, binToInt)
-import School.Types.TypeName (TypeName(..))
+import School.Types.DataType (DataType(..))
 import School.Utils.Either (eitherToBool)
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck hiding ((><))
@@ -68,7 +68,7 @@ prop_double_to_double doubles = let
     decodeList 8 id binToDouble converted
   in eitherToBool (== doubles) result
 
-prop_double_to_integral :: [Double] -> TypeName -> Property
+prop_double_to_integral :: [Double] -> DataType -> Property
 prop_double_to_integral doubles t = (t /= DBL64B) ==> let
   encoded = runPut $ mapM_ putDouble doubles
   result = binConversion DBL64B t encoded
