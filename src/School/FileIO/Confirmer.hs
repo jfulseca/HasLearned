@@ -1,32 +1,26 @@
 {-# LANGUAGE NamedFieldPuns #-}
 
 module School.FileIO.Confirmer
-( Confirmer
-, confirmAtom
+( confirmAtom
 , confirmer
 , idxConfirm
 , smConfirm
 ) where
 
-import Conduit ((.|), ConduitM, mapC, mapCE, mapM_C, takeCE, takeWhileCE)
+import Conduit ((.|), mapC, mapCE, mapM_C, takeCE, takeWhileCE)
 import Control.Monad (when)
 import Data.Attoparsec.ByteString (parseOnly)
-import Data.ByteString (ByteString, unpack)
+import Data.ByteString (unpack)
 import Data.ByteString.Conversion (FromByteString, parser)
-import School.App.AppS (AppS, liftAppS, throw)
+import School.App.AppS (AppS, ConduitBS, liftAppS, throw)
 import School.FileIO.MatrixHeader (MatrixHeader(..), compatibleHeaders)
 import School.FileIO.FileType (FileType(..))
 import School.Types.DataType (DataType, fromIdxIndicator)
 import School.Utils.Constants (separator, binSeparator)
 
-type Confirmer a = ConduitM ByteString
-                            ByteString
-                            (AppS a)
-                            ()
-
 confirmAtom :: (Eq b, FromByteString b, Show b)
             => (b -> Bool)
-            -> Confirmer a
+            -> ConduitBS a
 confirmAtom check = mapM_C $ \bytes -> do
   let parseResult = atomParser check bytes
   liftAppS parseResult
@@ -40,14 +34,14 @@ confirmAtom check = mapM_C $ \bytes -> do
          ++ "result " ++ (show b)
 
 smConfirm :: MatrixHeader
-        -> Confirmer a
+        -> ConduitBS a
 smConfirm header = do
   takeCE 1 .| confirmAtom (==separator)
   takeWhileCE (/= binSeparator) .| confirmAtom (compatibleHeaders header)
   takeCE 1 .| confirmAtom (==separator)
   mapC id
 
-idxConfirm :: MatrixHeader -> Confirmer a
+idxConfirm :: MatrixHeader -> ConduitBS a
 idxConfirm MatrixHeader { dataType } = do
   takeCE 4 .| checkHeader dataType
   mapC id
@@ -71,7 +65,7 @@ compat dType ints = do
                             else Left $ errorMsg coeff dType)
                     dType'
 
-checkHeader :: DataType -> Confirmer a
+checkHeader :: DataType -> ConduitBS a
 checkHeader dType =
     mapC unpack
  .| mapCE fromEnum
@@ -79,7 +73,7 @@ checkHeader dType =
 
 confirmer :: FileType
           -> MatrixHeader
-          -> Confirmer a
+          -> ConduitBS a
 confirmer IDX = idxConfirm
 confirmer SM = smConfirm
 confirmer _ = undefined

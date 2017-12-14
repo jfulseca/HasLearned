@@ -9,8 +9,7 @@ import Data.Conduit.Binary (sinkFile, sourceFileRange)
 import Data.Default.Class (Default(..))
 import Data.Void (Void)
 import School.FileIO.AppIO (AppIO, liftAppIO)
-import School.App.AppS (AppS)
-import School.FileIO.Confirmer (Confirmer)
+import School.App.AppS (AppS, ConduitBS)
 import School.FileIO.FileApp (FileApp(..))
 import School.FileIO.FilePath (FilePath, guessFileType)
 import School.FileIO.FileType (FileType(..))
@@ -53,7 +52,7 @@ instance Default FileTransformerOptions where
                                , skipRowsOpt = Nothing
                                }
 
-getHandler :: FAParams FileTransformerOptions -> Confirmer a
+getHandler :: FAParams FileTransformerOptions -> ConduitBS a
 getHandler _ = mapC id
 
 getOffset :: Integer

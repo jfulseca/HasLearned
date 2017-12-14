@@ -72,6 +72,7 @@ library
                      , bytestring
                      , bytestring-conversion
                      , cereal
+                     , conduit
                      , conduit-combinators
                      , conduit-extra
                      , directory

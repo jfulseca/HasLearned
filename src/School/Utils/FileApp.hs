@@ -16,8 +16,9 @@ import Control.Monad.Trans.Except (throwE)
 import qualified Data.ByteString as B
 import Data.Conduit.Binary (sourceFile, sourceFileRange)
 import Data.Maybe (isNothing)
+import School.App.AppS (ConduitBS)
 import School.FileIO.AppIO (AppIO, liftAppIO, runConduitInAppIO)
-import School.FileIO.Confirmer (Confirmer, confirmer)
+import School.FileIO.Confirmer (confirmer)
 import School.FileIO.FilePath (FilePath)
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..), headerBuilder)
@@ -59,7 +60,7 @@ getHeaderBytes SM path = do
 
 putHeader :: FileType
           -> MatrixHeader
-          -> Confirmer a
+          -> ConduitBS a
 putHeader fType header = do
   yield $ headerBuilder fType header
   mapC id
