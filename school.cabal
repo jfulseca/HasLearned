@@ -61,6 +61,7 @@ library
                      , School.Utils.Debug
                      , School.Utils.Double
                      , School.Utils.Either
+                     , School.Utils.FileApp
                      , School.Utils.IO
                      , School.Utils.LinearAlgebra
                      , School.Utils.Random
