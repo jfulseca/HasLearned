@@ -11,6 +11,7 @@ import Data.Function (on)
 import Numeric.LinearAlgebra ((?))
 import School.App.AppIO (AppIO, runAppIO)
 import School.App.FileHandler
+import School.FileIO.FileApp (fileApp)
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.FileIO.MatrixSource (matrixDoubleSource)
@@ -43,13 +44,12 @@ fileEq = liftA2 (==) `on` BL.readFile
 
 prop_copy :: Property
 prop_copy = monadicIO $ do
-  let options = def { inputFile = sm3x3File
-                    , inHeader = header3x3
-                    , inType = Just SM
-                    , outputFile = testFile
-                    , outType = Just SM
+  let options = def { inFileOpt = sm3x3File
+                    , inTypeOpt = Just SM
+                    , outFileOpt = testFile
+                    , outTypeOpt = Just SM
                     }
-  result <- run $ fileHandler options
+  result <- run $ fileApp options
   assert $ isRight result
   equal <- liftIO $ fileEq sm3x3File testFile
   liftIO $ removeFile testFile
@@ -57,11 +57,10 @@ prop_copy = monadicIO $ do
 
 prop_copy_guess_filetypes :: Property
 prop_copy_guess_filetypes = monadicIO $ do
-  let options = def { inputFile = sm3x3File
-                    , inHeader = header3x3
-                    , outputFile = testFile
+  let options = def { inFileOpt = sm3x3File
+                    , outFileOpt = testFile
                     }
-  result <- run $ fileHandler options
+  result <- run $ fileApp options
   assert $ isRight result
   equal <- liftIO $ fileEq sm3x3File testFile
   liftIO $ removeFile testFile
@@ -69,13 +68,12 @@ prop_copy_guess_filetypes = monadicIO $ do
 
 prop_copy_add_extension :: Property
 prop_copy_add_extension = monadicIO $ do
-  let options = def { inputFile = sm3x3File
-                    , inHeader = header3x3
-                    , inType = Just SM
-                    , outputFile = "test"
-                    , outType = Just SM
+  let options = def { inFileOpt = sm3x3File
+                    , inTypeOpt = Just SM
+                    , outFileOpt = "test"
+                    , outTypeOpt = Just SM
                     }
-  result <- run $ fileHandler options
+  result <- run $ fileApp options
   assert $ isRight result
   equal <- liftIO $ fileEq sm3x3File testFile
   liftIO $ removeFile testFile
@@ -84,14 +82,14 @@ prop_copy_add_extension = monadicIO $ do
 prop_skip_rows :: Property
 prop_skip_rows = monadicIO $ do
   let outHeader = header3x3 { rows = 1 }
-  let options = def { inputFile = sm3x3File
-                    , inHeader = header3x3
-                    , inType = Just SM
-                    , outputFile = testFile
-                    , outType = Just SM
-                    , skipRows = Just 2
+  let options = def { columnsOpt = Just 3
+                    , inFileOpt = sm3x3File
+                    , inTypeOpt = Just SM
+                    , outFileOpt = testFile
+                    , outTypeOpt = Just SM
+                    , skipRowsOpt = 2
                     }
-  result <- run $ fileHandler options
+  result <- run $ fileApp options
   assert $ isRight result
   let check = Just $ dummyMatrix 3 3 ? [2]
   readRes <- testRun $ matrixDoubleSource SM
@@ -103,11 +101,12 @@ prop_skip_rows = monadicIO $ do
 
 prop_skip_too_many_rows :: Property
 prop_skip_too_many_rows = monadicIO $ do
-  let options = def { inHeader = header3x3
-                    , inType = Just SM
-                    , skipRows = Just 4
+  let options = def { inFileOpt = sm3x3File
+                    , columnsOpt = Just 3
+                    , inTypeOpt = Just SM
+                    , skipRowsOpt = 4
                     }
-  result <- run $ fileHandler options
+  result <- run $ fileApp options
   assert $ isLeft result
 
 fileHandlerTest :: TestTree
