@@ -5,7 +5,6 @@ module School.App.FileTransformer
 
 import Conduit ((.|), ConduitM, mapC)
 import Control.Monad (when)
-import Control.Monad.Trans.Except (throwE)
 import Data.Conduit.Binary (sinkFile, sourceFileRange)
 import Data.Default.Class (Default(..))
 import Data.Void (Void)
@@ -17,12 +16,11 @@ import School.FileIO.FilePath (FilePath, guessFileType)
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..), headerParser)
 import School.Types.DataType (DataType, getSize)
-import School.Utils.FileApp (checkFile, getFileHeaderLength, getHeaderBytes,
-                             getNElements, putHeader)
+import School.Utils.FileApp (checkFile, fileExists, getFileHeaderLength,
+                             getHeaderBytes, getNElements, putHeader)
 
 data FileTransformerOptions =
-  FileTransformerOptions { columnsOpt :: Maybe Int
-                         , inFileOpt :: FilePath
+  FileTransformerOptions { inFileOpt :: FilePath
                          , inDataTypeOpt :: DataType
                          , inFileTypeOpt :: Maybe FileType
                          , nRowsOpt :: Maybe Integer
@@ -45,8 +43,7 @@ instance FileApp FileTransformerOptions where
   prepare = prepareHandler
 
 instance Default FileTransformerOptions where
-  def = FileTransformerOptions { columnsOpt = Nothing
-                               , inFileOpt = ""
+  def = FileTransformerOptions { inFileOpt = ""
                                , inDataTypeOpt = def
                                , inFileTypeOpt = Nothing
                                , nRowsOpt = Nothing
@@ -87,29 +84,23 @@ getExtent size dType nElements nCols skip = do
   let elSize = getSize dType
   return $ sizeEls * fromIntegral elSize
 
-needColumns :: String
-needColumns = "Must specify number of columns when "
-           ++ "altering number of rows"
-
 getLimits :: Maybe Integer
           -> Maybe Integer
-          -> Maybe Int
+          -> Int
           -> DataType
           -> Integer
           -> AppIO (Integer, Maybe Integer)
 getLimits Nothing Nothing _ _ _ =
   return (0, Nothing)
-getLimits (Just _) _ Nothing _ _ = throwE needColumns
-getLimits _ (Just _) Nothing _ _ = throwE needColumns
-getLimits (Just skip) Nothing (Just nCols) dType nEl = do
+getLimits (Just skip) Nothing nCols dType nEl = do
   offset <- liftAppIO $
      getOffset skip dType nEl nCols
   return (offset, Nothing)
-getLimits Nothing (Just size) (Just nCols) dType nEl = do
+getLimits Nothing (Just size) nCols dType nEl = do
   extent <- liftAppIO $
      getExtent size dType nEl nCols 0
   return (0, Just extent)
-getLimits (Just skip) (Just size) (Just nCols) dType nEl = do
+getLimits (Just skip) (Just size) nCols dType nEl = do
   offset <- liftAppIO $
      getOffset skip dType nEl nCols
   extent <- liftAppIO $
@@ -118,8 +109,7 @@ getLimits (Just skip) (Just size) (Just nCols) dType nEl = do
 
 scanOptions :: FileTransformerOptions
             -> AppIO (FAParams FileTransformerOptions)
-scanOptions FileTransformerOptions { columnsOpt
-                                   , inFileOpt
+scanOptions FileTransformerOptions { inFileOpt
                                    , inDataTypeOpt
                                    , inFileTypeOpt
                                    , nRowsOpt
@@ -129,29 +119,29 @@ scanOptions FileTransformerOptions { columnsOpt
                                    , skipRowsOpt
                                    } = do
   let (inputType, inputFile) = guessFileType False (inFileTypeOpt, inFileOpt)
+  fileExists inputFile
   hBytes <- getHeaderBytes inputType inputFile
   let nHeader = getFileHeaderLength inputType hBytes
+  inHeader@MatrixHeader { cols } <- liftAppIO $
+    headerParser inputType hBytes
+  checkFile inputFile inputType inHeader
   nEl <- getNElements inDataTypeOpt
                       inputFile
                       nHeader
   (offset, size) <- getLimits skipRowsOpt
                               nRowsOpt
-                              columnsOpt
+                              cols
                               inDataTypeOpt
                               nEl
   let totalOffset = Just $ offset + (fromIntegral nHeader)
-  inHeader <- liftAppIO $
-    headerParser inputType nEl columnsOpt hBytes
-  checkFile inputFile inputType inHeader
   let (outputType, outputFile) = guessFileType True (outFileTypeOpt, outFileOpt)
   let outputFormat = maybe inDataTypeOpt id outDataTypeOpt
   let skip = maybe 0 fromIntegral skipRowsOpt
   let outRows = maybe ((rows inHeader) - skip)
                       fromIntegral
                       nRowsOpt
-  let outCols = cols inHeader
   let outHeader = MatrixHeader { dataType = outputFormat
-                               , cols = outCols
+                               , cols
                                , rows = outRows
                                }
   return FileTransformerParams { inputFile

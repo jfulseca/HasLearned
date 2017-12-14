@@ -82,8 +82,7 @@ prop_copy_add_extension = monadicIO $ do
 prop_skip_rows :: Property
 prop_skip_rows = monadicIO $ do
   let outHeader = header3x3 { rows = 1 }
-  let options = def { columnsOpt = Just 3
-                    , inFileOpt = sm3x3File
+  let options = def { inFileOpt = sm3x3File
                     , inFileTypeOpt = Just SM
                     , outFileOpt = testFile
                     , outFileTypeOpt = Just SM
@@ -102,7 +101,6 @@ prop_skip_rows = monadicIO $ do
 prop_skip_too_many_rows :: Property
 prop_skip_too_many_rows = monadicIO $ do
   let options = def { inFileOpt = sm3x3File
-                    , columnsOpt = Just 3
                     , inFileTypeOpt = Just SM
                     , skipRowsOpt = Just 4
                     }
@@ -112,7 +110,6 @@ prop_skip_too_many_rows = monadicIO $ do
 prop_limit_extent :: Property
 prop_limit_extent = monadicIO $ do
   let options = def { inFileOpt = sm3x3File
-                    , columnsOpt = Just 3
                     , inFileTypeOpt = Just SM
                     , nRowsOpt = Just 2
                     , outFileOpt = testFile
@@ -131,7 +128,6 @@ prop_limit_extent = monadicIO $ do
 prop_skip_and_limit :: Property
 prop_skip_and_limit = monadicIO $ do
   let options = def { inFileOpt = sm3x3File
-                    , columnsOpt = Just 3
                     , inFileTypeOpt = Just SM
                     , nRowsOpt = Just 1
                     , skipRowsOpt = Just 1
@@ -151,7 +147,6 @@ prop_skip_and_limit = monadicIO $ do
 prop_limit_too_many_rows :: Property
 prop_limit_too_many_rows = monadicIO $ do
   let options = def { inFileOpt = sm3x3File
-                    , columnsOpt = Just 3
                     , inFileTypeOpt = Just SM
                     , nRowsOpt = Just 4
                     }
@@ -161,7 +156,6 @@ prop_limit_too_many_rows = monadicIO $ do
 prop_limit_and_skip_too_many :: Property
 prop_limit_and_skip_too_many = monadicIO $ do
   let options = def { inFileOpt = sm3x3File
-                    , columnsOpt = Just 3
                     , inFileTypeOpt = Just SM
                     , nRowsOpt = Just 3
                     , skipRowsOpt = Just 1

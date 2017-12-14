@@ -2,6 +2,7 @@
 
 module School.Utils.FileApp
 ( checkFile
+, fileExists
 , getHeaderBytes
 , getFileHeaderLength
 , getNElements
@@ -32,15 +33,22 @@ liftBytes bytes = liftAppIO $
         Right
         bytes
 
+getNBytes :: FilePath -> Int -> AppIO B.ByteString
+getNBytes path n = do
+  bytes <- runConduitInAppIO $
+       sourceFileRange path Nothing (Just . fromIntegral $ n)
+    .| await
+  liftBytes bytes
+
 getHeaderBytes :: FileType
                -> FilePath
                -> AppIO B.ByteString
 getHeaderBytes CSV _ = undefined
 getHeaderBytes IDX path = do
-  bytes <- runConduitInAppIO $
-       sourceFileRange path Nothing (Just 4)
-    .| await
-  liftBytes bytes
+  specBytes <- getNBytes path 4
+  let spec = fromEnum <$> B.unpack specBytes
+  let dim = spec!!3
+  getNBytes path $ (dim + 1) * 4  
 getHeaderBytes SM path = do
   bytes <- runConduitInAppIO $
        sourceFileBS path
@@ -56,14 +64,18 @@ putHeader fType header = do
   yield $ headerBuilder fType header
   mapC id
 
+fileExists :: FilePath -> AppIO ()
+fileExists path = do
+  exists <- liftIO $ doesFileExist path
+  if (not exists)
+    then throwE $ "File " ++ path ++ " not found"
+    else return ()
+  
 checkFile :: FilePath
           -> FileType
           -> MatrixHeader
           -> AppIO ()
 checkFile path fType header = do
-  exists <- liftIO $ doesFileExist path
-  when (not exists)
-       (throwE $ "File " ++ path ++ " not found")
   confirmResult <- runConduitInAppIO $
       sourceFile path
    .| confirmer fType header
