@@ -146,7 +146,9 @@ scanOptions FileTransformerOptions { columnsOpt
   let (outputType, outputFile) = guessFileType True (outFileTypeOpt, outFileOpt)
   let outputFormat = maybe inDataTypeOpt id outDataTypeOpt
   let skip = maybe 0 fromIntegral skipRowsOpt
-  let outRows = (rows inHeader) - skip
+  let outRows = maybe ((rows inHeader) - skip)
+                      fromIntegral
+                      nRowsOpt
   let outCols = cols inHeader
   let outHeader = MatrixHeader { dataType = outputFormat
                                , cols = outCols

@@ -109,5 +109,65 @@ prop_skip_too_many_rows = monadicIO $ do
   result <- run $ fileApp options
   assert $ isLeft result
 
+prop_limit_extent :: Property
+prop_limit_extent = monadicIO $ do
+  let options = def { inFileOpt = sm3x3File
+                    , columnsOpt = Just 3
+                    , inFileTypeOpt = Just SM
+                    , nRowsOpt = Just 2
+                    , outFileOpt = testFile
+                    }
+  result <- run $ fileApp options
+  assert $ isRight result
+  let check = Just $ dummyMatrix 3 3 ? [0, 1]
+  let outHeader = header3x3 { rows = 2 }
+  readRes <- testRun $ matrixDoubleSource SM
+                                          outHeader
+                                          testFile
+                   .| await
+  liftIO $ removeFile testFile
+  assertRight (== check) readRes
+
+prop_skip_and_limit :: Property
+prop_skip_and_limit = monadicIO $ do
+  let options = def { inFileOpt = sm3x3File
+                    , columnsOpt = Just 3
+                    , inFileTypeOpt = Just SM
+                    , nRowsOpt = Just 1
+                    , skipRowsOpt = Just 1
+                    , outFileOpt = testFile
+                    }
+  result <- run $ fileApp options
+  assert $ isRight result
+  let check = Just $ dummyMatrix 3 3 ? [1]
+  let outHeader = header3x3 { rows = 1 }
+  readRes <- testRun $ matrixDoubleSource SM
+                                          outHeader
+                                          testFile
+                   .| await
+  liftIO $ removeFile testFile
+  assertRight (== check) readRes
+
+prop_limit_too_many_rows :: Property
+prop_limit_too_many_rows = monadicIO $ do
+  let options = def { inFileOpt = sm3x3File
+                    , columnsOpt = Just 3
+                    , inFileTypeOpt = Just SM
+                    , nRowsOpt = Just 4
+                    }
+  result <- run $ fileApp options
+  assert $ isLeft result
+
+prop_limit_and_skip_too_many :: Property
+prop_limit_and_skip_too_many = monadicIO $ do
+  let options = def { inFileOpt = sm3x3File
+                    , columnsOpt = Just 3
+                    , inFileTypeOpt = Just SM
+                    , nRowsOpt = Just 3
+                    , skipRowsOpt = Just 1
+                    }
+  result <- run $ fileApp options
+  assert $ isLeft result
+
 fileTransformerTest :: TestTree
 fileTransformerTest = $(testGroupGenerator)
