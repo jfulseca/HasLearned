@@ -22,71 +22,107 @@ import School.Utils.FileApp (checkFile, getFileHeaderLength, getHeaderBytes,
 
 data FileTransformerOptions =
   FileTransformerOptions { columnsOpt :: Maybe Int
-                         , endOpt :: Maybe Integer
                          , inFileOpt :: FilePath
                          , inDataTypeOpt :: DataType
                          , inFileTypeOpt :: Maybe FileType
+                         , nRowsOpt :: Maybe Integer
                          , outFileOpt :: FilePath
                          , outDataTypeOpt :: Maybe DataType
                          , outFileTypeOpt :: Maybe FileType
-                         , skipRowsOpt :: Integer
+                         , skipRowsOpt :: Maybe Integer
                          } deriving (Eq, Show)
 
 instance FileApp FileTransformerOptions where
   data FAParams FileTransformerOptions =
-    FileTransformerParams { end :: Maybe Integer
-                          , inputFile :: FilePath
-                          , offset :: Maybe Integer
+    FileTransformerParams { inputFile :: FilePath
+                          , totalOffset :: Maybe Integer
                           , outHeader :: MatrixHeader
                           , outputFile :: FilePath
                           , outputType :: FileType
+                          , size :: Maybe Integer
                           } deriving (Eq, Show)
   scan = scanOptions
   prepare = prepareHandler
 
 instance Default FileTransformerOptions where
   def = FileTransformerOptions { columnsOpt = Nothing
-                               , endOpt = Nothing
                                , inFileOpt = ""
                                , inDataTypeOpt = def
                                , inFileTypeOpt = Nothing
+                               , nRowsOpt = Nothing
                                , outFileOpt = ""
                                , outDataTypeOpt = Nothing
                                , outFileTypeOpt = Nothing
-                               , skipRowsOpt = 0
+                               , skipRowsOpt = Nothing
                                }
 
 getHandler :: FAParams FileTransformerOptions -> Confirmer a
 getHandler _ = mapC id
 
 getOffset :: Integer
-          -> Maybe Int
           -> DataType
           -> Integer
           -> Int
-          -> AppIO (Maybe Integer)
-getOffset 0 _ _ _ hBytes =
-  return . Just . fromIntegral $ hBytes
-getOffset skipRows columns format nElements hBytes = do
-  case columns of
-    Nothing -> throwE $ "Must specify number of "
-                     ++ "columns when skipping rows"
-    Just nCols -> do
-      let skipEl = (fromIntegral nCols) * skipRows
-      when (skipEl > nElements)
-           (throwE $ "Not enough data in file to skip "
-                  ++ (show skipRows) ++ " rows")
-      let elSize = getSize format
-      return . Just $ (skipEl * fromIntegral elSize)
-                    + fromIntegral hBytes
+          -> Either String Integer
+getOffset skipRows dType nElements nCols = do
+  let skipEl = (fromIntegral nCols) * skipRows
+  when (skipEl > nElements)
+       (Left $ "Not enough data in file to skip "
+            ++ (show skipRows) ++ " rows")
+  let elSize = getSize dType
+  return $ skipEl * fromIntegral elSize
+
+getExtent :: Integer
+          -> DataType
+          -> Integer
+          -> Int
+          -> Integer
+          -> Either String Integer
+getExtent size dType nElements nCols skip = do
+  let sizeEls = (fromIntegral nCols) * size
+  when (sizeEls + skip > nElements)
+       (Left $ "Not enough data in file to skip "
+            ++ (show skip) ++ " and keep "
+            ++ (show size) ++ " rows")
+  let elSize = getSize dType
+  return $ sizeEls * fromIntegral elSize
+
+needColumns :: String
+needColumns = "Must specify number of columns when "
+           ++ "altering number of rows"
+
+getLimits :: Maybe Integer
+          -> Maybe Integer
+          -> Maybe Int
+          -> DataType
+          -> Integer
+          -> AppIO (Integer, Maybe Integer)
+getLimits Nothing Nothing _ _ _ =
+  return (0, Nothing)
+getLimits (Just _) _ Nothing _ _ = throwE needColumns
+getLimits _ (Just _) Nothing _ _ = throwE needColumns
+getLimits (Just skip) Nothing (Just nCols) dType nEl = do
+  offset <- liftAppIO $
+     getOffset skip dType nEl nCols
+  return (offset, Nothing)
+getLimits Nothing (Just size) (Just nCols) dType nEl = do
+  extent <- liftAppIO $
+     getExtent size dType nEl nCols 0
+  return (0, Just extent)
+getLimits (Just skip) (Just size) (Just nCols) dType nEl = do
+  offset <- liftAppIO $
+     getOffset skip dType nEl nCols
+  extent <- liftAppIO $
+     getExtent size dType nEl nCols skip
+  return (offset, Just extent)
 
 scanOptions :: FileTransformerOptions
             -> AppIO (FAParams FileTransformerOptions)
 scanOptions FileTransformerOptions { columnsOpt
-                                   , endOpt
                                    , inFileOpt
                                    , inDataTypeOpt
                                    , inFileTypeOpt
+                                   , nRowsOpt
                                    , outFileOpt
                                    , outDataTypeOpt
                                    , outFileTypeOpt
@@ -98,40 +134,42 @@ scanOptions FileTransformerOptions { columnsOpt
   nEl <- getNElements inDataTypeOpt
                       inputFile
                       nHeader
-  offset <- getOffset skipRowsOpt
-                      columnsOpt
-                      inDataTypeOpt
-                      nEl
-                      nHeader
+  (offset, size) <- getLimits skipRowsOpt
+                              nRowsOpt
+                              columnsOpt
+                              inDataTypeOpt
+                              nEl
+  let totalOffset = Just $ offset + (fromIntegral nHeader)
   inHeader <- liftAppIO $
     headerParser inputType nEl columnsOpt hBytes
   checkFile inputFile inputType inHeader
   let (outputType, outputFile) = guessFileType True (outFileTypeOpt, outFileOpt)
   let outputFormat = maybe inDataTypeOpt id outDataTypeOpt
-  let outRows = (rows inHeader) - fromIntegral skipRowsOpt
+  let skip = maybe 0 fromIntegral skipRowsOpt
+  let outRows = (rows inHeader) - skip
   let outCols = cols inHeader
   let outHeader = MatrixHeader { dataType = outputFormat
                                , cols = outCols
                                , rows = outRows
                                }
-  return FileTransformerParams { end = endOpt
-                               , inputFile
-                               , offset
+  return FileTransformerParams { inputFile
+                               , totalOffset
                                , outHeader
                                , outputFile
                                , outputType
+                               , size
                                }
 
 prepareHandler :: FAParams FileTransformerOptions
                -> ConduitM () Void (AppS a) ()
-prepareHandler p@FileTransformerParams { end
-                                       , inputFile
-                                       , offset
+prepareHandler p@FileTransformerParams { inputFile
+                                       , totalOffset
                                        , outHeader
                                        , outputFile
                                        , outputType
+                                       , size
                                        } =
-    sourceFileRange inputFile offset end
+    sourceFileRange inputFile totalOffset size
  .| putHeader outputType outHeader
  .| getHandler p
  .| sinkFile outputFile

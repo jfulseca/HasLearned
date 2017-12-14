@@ -87,7 +87,7 @@ prop_skip_rows = monadicIO $ do
                     , inFileTypeOpt = Just SM
                     , outFileOpt = testFile
                     , outFileTypeOpt = Just SM
-                    , skipRowsOpt = 2
+                    , skipRowsOpt = Just 2
                     }
   result <- run $ fileApp options
   assert $ isRight result
@@ -104,7 +104,7 @@ prop_skip_too_many_rows = monadicIO $ do
   let options = def { inFileOpt = sm3x3File
                     , columnsOpt = Just 3
                     , inFileTypeOpt = Just SM
-                    , skipRowsOpt = 4
+                    , skipRowsOpt = Just 4
                     }
   result <- run $ fileApp options
   assert $ isLeft result
