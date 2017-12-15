@@ -4,13 +4,15 @@ module School.App.AppS
 , FullConduitAppS
 , liftAppS
 , maybeToAppS
+, runAppS
 , runAppSConduit
 , runAppSConduitDefState
+, runAppSPure
 , throw
 , throwConduit
 ) where 
 
-import Conduit (ConduitM, ResourceT, runConduitRes)
+import Conduit (ConduitM, ResourceT, runConduitRes, runResourceT)
 import Control.Monad.State.Lazy (StateT, runStateT)
 import Control.Monad.Trans.Class (lift)
 import Control.Monad.Trans.Except (ExceptT(..), runExceptT)
@@ -22,6 +24,18 @@ import School.Utils.Either (mapRight)
 type AppS a = ResourceT (StateT (TrainState a)
                                 (ExceptT String
                                          IO))
+
+runAppS :: TrainState a
+        -> AppS a b
+        -> IO (Either String (b, TrainState a))
+runAppS state app = runExceptT $
+  runStateT (runResourceT app) state
+
+runAppSPure :: (Num a)
+            => AppS a b
+            -> IO (Either String b)
+runAppSPure app =
+  (fst <$>) <$> (runAppS def app)
 
 liftAppS :: Either String b -> AppS a b
 liftAppS = lift . lift . ExceptT . return
