@@ -5,11 +5,10 @@ module School.App.MultiLayerPerceptron
 , multiLayerPerceptron
 ) where
 
-import Conduit ((.|), mapC)
 import Numeric.LinearAlgebra (R)
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..))
-import School.FileIO.MatrixSource (matrixDoubleSource)
+import School.FileIO.MatrixSourcery (matrixDoubleSourcery)
 import School.Train.GradientDescent (gradientDescent)
 import School.Train.IterationHandler (logCost)
 import School.Train.SimpleDescentUpdate (simpleDescentUpdate)
@@ -22,7 +21,6 @@ import School.Unit.Affine (affine)
 import School.Unit.RecLin (recLin)
 import School.Unit.MultiNoulli (multiNoulli)
 import School.Unit.Unit (Unit)
-import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitParams (UnitParams(..))
 import School.Unit.WeightDecay (weightDecay)
 import School.Utils.Random (randAffineParams)
@@ -83,7 +81,7 @@ setupUnits nFeatures nClasses hiddenDims seed = do
 multiLayerPerceptron :: MLPOptions
                      -> FilePath
                      -> IO (Either String
-                                   (Maybe [R], [UnitParams R]))
+                           (Maybe [R], [UnitParams R]))
 multiLayerPerceptron (MLPOptions { nClasses = nC
                                  , nBatches = nB
                                  , nFeatures = nF
@@ -99,8 +97,7 @@ multiLayerPerceptron (MLPOptions { nClasses = nC
                             , rows = nB
                             , dataType = DBL64B
                             }
-  let source = matrixDoubleSource SM header path
-            .| mapC BatchActivation
+  let sourcerer = matrixDoubleSourcery SM header path
   let setup = setupUnits (nF)
                          (nC)
                          hiddenDims
@@ -117,9 +114,9 @@ multiLayerPerceptron (MLPOptions { nClasses = nC
                       Nothing -> mempty
                       Just p -> logCost p
       let initState = def { paramList
-                                    , learningRate
-                                    }
-      endState <- gradientDescent source
+                          , learningRate
+                          }
+      endState <- gradientDescent sourcerer
                                   units
                                   cost
                                   update

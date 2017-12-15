@@ -1,10 +1,11 @@
 module School.Train.GradientDescent
 ( gradientDescent ) where
 
-import Conduit ((.|), ConduitM, mapMC, sinkNull, takeWhileC)
+import Conduit ((.|), ConduitM, mapC, mapMC, sinkNull, takeWhileC)
 import Control.Monad.State.Lazy (get)
 import Data.Maybe (isJust)
-import School.App.AppS (AppS, runAppSConduit)
+import School.App.AppS (AppS, runAppS)
+import School.FileIO.MatrixSourcery (MatrixSourcery)
 import School.Train.GradientDescentPass (gradientDescentPass)
 import School.Train.IterationHandler (IterationHandler(..))
 import School.Train.UpdateParams (UpdateParams)
@@ -12,7 +13,7 @@ import School.Train.StoppingCondition (StoppingCondition(..))
 import School.Train.TrainState (TrainState)
 import School.Unit.CostFunction (CostFunction)
 import School.Unit.Unit (Unit)
-import School.Unit.UnitActivation (ActivationSource)
+import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitGradient (UnitGradient)
 import School.Utils.Either (mapRight)
 
@@ -27,7 +28,7 @@ stopping condition = mapMC $ \input -> do
     then return Nothing
     else return . Just $ input
 
-gradientDescent :: ActivationSource a
+gradientDescent :: MatrixSourcery a ()
                 -> [Unit a]
                 -> CostFunction a
                 -> UpdateParams a
@@ -36,19 +37,19 @@ gradientDescent :: ActivationSource a
                 -> TrainState a
                 -> IO (Either String
                               (TrainState a))
-gradientDescent source
+gradientDescent sourcerer
                 units
                 cost
                 update
                 condition
                 handler
                 initState = do
-  let pass = gradientDescentPass units cost update
-  let iterations = source
-                .| pass
-                .| runHandler handler
-                .| stopping condition
-                .| takeWhileC isJust
-                .| sinkNull
-  result <- runAppSConduit iterations $ initState
+  let sink = mapC BatchActivation
+          .| gradientDescentPass units cost update
+          .| runHandler handler
+          .| stopping condition
+          .| takeWhileC isJust
+          .| sinkNull
+  result <- runAppS initState $
+    sourcerer sink
   return $ mapRight snd result

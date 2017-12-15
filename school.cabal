@@ -19,14 +19,15 @@ library
                      , School.App.MultiLayerPerceptron 
                      , School.Evaluate.Evaluate
                      , School.FileIO.AppIO
-                     , School.FileIO.Confirmer
                      , School.FileIO.BinConversion
+                     , School.FileIO.Confirmer
+                     , School.FileIO.ConduitHeader
                      , School.FileIO.FileApp
                      , School.FileIO.FilePath
                      , School.FileIO.FileType
                      , School.FileIO.MatrixHeader
                      , School.FileIO.MatrixSink
-                     , School.FileIO.MatrixSource
+                     , School.FileIO.MatrixSourcery
                      , School.Train.AppTrain
                      , School.Train.BackwardPass
                      , School.Train.ForwardPass
@@ -43,6 +44,7 @@ library
                      , School.Types.DataType
                      , School.Types.PingPong
                      , School.Types.Slinky
+                     , School.Types.Sourcery
                      , School.Unit.Affine
                      , School.Unit.ApplyCost
                      , School.Unit.CostFunction
@@ -110,7 +112,7 @@ test-suite school-test
                      , School.FileIO.Test.BinConversion
                      , School.FileIO.Test.MatrixHeader
                      , School.FileIO.Test.MatrixSink
-                     , School.FileIO.Test.MatrixSource
+                     , School.FileIO.Test.MatrixSourcery
                      , School.TestUtils
                      , School.Types.Test.Conversion
                      , School.Types.Test.FloatEq

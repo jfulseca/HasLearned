@@ -7,9 +7,10 @@ import Conduit ((.|), sinkList)
 import Control.Monad.IO.Class (liftIO)
 import Data.Either (isRight)
 import Data.List.Split (chunksOf)
+import School.App.AppS (runAppSPure)
 import School.App.CSVReader
 import School.FileIO.MatrixHeader (MatrixHeader(..))
-import School.FileIO.MatrixSource (matrixDoubleSource)
+import School.FileIO.MatrixSourcery (matrixDoubleSourcery)
 import School.FileIO.FileType (FileType(..))
 import School.TestUtils (testRun)
 import School.Types.FloatEq (FloatEq(..))
@@ -17,7 +18,7 @@ import School.Types.DataType (DataType(..))
 import qualified Numeric.LinearAlgebra as NL
 import Prelude hiding (appendFile, writeFile)
 import System.Directory (removeFile)
-import Test.QuickCheck.Monadic (assert, monadicIO)
+import Test.QuickCheck.Monadic (assert, monadicIO, run)
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck hiding ((><))
 import Test.Tasty.TH
@@ -47,8 +48,8 @@ prop_convert_csv_file = monadicIO $ do
                     .| csvToMatrixDouble header
                     .| sinkList
   let original = readRes >>= matrixConcat
-  written <- testRun $ matrixDoubleSource SM header bFileName
-                    .| sinkList
+  written <- run . runAppSPure $
+    matrixDoubleSourcery SM header bFileName sinkList
   liftIO $ removeFile bFileName
   assert $ original ~= written
 

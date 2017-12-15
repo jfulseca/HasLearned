@@ -3,29 +3,27 @@
 module School.App.Test.FileTransformer
 ( fileTransformerTest ) where
 
-import Conduit ((.|), await, liftIO)
+import Conduit (await, liftIO)
 import qualified Data.ByteString.Lazy as BL
 import Control.Applicative (liftA2)
 import Data.Default.Class (def)
 import Data.Function (on)
 import Numeric.LinearAlgebra ((?))
-import School.FileIO.AppIO (AppIO, runAppIO)
+import School.App.AppS (runAppSPure)
 import School.App.FileTransformer
+import School.FileIO.AppIO (runAppIO)
 import School.FileIO.FileApp (fileApp)
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..))
-import School.FileIO.MatrixSource (matrixDoubleSource)
-import School.TestUtils (assertRight, dummyMatrix, testRun)
+import School.FileIO.MatrixSourcery (matrixDoubleSourcery)
+import School.TestUtils (assertRight, dummyMatrix)
 import School.Types.DataType (DataType(..))
 import School.Utils.Either (isLeft, isRight)
 import System.Directory (removeFile)
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck hiding ((><))
 import Test.Tasty.TH
-import Test.QuickCheck.Monadic (PropertyM, assert, monadicIO)
-
-run :: AppIO a -> PropertyM IO (Either String a)
-run = liftIO . runAppIO
+import Test.QuickCheck.Monadic (assert, monadicIO, run)
 
 sm3x3File :: String
 sm3x3File = "test/data/matrix3x3.sm"
@@ -49,7 +47,7 @@ prop_copy = monadicIO $ do
                     , outFileOpt = testFile
                     , outFileTypeOpt = Just SM
                     }
-  result <- run $ fileApp options
+  result <-liftIO . runAppIO $ fileApp options
   assert $ isRight result
   equal <- liftIO $ fileEq sm3x3File testFile
   liftIO $ removeFile testFile
@@ -60,7 +58,7 @@ prop_copy_guess_filetypes = monadicIO $ do
   let options = def { inFileOpt = sm3x3File
                     , outFileOpt = testFile
                     }
-  result <- run $ fileApp options
+  result <-liftIO . runAppIO $ fileApp options
   assert $ isRight result
   equal <- liftIO $ fileEq sm3x3File testFile
   liftIO $ removeFile testFile
@@ -73,7 +71,7 @@ prop_copy_add_extension = monadicIO $ do
                     , outFileOpt = "test"
                     , outFileTypeOpt = Just SM
                     }
-  result <- run $ fileApp options
+  result <-liftIO . runAppIO $ fileApp options
   assert $ isRight result
   equal <- liftIO $ fileEq sm3x3File testFile
   liftIO $ removeFile testFile
@@ -88,13 +86,11 @@ prop_skip_rows = monadicIO $ do
                     , outFileTypeOpt = Just SM
                     , skipRowsOpt = Just 2
                     }
-  result <- run $ fileApp options
+  result <-liftIO . runAppIO $ fileApp options
   assert $ isRight result
   let check = Just $ dummyMatrix 3 3 ? [2]
-  readRes <- testRun $ matrixDoubleSource SM
-                                          outHeader
-                                          testFile
-                   .| await
+  readRes <- run . runAppSPure $
+    matrixDoubleSourcery SM outHeader testFile await
   liftIO $ removeFile testFile
   assertRight (== check) readRes
 
@@ -104,7 +100,7 @@ prop_skip_too_many_rows = monadicIO $ do
                     , inFileTypeOpt = Just SM
                     , skipRowsOpt = Just 4
                     }
-  result <- run $ fileApp options
+  result <-liftIO . runAppIO $ fileApp options
   assert $ isLeft result
 
 prop_limit_extent :: Property
@@ -114,14 +110,12 @@ prop_limit_extent = monadicIO $ do
                     , nRowsOpt = Just 2
                     , outFileOpt = testFile
                     }
-  result <- run $ fileApp options
+  result <-liftIO . runAppIO $ fileApp options
   assert $ isRight result
   let check = Just $ dummyMatrix 3 3 ? [0, 1]
   let outHeader = header3x3 { rows = 2 }
-  readRes <- testRun $ matrixDoubleSource SM
-                                          outHeader
-                                          testFile
-                   .| await
+  readRes <- run . runAppSPure $
+    matrixDoubleSourcery SM outHeader testFile await
   liftIO $ removeFile testFile
   assertRight (== check) readRes
 
@@ -133,14 +127,12 @@ prop_skip_and_limit = monadicIO $ do
                     , skipRowsOpt = Just 1
                     , outFileOpt = testFile
                     }
-  result <- run $ fileApp options
+  result <-liftIO . runAppIO $ fileApp options
   assert $ isRight result
   let check = Just $ dummyMatrix 3 3 ? [1]
   let outHeader = header3x3 { rows = 1 }
-  readRes <- testRun $ matrixDoubleSource SM
-                                          outHeader
-                                          testFile
-                   .| await
+  readRes <- run . runAppSPure $
+    matrixDoubleSourcery SM outHeader testFile await
   liftIO $ removeFile testFile
   assertRight (== check) readRes
 
@@ -150,7 +142,7 @@ prop_limit_too_many_rows = monadicIO $ do
                     , inFileTypeOpt = Just SM
                     , nRowsOpt = Just 4
                     }
-  result <- run $ fileApp options
+  result <-liftIO . runAppIO $ fileApp options
   assert $ isLeft result
 
 prop_limit_and_skip_too_many :: Property
@@ -160,7 +152,7 @@ prop_limit_and_skip_too_many = monadicIO $ do
                     , nRowsOpt = Just 3
                     , skipRowsOpt = Just 1
                     }
-  result <- run $ fileApp options
+  result <-liftIO . runAppIO $ fileApp options
   assert $ isLeft result
 
 fileTransformerTest :: TestTree
