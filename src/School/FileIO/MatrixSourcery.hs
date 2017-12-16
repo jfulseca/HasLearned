@@ -7,7 +7,7 @@ module School.FileIO.MatrixSourcery
 , poolMatrix
 ) where
 
-import Conduit (($$+), (.|), ConduitM, mapMC,
+import Conduit (($$+-), (.|), ConduitM, mapMC,
                 nullC, sourceFileBS, takeCE)
 import Data.ByteString (ByteString)
 import School.App.AppS (AppS, liftAppS)
@@ -16,7 +16,7 @@ import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.Decoding (binToMatrixDouble)
 import School.Types.DataType (getSize)
-import School.Types.Sourcery (Sourcery, sourcery)
+import School.Types.Sourcery (Sourcery)
 import Numeric.LinearAlgebra (Element, Matrix, R)
 
 type MatrixConduit a = ConduitM ByteString
@@ -49,11 +49,8 @@ matrixDoubleSourcery fType
                      path
                      sink = do
   let size = rows * cols * getSize dataType
-  let cHeader = conduitHeader fType header
+  let source = sourceFileBS path
+  cHeader <- conduitHeader fType header source
   let trans = liftAppS
-           . (binToMatrixDouble dataType rows cols)
-  (resumable, _) <- sourceFileBS path $$+ cHeader
-  sourcery resumable (poolMatrix size trans) sink
-
---  let poolSink = poolMatrix size trans .| sink
---  resumable $$+- poolSink
+            . (binToMatrixDouble dataType rows cols)
+  cHeader $$+- (poolMatrix size trans) .| sink

@@ -1,10 +1,9 @@
 module School.FileIO.ConduitHeader
 ( ConduitHeader
 , conduitHeader
-, runConduitHeader
 ) where
 
-import Conduit ((.|), ($$++), ($$+-), ConduitM, ResumableSource,
+import Conduit ((.|), ($$+), ($$++), ConduitM, ResumableSource,
                 mapM_C, takeCE, takeWhileCE)
 import Data.Attoparsec.ByteString (parseOnly) 
 import Data.ByteString (ByteString)
@@ -15,27 +14,28 @@ import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader, compatibleHeaders)
 import School.Utils.Constants (binSeparator, separator)
 
-type ConduitHeader a = ConduitM ByteString
-                                Void
-                                (AppS a)
-                                ()
-
-runConduitHeader :: ConduitHeader a
-                 -> ResumableSource (AppS a) ByteString
-                 -> ConduitM ByteString Void (AppS a) b
-                 -> AppS a b
-runConduitHeader cHeader source sink = do
-  (resumable, _) <- source $$++ cHeader
-  resumable $$+- sink
+type ConduitHeader a =
+    ConduitM () ByteString (AppS a) ()
+ -> AppS a (ResumableSource (AppS a) ByteString)
 
 conduitHeader :: FileType
               -> MatrixHeader
               -> ConduitHeader a
-conduitHeader SM = smConduitHeader
-conduitHeader _ = undefined
+conduitHeader SM header source = do
+  let sink = smConduitHeader header
+  (resumable, _) <- source $$+ sink
+  return resumable 
+conduitHeader _ _ _ = undefined
 
+type HeaderSink a =
+  ConduitM ByteString Void (AppS a) ()
+
+{-idxConduitHeader :: MatrixHeader
+                 -> ConduitHeader a
+idxConduitHeader header = do
+-}
 smConduitHeader :: MatrixHeader
-                -> ConduitHeader a
+                -> HeaderSink a
 smConduitHeader header = do
   let sepEq = (==separator)
   let compat = compatibleHeaders header
@@ -45,7 +45,7 @@ smConduitHeader header = do
 
 confirmAtom :: (Eq b, FromByteString b, Show b)
             => (b -> Bool)
-            -> ConduitHeader a
+            -> HeaderSink a
 confirmAtom check = mapM_C $ \bytes -> do
   let parseResult = atomParser check bytes
   liftAppS parseResult
