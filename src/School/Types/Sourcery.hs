@@ -1,20 +1,20 @@
 module School.Types.Sourcery
 ( Sourcery
-, liftsourcery
+, liftSourcery
 , sourcery
 ) where
 
-import Conduit (($$+-), (.|), ConduitM, ResourceT,
-                ResumableSource, runConduitRes)
+import Conduit (($$+-), (.|), ConduitM, ResumableSource, runConduit)
 import Data.Void (Void)
 
 type Sourcery i m r = ConduitM i Void m r
                    -> m r
 
-liftSourcery :: ConduitM () o (ResourceT m) ()
+liftSourcery :: (Monad m)
+             => ConduitM () o m ()
              -> Sourcery o m ()
-liftSourcery source sink =
-  runConduitRes $ source .| sink
+liftSourcery source sink = do
+  runConduit $ source .| sink
 
 sourcery :: (Monad m)
          => ResumableSource m a
