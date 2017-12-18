@@ -13,7 +13,7 @@ extra-source-files:  ChangeLog.md
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     School.App.AppS
+  exposed-modules:     School.Train.AppTrain
                      , School.App.CSVReader
                      , School.App.FileTransformer
                      , School.App.MultiLayerPerceptron 

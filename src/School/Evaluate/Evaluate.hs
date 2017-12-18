@@ -3,8 +3,8 @@
 module School.Evaluate.Evaluate
 ( evaluate ) where
 
-import Conduit ((.|), sinkList)
-import School.App.AppS (runAppSConduit)
+import Conduit ((.|), runConduit, sinkList)
+import School.Train.AppTrain (runAppTrain)
 import School.Train.ForwardPass (forwardPass)
 import School.Train.TrainState (TrainState(..), def)
 import School.Types.PingPong (PingPong)
@@ -25,5 +25,5 @@ evaluate units costF paramList source = do
           .| forwardPass units costF
           .| sinkList
   let state = def { paramList }
-  result <- runAppSConduit pass state
+  result <- runAppTrain state $ runConduit pass
   return $ mapRight (cost . snd) result

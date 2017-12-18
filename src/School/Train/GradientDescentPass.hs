@@ -6,7 +6,7 @@ module School.Train.GradientDescentPass
 import Conduit ((.|), ConduitM, mapMC)
 import Control.Monad.Except (throwError)
 import Control.Monad.State.Lazy (get, put)
-import School.App.AppS (AppS)
+import School.Train.AppTrain (AppTrain)
 import School.Train.BackwardPass (backwardPass)
 import School.Train.ForwardPass (forwardPass)
 import School.Train.TrainState (TrainState(..))
@@ -20,7 +20,7 @@ import School.Unit.UnitGradient (UnitGradient(..))
 updateStep :: UpdateParams a
            -> ConduitM (BackwardStack a)
                        (UnitGradient a)
-                       (AppS a)
+                       (AppTrain a)
                        ()
 updateStep update = mapMC $ \(_, grad) -> do
   state@TrainState{ iterationCount } <- get
@@ -39,7 +39,7 @@ gradientDescentPass :: [Unit a]
                     -> UpdateParams a
                     -> ConduitM (UnitActivation a)
                                 (UnitGradient a)
-                                (AppS a)
+                                (AppTrain a)
                                 ()
 gradientDescentPass units cost update =
     forwardPass units cost

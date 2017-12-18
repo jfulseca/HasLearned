@@ -8,14 +8,14 @@ module School.Train.IterationHandler
 
 import Conduit ((.|), ConduitM, liftIO, mapC, mapMC)
 import Control.Monad.State.Lazy (get, put)
-import School.App.AppS (AppS)
+import School.Train.AppTrain (AppTrain)
 import School.Train.TrainState (HandlerStore(..), TrainState(..))
 import System.FilePath (FilePath)
 
 newtype IterationHandler a b =
-  IterationHandler { runHandler :: ConduitM b b (AppS a) () }
+  IterationHandler { runHandler :: ConduitM b b (AppTrain a) () }
 
-toHandler :: ConduitM b b (AppS a) ()
+toHandler :: ConduitM b b (AppTrain a) ()
           -> IterationHandler a b
 toHandler runHandler = IterationHandler { runHandler }
 

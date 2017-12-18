@@ -8,14 +8,14 @@ module School.Unit.UnitActivation
 
 import Conduit (ConduitM)
 import Numeric.LinearAlgebra (Container, Matrix, Vector)
-import School.App.AppS (AppS)
+import School.Train.AppTrain (AppTrain)
 
 data UnitActivation a =
     BatchActivation (Matrix a)
  |  ApplyFail String deriving (Show)
 
 type ActivationSource a =
-  ConduitM () (UnitActivation a) (AppS a) ()
+  ConduitM () (UnitActivation a) (AppTrain a) ()
 
 instance (Container Vector a, Eq a, Num a) => Eq (UnitActivation a) where
   (BatchActivation a1) == (BatchActivation a2) =

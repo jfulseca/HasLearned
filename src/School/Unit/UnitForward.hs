@@ -5,7 +5,7 @@ module School.Unit.UnitForward
 
 import Conduit (ConduitM, mapMC)
 import Control.Monad.Except (throwError)
-import School.App.AppS (AppS)
+import School.Train.AppTrain (AppTrain)
 import School.Train.StateFunctions (getParams)
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitActivation (UnitActivation(..))
@@ -14,7 +14,7 @@ type ForwardStack a = [UnitActivation a]
 
 applyUnit :: Unit a 
           -> ForwardStack a
-          -> AppS a (ForwardStack a)
+          -> AppTrain a (ForwardStack a)
 applyUnit _ [] =
   throwError $ "No input activations " ++
                " to forward network unit "
@@ -29,6 +29,6 @@ applyUnit unit activations = do
 
 unitForward :: Unit a -> ConduitM (ForwardStack a)
                                   (ForwardStack a)
-                                  (AppS a)
+                                  (AppTrain a)
                                   ()
 unitForward unit = mapMC (applyUnit unit)

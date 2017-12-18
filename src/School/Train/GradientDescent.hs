@@ -4,7 +4,7 @@ module School.Train.GradientDescent
 import Conduit ((.|), ConduitM, mapC, mapMC, sinkNull, takeWhileC)
 import Control.Monad.State.Lazy (get)
 import Data.Maybe (isJust)
-import School.App.AppS (AppS, runAppS)
+import School.Train.AppTrain (AppTrain, runAppTrain)
 import School.FileIO.MatrixSourcery (MatrixSourcery)
 import School.Train.GradientDescentPass (gradientDescentPass)
 import School.Train.IterationHandler (IterationHandler(..))
@@ -20,7 +20,7 @@ import School.Utils.Either (mapRight)
 stopping :: StoppingCondition a
          -> ConduitM (UnitGradient a)
                      (Maybe (UnitGradient a))
-                     (AppS a)
+                     (AppTrain a)
                      ()
 stopping condition = mapMC $ \input -> do
   state <- get
@@ -28,7 +28,7 @@ stopping condition = mapMC $ \input -> do
     then return Nothing
     else return . Just $ input
 
-gradientDescent :: MatrixSourcery (AppS a) a ()
+gradientDescent :: MatrixSourcery (AppTrain a) a ()
                 -> [Unit a]
                 -> CostFunction a
                 -> UpdateParams a
@@ -50,6 +50,6 @@ gradientDescent sourcerer
           .| stopping condition
           .| takeWhileC isJust
           .| sinkNull
-  result <- runAppS initState $
+  result <- runAppTrain initState $
     sourcerer sink
   return $ mapRight snd result

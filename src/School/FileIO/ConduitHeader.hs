@@ -70,7 +70,7 @@ errorMsg :: Int -> DataType -> String
 errorMsg i t = "Type indicator " ++ (show i)
             ++ " does not correspond to " ++ (show t)
 
-compat :: DataType -> [Int] -> AppS a ()
+compat :: DataType -> [Int] -> AppTrain a ()
 compat dType ints = do
   let check = length ints == 4
            && ints!!0 == 0

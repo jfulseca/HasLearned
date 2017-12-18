@@ -30,7 +30,7 @@ module School.TestUtils
 , whenPrint
 ) where
 
-import Conduit (ConduitM, liftIO)
+import Conduit (ConduitM, liftIO, runConduit)
 import Control.Exception (catch)
 import Control.Monad (when)
 import Data.Default.Class (def)
@@ -38,7 +38,7 @@ import Data.Either (either)
 import Data.List (sort)
 import Data.Void (Void)
 import Numeric.LinearAlgebra ((><), (|>), Element, IndexOf, Matrix, R, Vector, accum, assoc, fromColumns, fromList, fromRows, size, sumElements, toColumns)
-import School.App.AppS (AppS, runAppSConduit)
+import School.Train.AppTrain (AppTrain, runAppTrain)
 import School.Train.TrainState (TrainState)
 import School.Types.Slinky (Slinky)
 import School.Unit.CostFunction (CostFunction(..))
@@ -65,11 +65,11 @@ assertRight :: (b -> Bool)
 assertRight f = either (const $ assert False)
                        (\x -> assert $ f x)
 
-testState :: ConduitM () Void (AppS R) b
+testState :: ConduitM () Void (AppTrain R) b
           -> TrainState R
           -> PropertyM IO (Either String (b, TrainState R))
 testState conduit state =
-  liftIO $ runAppSConduit conduit state
+  liftIO . (runAppTrain state) . runConduit $ conduit
 
 isSorted :: (Ord a) => [a] -> Bool
 isSorted xs = xs == (reverse . sort $ xs)
