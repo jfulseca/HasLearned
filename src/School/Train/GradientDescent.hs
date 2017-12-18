@@ -28,7 +28,7 @@ stopping condition = mapMC $ \input -> do
     then return Nothing
     else return . Just $ input
 
-gradientDescent :: MatrixSourcery a ()
+gradientDescent :: MatrixSourcery (AppS a) a ()
                 -> [Unit a]
                 -> CostFunction a
                 -> UpdateParams a

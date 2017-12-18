@@ -5,20 +5,18 @@ module School.FileIO.FileApp
 , fileApp
 ) where
 
-import Conduit (ConduitM)
+import Conduit (ConduitM, runConduit)
 import Data.Void (Void)
-import School.FileIO.AppIO (AppIO, runConduitInAppIO)
-import School.App.AppS (AppS)
+import School.FileIO.AppIO (AppIO)
 
 class FileApp options where
   data FAParams options :: *
   scan :: options -> AppIO (FAParams options)
   prepare :: (FAParams options)
-          -> ConduitM () Void (AppS a) ()
+          -> ConduitM () Void AppIO ()
 
 fileApp :: (FileApp o) => o -> AppIO ()
 fileApp options = do
   params <- scan options
   let pipeLine = prepare params 
-  runConduitInAppIO pipeLine
-
+  runConduit pipeLine

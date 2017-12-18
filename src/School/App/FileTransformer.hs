@@ -5,11 +5,11 @@ module School.App.FileTransformer
 
 import Conduit ((.|), ConduitM, mapC)
 import Control.Monad (when)
+import Data.ByteString (ByteString)
 import Data.Conduit.Binary (sinkFile, sourceFileRange)
 import Data.Default.Class (Default(..))
 import Data.Void (Void)
-import School.FileIO.AppIO (AppIO, liftAppIO)
-import School.App.AppS (AppS, ConduitBS)
+import School.FileIO.AppIO (AppIO, liftResult)
 import School.FileIO.FileApp (FileApp(..))
 import School.FileIO.FilePath (FilePath, guessFileType)
 import School.FileIO.FileType (FileType(..))
@@ -52,7 +52,8 @@ instance Default FileTransformerOptions where
                                , skipRowsOpt = Nothing
                                }
 
-getHandler :: FAParams FileTransformerOptions -> ConduitBS a
+getHandler :: FAParams FileTransformerOptions
+           -> ConduitM ByteString ByteString AppIO ()
 getHandler _ = mapC id
 
 getOffset :: Integer
@@ -92,17 +93,17 @@ getLimits :: Maybe Integer
 getLimits Nothing Nothing _ _ _ =
   return (0, Nothing)
 getLimits (Just skip) Nothing nCols dType nEl = do
-  offset <- liftAppIO $
+  offset <- liftResult $
      getOffset skip dType nEl nCols
   return (offset, Nothing)
 getLimits Nothing (Just size) nCols dType nEl = do
-  extent <- liftAppIO $
+  extent <- liftResult $
      getExtent size dType nEl nCols 0
   return (0, Just extent)
 getLimits (Just skip) (Just size) nCols dType nEl = do
-  offset <- liftAppIO $
+  offset <- liftResult $
      getOffset skip dType nEl nCols
-  extent <- liftAppIO $
+  extent <- liftResult $
      getExtent size dType nEl nCols skip
   return (offset, Just extent)
 
@@ -121,7 +122,7 @@ scanOptions FileTransformerOptions { inFileOpt
   fileExists inputFile
   hBytes <- getHeaderBytes inputType inputFile
   let nHeader = getFileHeaderLength inputType hBytes
-  inHeader@MatrixHeader { cols } <- liftAppIO $
+  inHeader@MatrixHeader { cols } <- liftResult $
     headerParser inputType hBytes
   checkFile inputFile inputType inHeader
   nEl <- getNElements inDataTypeOpt
@@ -152,7 +153,7 @@ scanOptions FileTransformerOptions { inFileOpt
                                }
 
 prepareHandler :: FAParams FileTransformerOptions
-               -> ConduitM () Void (AppS a) ()
+               -> ConduitM () Void AppIO ()
 prepareHandler p@FileTransformerParams { inputFile
                                        , totalOffset
                                        , outHeader

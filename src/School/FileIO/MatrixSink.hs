@@ -6,7 +6,7 @@ module School.FileIO.MatrixSink
 
 import Conduit ((.|), ConduitM, mapC, sinkFileBS, yield)
 import Data.Void (Void)
-import School.App.AppS (AppS)
+import School.FileIO.AppIO (AppIO)
 import School.FileIO.FileType (FileType)
 import School.FileIO.MatrixHeader (MatrixHeader(..), headerBuilder)
 import School.Types.Encoding (matrixDoubleToBin, matrixIntToBin)
@@ -14,7 +14,7 @@ import Numeric.LinearAlgebra.Data (I, Matrix, R)
 
 type MatrixSink a = ConduitM (Matrix a)
                              Void
-                             (AppS a)
+                             AppIO
                              ()
 
 matrixDoubleSink :: FileType

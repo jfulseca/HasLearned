@@ -3,20 +3,21 @@
 module School.FileIO.Test.MatrixSourcery
 ( matrixSourceryTest ) where
 
-import Conduit ((.|), sinkList, yield)
+import Conduit (($$+-), (.|), runConduit, sinkList, yield)
 import Data.ByteString (ByteString)
 import Data.ByteString.Conversion (toByteString')
 import Data.Either (isLeft, isRight)
 import Data.Monoid ((<>))
-import School.App.AppS (liftAppS, runAppSPure)
-import School.FileIO.Confirmer (confirmer)
+import School.FileIO.AppIO (AppIO, runAppIO)
+import School.FileIO.ConduitHeader (conduitHeader)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.FileIO.MatrixSourcery
 import School.FileIO.FileType (FileType(..)) 
-import School.TestUtils (def, dummyList, dummyMatrix, testRun)
+import School.TestUtils (def, dummyList, dummyMatrix)
 import School.Types.Decoding (binToMatrixDouble)
 import School.Types.Encoding (doubleToBin)
 import School.Types.DataType (DataType(..), getSize)
+import School.Types.LiftResult (liftResult)
 import Numeric.LinearAlgebra.Data (Matrix)
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck hiding ((><))
@@ -26,16 +27,16 @@ import Test.QuickCheck.Monadic (PropertyM, assert, monadicIO, pre, run)
 testHeader :: MatrixHeader
            -> ByteString
            -> PropertyM IO (Either String [ByteString])
-testHeader header byteString = testRun $
-    yield byteString 
- .| confirmer SM header
- .| sinkList
+testHeader header byteString = run . runAppIO $ do
+  let source = yield byteString
+  cHeader <- conduitHeader SM header source
+  cHeader $$+- sinkList
 
 poolMatrixDouble :: Positive Int
                  -> Positive Int
-                 -> MatrixConduit Double
+                 -> MatrixConduit AppIO Double
 poolMatrixDouble (Positive r) (Positive c) =
-  let trans = liftAppS
+  let trans = liftResult
             . (binToMatrixDouble DBL64B r c)
       size = getSize DBL64B
   in poolMatrix (r * c * size) trans
@@ -45,7 +46,7 @@ testMatrix :: Positive Int
            -> ByteString
            -> PropertyM IO (Either String [Matrix Double])
 
-testMatrix pr pc bytes = testRun $
+testMatrix pr pc bytes = run . runAppIO . runConduit $
     yield bytes
  .| poolMatrixDouble pr pc
  .| sinkList
@@ -135,7 +136,7 @@ prop_read_3x3_matrix :: Property
 prop_read_3x3_matrix = monadicIO $ do
   let h = MatrixHeader DBL64B 3 3
   let path = "test/data/matrix3x3.sm"
-  matrix <- run . runAppSPure $
+  matrix <- run . runAppIO $
     matrixDoubleSourcery SM h path sinkList
   let check = Right $ [dummyMatrix 3 3]
   assert $ matrix == check
@@ -144,7 +145,7 @@ prop_read_3x3_matrix_twice :: Property
 prop_read_3x3_matrix_twice = monadicIO $ do
   let h = MatrixHeader DBL64B 3 3
   let path = "test/data/matrix3x3Twice.sm"
-  matrix <- run . runAppSPure $
+  matrix <- run . runAppIO $
     matrixDoubleSourcery SM h path sinkList
   let check = dummyMatrix 3 3
   assert $ matrix == Right [check, check]

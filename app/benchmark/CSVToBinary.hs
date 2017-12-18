@@ -1,5 +1,7 @@
+import Conduit (ConduitM, runConduit)
 import Criterion.Main
-import School.App.AppS (FullConduitAppS, runAppSConduitDefState)
+import Data.Void (Void)
+import School.FileIO.AppIO (AppIO, runAppIO)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.App.CSVReader (csvToBinary)
 import School.Types.DataType (DataType(..))
@@ -13,7 +15,7 @@ dataDir = "app/benchmark/data/"
 convert :: (  FilePath
            -> FilePath
            -> MatrixHeader
-           -> FullConduitAppS Double)
+           -> ConduitM () Void AppIO ())
         -> FilePath
         -> Int
         -> Int
@@ -24,7 +26,7 @@ convert readWrite fName nRows nCols = do
   let conversion = readWrite (dataDir ++ fName)
                              outFile
                              header
-  result <- runAppSConduitDefState conversion
+  result <- runAppIO . runConduit $ conversion
   removeFile outFile
   either putStrLn
          (const $ return ())

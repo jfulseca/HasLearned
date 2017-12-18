@@ -1,9 +1,8 @@
-import Conduit (ConduitM)
+import Conduit (runConduit)
 import Data.Either (either)
 import Data.Semigroup ((<>))
-import Data.Void (Void)
-import School.App.AppS (AppS, runAppSConduitDefState)
 import School.App.CSVReader
+import School.FileIO.AppIO (runAppIO)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.DataType (DataType(..))
 import Options.Applicative
@@ -46,8 +45,7 @@ convert args = do
   let conv = csvToBinary (inFile args)
                          (outFile args)
                          matrixHeader
-               :: ConduitM () Void (AppS Double) ()
-  result <- runAppSConduitDefState conv
+  result <- runAppIO . runConduit $ conv
   either putStrLn return result
 
 main :: IO ()

@@ -9,7 +9,6 @@ import Control.Applicative (liftA2)
 import Data.Default.Class (def)
 import Data.Function (on)
 import Numeric.LinearAlgebra ((?))
-import School.App.AppS (runAppSPure)
 import School.App.FileTransformer
 import School.FileIO.AppIO (runAppIO)
 import School.FileIO.FileApp (fileApp)
@@ -86,10 +85,10 @@ prop_skip_rows = monadicIO $ do
                     , outFileTypeOpt = Just SM
                     , skipRowsOpt = Just 2
                     }
-  result <-liftIO . runAppIO $ fileApp options
+  result <- liftIO . runAppIO $ fileApp options
   assert $ isRight result
   let check = Just $ dummyMatrix 3 3 ? [2]
-  readRes <- run . runAppSPure $
+  readRes <- run . runAppIO $
     matrixDoubleSourcery SM outHeader testFile await
   liftIO $ removeFile testFile
   assertRight (== check) readRes
@@ -114,7 +113,7 @@ prop_limit_extent = monadicIO $ do
   assert $ isRight result
   let check = Just $ dummyMatrix 3 3 ? [0, 1]
   let outHeader = header3x3 { rows = 2 }
-  readRes <- run . runAppSPure $
+  readRes <- run . runAppIO $
     matrixDoubleSourcery SM outHeader testFile await
   liftIO $ removeFile testFile
   assertRight (== check) readRes
@@ -131,7 +130,7 @@ prop_skip_and_limit = monadicIO $ do
   assert $ isRight result
   let check = Just $ dummyMatrix 3 3 ? [1]
   let outHeader = header3x3 { rows = 1 }
-  readRes <- run . runAppSPure $
+  readRes <- run . runAppIO $
     matrixDoubleSourcery SM outHeader testFile await
   liftIO $ removeFile testFile
   assertRight (== check) readRes

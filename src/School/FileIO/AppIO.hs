@@ -1,26 +1,28 @@
+{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, TypeSynonymInstances #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
+
 module School.FileIO.AppIO
 ( AppIO
-, liftAppIO
+, liftResult
+, maybeToAppIO
 , runAppIO
-, runConduitInAppIO
 ) where
 
-import Conduit (ConduitM)
+import Conduit (ResourceT, runResourceT)
+import Control.Monad.Except (throwError)
+import Control.Monad.Trans.Class (lift)
 import Control.Monad.Trans.Except (ExceptT(..), runExceptT)
-import Data.Void (Void)
-import School.App.AppS (AppS, runAppSConduitDefState)
+import School.Types.Error (Error)
+import School.Types.LiftResult (LiftResult(..))
 
-type AppIO a = ExceptT String IO a
+type AppIO = ResourceT (ExceptT Error IO)
 
-liftAppIO :: Either String a -> AppIO a
-liftAppIO = ExceptT . return
+instance LiftResult AppIO where
+  liftResult = lift . ExceptT . return
 
 runAppIO :: AppIO a -> IO (Either String a)
-runAppIO = runExceptT
+runAppIO = runExceptT . runResourceT
 
-runConduitInAppIO :: ConduitM ()
-                              Void
-                              (AppS Int)
-                              b
-                  -> AppIO b
-runConduitInAppIO = ExceptT . runAppSConduitDefState
+maybeToAppIO :: Error -> Maybe a -> AppIO a
+maybeToAppIO e =
+  maybe (throwError e) (liftResult . Right)

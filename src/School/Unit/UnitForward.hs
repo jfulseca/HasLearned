@@ -16,12 +16,12 @@ applyUnit :: Unit a
           -> ForwardStack a
           -> AppS a (ForwardStack a)
 applyUnit _ [] =
-  throwError $ "ERROR: No input activations " ++
+  throwError $ "No input activations " ++
                " to forward network unit "
 applyUnit unit activations = do
   let input = head activations
   case input of
-    (ApplyFail msg) -> throwError $ "ERROR: " ++ msg
+    (ApplyFail msg) -> throwError msg
     _ -> do
       params <- getParams
       let output = apply unit params input

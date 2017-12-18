@@ -1,5 +1,11 @@
 set -euo pipefail
 
-stack build
+arg="$@"
+
+if [ ! -z $arg ]; then
+  arg=$(echo --ghc-options $arg)
+fi
+
+stack build $arg
 
 set +euo pipefail

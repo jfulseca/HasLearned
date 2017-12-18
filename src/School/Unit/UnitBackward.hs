@@ -3,7 +3,8 @@ module School.Unit.UnitBackward
 , unitBackward ) where
 
 import Conduit (ConduitM, mapMC)
-import School.App.AppS (AppS, throw)
+import Control.Monad.Except (throwError)
+import School.App.AppS (AppS)
 import School.Train.AppTrain (getParams, putParamDerivs)
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitActivation (UnitActivation(..))
@@ -19,13 +20,13 @@ derivUnit :: Unit a
           -> BackwardStack a
           -> AppS a (BackwardStack a)
 derivUnit _ ([], _) =
-  throw $ "No input activations " ++
+  throwError $ "No input activations " ++
           "to backward network unit "
-derivUnit _ (_, GradientFail msg) = throw msg
+derivUnit _ (_, GradientFail msg) = throwError msg
 derivUnit unit (acts, inGrad) = do
   let input = head acts
   case input of
-    (ApplyFail msg) -> throw $ "ERROR: " ++ msg
+    (ApplyFail msg) -> throwError msg
     _ -> do
       params <- getParams
       let (gradient, derivs) = deriv unit params inGrad input

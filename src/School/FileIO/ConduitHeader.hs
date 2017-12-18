@@ -3,39 +3,41 @@ module School.FileIO.ConduitHeader
 , conduitHeader
 ) where
 
-import Conduit ((.|), ($$+), ($$++), ConduitM, ResumableSource,
+import Conduit ((.|), ($$+), ConduitM, ResumableSource,
                 mapM_C, takeCE, takeWhileCE)
 import Data.Attoparsec.ByteString (parseOnly) 
 import Data.ByteString (ByteString)
 import Data.ByteString.Conversion (FromByteString(..))
 import Data.Void (Void)
-import School.App.AppS (AppS, liftAppS)
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader, compatibleHeaders)
+import School.Types.LiftResult (LiftResult(..))
 import School.Utils.Constants (binSeparator, separator)
 
-type ConduitHeader a =
-    ConduitM () ByteString (AppS a) ()
- -> AppS a (ResumableSource (AppS a) ByteString)
+type ConduitHeader m =
+    ConduitM () ByteString m ()
+ -> m (ResumableSource m ByteString)
 
-conduitHeader :: FileType
+conduitHeader :: (LiftResult m)
+              => FileType
               -> MatrixHeader
-              -> ConduitHeader a
+              -> ConduitHeader m
 conduitHeader SM header source = do
   let sink = smConduitHeader header
   (resumable, _) <- source $$+ sink
   return resumable 
 conduitHeader _ _ _ = undefined
 
-type HeaderSink a =
-  ConduitM ByteString Void (AppS a) ()
+type HeaderSink m =
+  ConduitM ByteString Void m ()
 
 {-idxConduitHeader :: MatrixHeader
-                 -> ConduitHeader a
+                 -> ConduitHeader m
 idxConduitHeader header = do
 -}
-smConduitHeader :: MatrixHeader
-                -> HeaderSink a
+smConduitHeader :: (LiftResult m)
+                => MatrixHeader
+                -> HeaderSink m
 smConduitHeader header = do
   let sepEq = (==separator)
   let compat = compatibleHeaders header
@@ -43,12 +45,12 @@ smConduitHeader header = do
   takeWhileCE (/= binSeparator) .| confirmAtom compat
   takeCE 1 .| confirmAtom sepEq
 
-confirmAtom :: (Eq b, FromByteString b, Show b)
+confirmAtom :: (Eq b, FromByteString b, LiftResult m, Show b)
             => (b -> Bool)
-            -> HeaderSink a
+            -> HeaderSink m
 confirmAtom check = mapM_C $ \bytes -> do
   let parseResult = atomParser check bytes
-  liftAppS parseResult
+  liftResult parseResult
   where
     atomParser c b = do
       atom <- parseOnly parser b
@@ -77,7 +79,7 @@ compat dType ints = do
        (throw "Invalid IDX format")
   let coeff = ints!!2
   let dType' = fromIdxIndicator coeff
-  liftAppS $ either Left
+  liftResult $ either Left
                     (\t -> if t == dType
                             then Right ()
                             else Left $ errorMsg coeff dType)

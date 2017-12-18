@@ -20,7 +20,6 @@ library
                      , School.Evaluate.Evaluate
                      , School.FileIO.AppIO
                      , School.FileIO.BinConversion
-                     , School.FileIO.Confirmer
                      , School.FileIO.ConduitHeader
                      , School.FileIO.FileApp
                      , School.FileIO.FilePath
@@ -40,8 +39,10 @@ library
                      , School.Train.UpdateParams
                      , School.Types.Decoding
                      , School.Types.Encoding
+                     , School.Types.Error
                      , School.Types.FloatEq
                      , School.Types.DataType
+                     , School.Types.LiftResult
                      , School.Types.PingPong
                      , School.Types.Slinky
                      , School.Types.Sourcery
@@ -155,6 +156,7 @@ benchmark csv-benchmark
   ghc-options:         -Wall
   build-depends:       QuickCheck
                      , base >= 4.9
+                     , conduit-combinators
                      , criterion
                      , directory
                      , filepath

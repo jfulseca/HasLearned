@@ -5,8 +5,9 @@ module School.Unit.ApplyCost
 
 import Conduit (ConduitM, mapMC)
 import Control.Monad (when)
+import Control.Monad.Except (throwError)
 import Control.Monad.State.Lazy (get)
-import School.App.AppS (AppS, throw)
+import School.App.AppS (AppS)
 import School.Train.AppTrain (putCost)
 import School.Train.TrainState (TrainState(..))
 import School.Unit.CostFunction (CostFunction(..))
@@ -19,12 +20,12 @@ applyCost :: CostFunction a
                       (AppS a)
                       ()
 applyCost costFunc = mapMC $ \stack -> do
-  when (length stack < 1) $ throw "No activations in applyCost"
+  when (length stack < 1) $ throwError "No activations in applyCost"
   let activation = head stack
   TrainState { costParams } <- get
   let cost = computeCost costFunc activation costParams
-  either throw putCost cost
+  either throwError putCost cost
   let grad = derivCost costFunc activation costParams
-  either throw
+  either throwError
     (\g -> return (tail stack, g))
     grad

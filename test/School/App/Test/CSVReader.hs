@@ -3,16 +3,15 @@
 module School.App.Test.CSVReader
 ( csvReaderTest ) where
 
-import Conduit ((.|), sinkList)
+import Conduit ((.|), runConduit, sinkList)
 import Control.Monad.IO.Class (liftIO)
 import Data.Either (isRight)
 import Data.List.Split (chunksOf)
-import School.App.AppS (runAppSPure)
 import School.App.CSVReader
+import School.FileIO.AppIO (runAppIO)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.FileIO.MatrixSourcery (matrixDoubleSourcery)
 import School.FileIO.FileType (FileType(..))
-import School.TestUtils (testRun)
 import School.Types.FloatEq (FloatEq(..))
 import School.Types.DataType (DataType(..))
 import qualified Numeric.LinearAlgebra as NL
@@ -40,15 +39,15 @@ prop_convert_csv_file = monadicIO $ do
   let filePath = "test/data/csvTest.csv"
   let bFileName = "test.dat"
   let header = MatrixHeader DBL64B 51 3
-  writeRes <- testRun $ csvToBinary filePath
-                                    bFileName
-                                    header
+  writeRes <- run . runAppIO . runConduit $
+    csvToBinary filePath bFileName header
   assert $ isRight writeRes
-  readRes <- testRun $ readCSV filePath
-                    .| csvToMatrixDouble header
-                    .| sinkList
+  readRes <- run . runAppIO . runConduit $
+      readCSV filePath
+     .| csvToMatrixDouble header
+     .| sinkList
   let original = readRes >>= matrixConcat
-  written <- run . runAppSPure $
+  written <- run . runAppIO $
     matrixDoubleSourcery SM header bFileName sinkList
   liftIO $ removeFile bFileName
   assert $ original ~= written

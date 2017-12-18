@@ -24,7 +24,6 @@ module School.TestUtils
 , randomVector
 , singleClassOutput
 , testIOCatch
-, testRun
 , testState
 , unitCorrect
 , weight1
@@ -39,7 +38,7 @@ import Data.Either (either)
 import Data.List (sort)
 import Data.Void (Void)
 import Numeric.LinearAlgebra ((><), (|>), Element, IndexOf, Matrix, R, Vector, accum, assoc, fromColumns, fromList, fromRows, size, sumElements, toColumns)
-import School.App.AppS (AppS, runAppSConduit, runAppSConduitDefState)
+import School.App.AppS (AppS, runAppSConduit)
 import School.Train.TrainState (TrainState)
 import School.Types.Slinky (Slinky)
 import School.Unit.CostFunction (CostFunction(..))
@@ -52,7 +51,7 @@ import School.Unit.WeightDecay (weightDecay)
 import School.Utils.Double (doubleRange)
 import System.Exit (ExitCode(..))
 import System.Random (getStdRandom, randomR)
-import Test.QuickCheck.Monadic (PropertyM, assert, run)
+import Test.QuickCheck.Monadic (PropertyM, assert)
 
 testIOCatch :: IO a -> PropertyM IO ExitCode
 testIOCatch action = liftIO $
@@ -74,10 +73,6 @@ testState conduit state =
 
 isSorted :: (Ord a) => [a] -> Bool
 isSorted xs = xs == (reverse . sort $ xs)
-
-testRun :: ConduitM () Void (AppS R) b
-        -> PropertyM IO (Either String b)
-testRun = run . runAppSConduitDefState
 
 dummyList :: (Num a) => Int -> Int -> [a]
 dummyList r c = map fromIntegral [ r*i + j | i <- [1..r], j <- [1..c] ]

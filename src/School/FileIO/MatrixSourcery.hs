@@ -7,27 +7,27 @@ module School.FileIO.MatrixSourcery
 , poolMatrix
 ) where
 
-import Conduit (($$+-), (.|), ConduitM, mapMC,
+import Conduit (($$+-), (.|), ConduitM, MonadResource, mapMC,
                 nullC, sourceFileBS, takeCE)
 import Data.ByteString (ByteString)
-import School.App.AppS (AppS, liftAppS)
 import School.FileIO.ConduitHeader (conduitHeader)
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.Decoding (binToMatrixDouble)
 import School.Types.DataType (getSize)
+import School.Types.LiftResult (LiftResult(..))
 import School.Types.Sourcery (Sourcery)
 import Numeric.LinearAlgebra (Element, Matrix, R)
 
-type MatrixConduit a = ConduitM ByteString
-                                (Matrix a)
-                                (AppS a)
-                                ()
+type MatrixConduit m a = ConduitM ByteString
+                                  (Matrix a)
+                                  m
+                                  ()
 
-poolMatrix :: (Element a)
+poolMatrix :: (Element a, Monad m)
            => Int
-           -> (ByteString -> AppS a (Matrix a))
-           -> MatrixConduit a
+           -> (ByteString -> m (Matrix a))
+           -> MatrixConduit m a
 poolMatrix chunkSize transformer = loop where
   loop = do
     takeCE chunkSize .| mapMC transformer
@@ -36,14 +36,15 @@ poolMatrix chunkSize transformer = loop where
       then return ()
       else loop
 
-type MatrixSourcery a r = Sourcery (Matrix a)
-                                   (AppS a)
-                                   r
+type MatrixSourcery m a r = Sourcery (Matrix a)
+                                     m
+                                     r
 
-matrixDoubleSourcery :: FileType
+matrixDoubleSourcery :: (LiftResult m, MonadResource m)
+                     => FileType
                      -> MatrixHeader
                      -> FilePath
-                     -> MatrixSourcery R r
+                     -> MatrixSourcery m R r
 matrixDoubleSourcery fType
                      header@MatrixHeader { cols, rows, dataType }
                      path
@@ -51,6 +52,6 @@ matrixDoubleSourcery fType
   let size = rows * cols * getSize dataType
   let source = sourceFileBS path
   cHeader <- conduitHeader fType header source
-  let trans = liftAppS
+  let trans = liftResult
             . (binToMatrixDouble dataType rows cols)
   cHeader $$+- (poolMatrix size trans) .| sink
