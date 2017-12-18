@@ -27,12 +27,12 @@ library
                      , School.FileIO.MatrixHeader
                      , School.FileIO.MatrixSink
                      , School.FileIO.MatrixSourcery
-                     , School.Train.AppTrain
                      , School.Train.BackwardPass
                      , School.Train.ForwardPass
                      , School.Train.GradientDescent
                      , School.Train.GradientDescentPass
                      , School.Train.IterationHandler
+                     , School.Train.StateFunctions
                      , School.Train.StoppingCondition
                      , School.Train.SimpleDescentUpdate
                      , School.Train.TrainState

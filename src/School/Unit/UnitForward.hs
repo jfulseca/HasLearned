@@ -6,7 +6,7 @@ module School.Unit.UnitForward
 import Conduit (ConduitM, mapMC)
 import Control.Monad.Except (throwError)
 import School.App.AppS (AppS)
-import School.Train.AppTrain (getParams)
+import School.Train.StateFunctions (getParams)
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 

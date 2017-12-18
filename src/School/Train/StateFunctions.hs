@@ -1,6 +1,6 @@
 {-# LANGUAGE NamedFieldPuns #-}
 
-module School.Train.AppTrain
+module School.Train.StateFunctions
 ( getParams
 , putCost
 , putCostParams

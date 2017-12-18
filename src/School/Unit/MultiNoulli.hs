@@ -6,7 +6,7 @@ module School.Unit.MultiNoulli
 import Conduit (mapMC)
 import Numeric.LinearAlgebra (Container, Element, Vector, assoc, cols, fromRows,
                               rows, takeColumns, toColumns, toList, toLists)
-import School.Train.AppTrain (putCostParams)
+import School.Train.StateFunctions (putCostParams)
 import School.Types.Slinky (Slinky(..))
 import School.Unit.CostParams (CostParams(..))
 import School.Unit.UnitActivation (UnitActivation(..))
