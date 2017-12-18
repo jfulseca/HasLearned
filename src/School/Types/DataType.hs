@@ -10,6 +10,7 @@ import Data.Attoparsec.ByteString (Parser)
 import Data.Attoparsec.ByteString.Char8 (char)
 import Data.ByteString.Conversion (FromByteString(..), ToByteString(..))
 import Data.Default.Class (Default(..))
+import School.Types.Error (Error)
 import Test.QuickCheck (Arbitrary(..), elements)
 
 data DataType = INT32B | DBL64B | INT08B
@@ -50,7 +51,7 @@ instance Arbitrary DataType where
                        , INT08B
                        ]
 
-fromIdxIndicator :: Int -> Either String DataType
+fromIdxIndicator :: Int -> Either Error DataType
 fromIdxIndicator 8 = Right INT08B
 fromIdxIndicator k = Left $
   "Unknown IDX type indicator " ++ (show k)

@@ -68,6 +68,7 @@ library
                      , School.Utils.IO
                      , School.Utils.LinearAlgebra
                      , School.Utils.Random
+                     , School.Utils.Maybe
                      , School.Utils.SafeEncoding
   build-depends:       QuickCheck
                      , attoparsec

@@ -1,16 +1,24 @@
+{-# LANGUAGE FlexibleContexts, NamedFieldPuns #-}
+
 module School.FileIO.ConduitHeader
 ( ConduitHeader
 , conduitHeader
 ) where
 
-import Conduit ((.|), ($$+), ConduitM, ResumableSource,
-                mapM_C, takeCE, takeWhileCE)
+import Conduit ((.|), ($$+), ($$++), ConduitM, ResumableSource,
+                mapMC, mapM_C, sinkList, takeCE, takeWhileCE)
+import Control.Monad (liftM2, when)
+import Control.Monad.Except (MonadError(..))
 import Data.Attoparsec.ByteString (parseOnly) 
-import Data.ByteString (ByteString)
+import Data.ByteString (ByteString, unpack)
 import Data.ByteString.Conversion (FromByteString(..))
 import Data.Void (Void)
+import Numeric.LinearAlgebra (I)
 import School.FileIO.FileType (FileType(..))
-import School.FileIO.MatrixHeader (MatrixHeader, compatibleHeaders)
+import School.FileIO.MatrixHeader (MatrixHeader(..), compatibleHeaders)
+import School.Types.DataType (fromIdxIndicator)
+import School.Types.Decoding (binToInt)
+import School.Types.Error (Error)
 import School.Types.LiftResult (LiftResult(..))
 import School.Utils.Constants (binSeparator, separator)
 
@@ -18,7 +26,7 @@ type ConduitHeader m =
     ConduitM () ByteString m ()
  -> m (ResumableSource m ByteString)
 
-conduitHeader :: (LiftResult m)
+conduitHeader :: (LiftResult m, MonadError Error m)
               => FileType
               -> MatrixHeader
               -> ConduitHeader m
@@ -26,15 +34,61 @@ conduitHeader SM header source = do
   let sink = smConduitHeader header
   (resumable, _) <- source $$+ sink
   return resumable 
+conduitHeader IDX header source =
+  idxConduitHeader header source
 conduitHeader _ _ _ = undefined
 
 type HeaderSink m =
   ConduitM ByteString Void m ()
 
-{-idxConduitHeader :: MatrixHeader
+getInt :: (LiftResult m, MonadError Error m)
+       => [I]
+       -> m Int
+getInt xs = do
+  when (length xs < 1)
+       (throwError "Insufficient data in IDX file")
+  return . fromIntegral . head $ xs
+  
+getDim :: (LiftResult m)
+       => ResumableSource m ByteString
+       -> m (ResumableSource m ByteString, [I])
+getDim resumable =
+  resumable $$++ takeCE 4
+         .| mapMC (liftResult . binToInt)
+         .| sinkList
+
+idxConduitHeader :: (LiftResult m, MonadError Error m)
+                 => MatrixHeader
                  -> ConduitHeader m
-idxConduitHeader header = do
--}
+idxConduitHeader header source = do
+  (resumable, first) <- source $$+ takeCE 4
+                     .| mapMC (return . (map fromEnum) . unpack)
+                     .| sinkList
+  when (length first < 1)
+       (throwError "IDX file empty")
+  let spec = head first
+  let checks = length spec == 4
+            && spec!!0 == 0
+            && spec!!1 == 0
+  when (not checks)
+       (throwError "Incorrect IDX header")
+  dataType <- liftResult . fromIdxIndicator $ spec!!2  
+  let dims = spec!!3
+  (resumable', nRows) <- getDim resumable
+  rows <- getInt nRows
+  let go d r acc = if d <= 1
+                     then return (r, acc)
+                     else do
+                       (r', n) <- getDim r
+                       go (d - 1) r' (liftM2 (*) n acc)
+  (resumable'', nCols) <- go dims resumable' [1]
+  cols <- getInt nCols
+  let header' = MatrixHeader { dataType, cols, rows }
+  when (not $ compatibleHeaders header header')
+       (throwError $ "Expected header " ++ (show header)
+                  ++ ", found " ++ (show header'))
+  return resumable''
+
 smConduitHeader :: (LiftResult m)
                 => MatrixHeader
                 -> HeaderSink m
@@ -59,36 +113,3 @@ confirmAtom check = mapM_C $ \bytes -> do
         else Left $ msg b
     msg b = "Parser gave unexpected "
          ++ "result " ++ (show b)
-
-{-
-idxConfirm :: MatrixHeader -> ConduitBS a
-idxConfirm MatrixHeader { dataType } = do
-  takeCE 4 .| checkHeader dataType
-  mapC id
-
-errorMsg :: Int -> DataType -> String
-errorMsg i t = "Type indicator " ++ (show i)
-            ++ " does not correspond to " ++ (show t)
-
-compat :: DataType -> [Int] -> AppTrain a ()
-compat dType ints = do
-  let check = length ints == 4
-           && ints!!0 == 0
-           && ints!!1 == 0
-  when (not check)
-       (throw "Invalid IDX format")
-  let coeff = ints!!2
-  let dType' = fromIdxIndicator coeff
-  liftResult $ either Left
-                    (\t -> if t == dType
-                            then Right ()
-                            else Left $ errorMsg coeff dType)
-                    dType'
-
-checkHeader :: DataType -> ConduitBS a
-checkHeader dType =
-    mapC unpack
- .| mapCE fromEnum
- .| mapM_C (compat dType)
-
--}

@@ -1,4 +1,4 @@
-{-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE FlexibleContexts, NamedFieldPuns #-}
 
 module School.FileIO.MatrixSourcery
 ( MatrixConduit
@@ -9,12 +9,14 @@ module School.FileIO.MatrixSourcery
 
 import Conduit (($$+-), (.|), ConduitM, MonadResource, mapMC,
                 nullC, sourceFileBS, takeCE)
+import Control.Monad.Except (MonadError(..))
 import Data.ByteString (ByteString)
 import School.FileIO.ConduitHeader (conduitHeader)
 import School.FileIO.FileType (FileType(..))
 import School.FileIO.MatrixHeader (MatrixHeader(..))
 import School.Types.Decoding (binToMatrixDouble)
 import School.Types.DataType (getSize)
+import School.Types.Error (Error)
 import School.Types.LiftResult (LiftResult(..))
 import School.Types.Sourcery (Sourcery)
 import Numeric.LinearAlgebra (Element, Matrix, R)
@@ -36,11 +38,10 @@ poolMatrix chunkSize transformer = loop where
       then return ()
       else loop
 
-type MatrixSourcery m a r = Sourcery (Matrix a)
-                                     m
-                                     r
+type MatrixSourcery m a r =
+  Sourcery (Matrix a) m r
 
-matrixDoubleSourcery :: (LiftResult m, MonadResource m)
+matrixDoubleSourcery :: (LiftResult m, MonadError Error m, MonadResource m)
                      => FileType
                      -> MatrixHeader
                      -> FilePath
