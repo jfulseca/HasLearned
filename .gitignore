@@ -1,5 +1,5 @@
-data/
-dist/
+/data/
+/dist/
 .stack-work/
 .cabal-sandbox/
 /**/*.save*
