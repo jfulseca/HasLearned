@@ -3,6 +3,6 @@
 .stack-work/
 .cabal-sandbox/
 /**/*.save*
-*.csv
-*.dat
-*.tix
+/*.csv
+/*.dat
+/*.tix
