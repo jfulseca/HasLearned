@@ -1,5 +1,6 @@
 set -euo pipefail
 
+rm *.tix
 stack bench
 
 set +euo pipefail

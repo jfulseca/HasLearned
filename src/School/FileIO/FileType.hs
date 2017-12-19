@@ -6,6 +6,7 @@ module School.FileIO.FileType
 
 import Data.Char (toLower, toUpper)
 import Data.Default.Class (Default(..))
+import Test.QuickCheck (Arbitrary(..), elements)
 
 data FileType = CSV | IDX | SM
   deriving (Eq, Read, Show)
@@ -18,3 +19,6 @@ toExtension = (map toLower) . show
 
 instance Default FileType where
   def = SM
+
+instance Arbitrary FileType where
+  arbitrary = elements [SM, IDX]
