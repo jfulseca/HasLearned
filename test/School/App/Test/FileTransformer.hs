@@ -3,7 +3,7 @@
 module School.App.Test.FileTransformer
 ( fileTransformerTest ) where
 
-import Conduit (await, liftIO)
+import Conduit (await, liftIO, sinkList)
 import qualified Data.ByteString.Lazy as BL
 import Control.Applicative (liftA2)
 import Data.Default.Class (def)
@@ -11,6 +11,7 @@ import Data.Function (on)
 import Numeric.LinearAlgebra ((?), Matrix, R)
 import School.App.FileTransformer
 import School.FileIO.AppIO (runAppIO)
+import School.FileIO.DoubleSourcery (doubleSourcery)
 import School.FileIO.FileApp (fileApp)
 import School.FileIO.FileType (FileType(..), toExtension)
 import School.FileIO.MatrixHeader (MatrixHeader(..))
@@ -28,6 +29,14 @@ import Test.QuickCheck.Monadic (PropertyM, assert, monadicIO, run)
 inFileName :: FileType -> FilePath
 inFileName fType = "test/data/matrix3x3."
                 ++ toExtension fType
+
+inFileNameTwice :: DataType -> FileType -> FilePath
+inFileNameTwice DBL64B fType = "test/data/matrix3x3Twice."
+                            ++ toExtension fType
+inFileNameTwice INT32B fType = "test/data/matrix3x3Twice_INT32B."
+                            ++ toExtension fType
+inFileNameTwice INT08B fType = "test/data/matrix3x3Twice_INT08B."
+                            ++ toExtension fType
 
 header3x3 :: MatrixHeader
 header3x3 = MatrixHeader { dataType = DBL64B
@@ -48,6 +57,14 @@ readMat :: FileType
                                 (Maybe (Matrix R)))
 readMat fType header path = run . runAppIO $
  matrixDoubleSourcery fType header path await
+
+readDoubleList :: FileType
+               -> MatrixHeader
+               -> FilePath
+               -> PropertyM IO (Either Error
+                                       [Double])
+readDoubleList fType header path = run . runAppIO $
+ doubleSourcery fType header path sinkList
 
 prop_copy :: FileType -> Property
 prop_copy fType = monadicIO $ do
@@ -147,7 +164,7 @@ prop_limit_too_many_rows fType = monadicIO $ do
                     , inFileTypeOpt = Just fType
                     , nRowsOpt = Just 4
                     }
-  result <-liftIO . runAppIO $ fileApp options
+  result <- liftIO . runAppIO $ fileApp options
   assert $ isLeft result
 
 prop_limit_and_skip_too_many :: FileType -> Property
@@ -157,8 +174,117 @@ prop_limit_and_skip_too_many fType = monadicIO $ do
                     , nRowsOpt = Just 3
                     , skipRowsOpt = Just 1
                     }
-  result <-liftIO . runAppIO $ fileApp options
+  result <- liftIO . runAppIO $ fileApp options
   assert $ isLeft result
+
+inFileType :: FileType -> DataType -> FilePath
+inFileType fType DBL64B = "test/data/matrix3x3."
+                       ++ toExtension fType
+inFileType fType INT32B = "test/data/matrix3x3_INT32B."
+                       ++ toExtension fType
+inFileType fType INT08B = "test/data/matrix3x3_INT08B."
+                       ++ toExtension fType
+
+legalConversion :: DataType -> DataType -> Bool
+legalConversion INT08B _ = True
+legalConversion INT32B INT32B = True
+legalConversion INT32B DBL64B = True
+legalConversion DBL64B DBL64B = True
+legalConversion _ _ = False
+
+prop_convert_data_type :: FileType -> DataType -> DataType -> Property
+prop_convert_data_type fType tIn tOut = monadicIO $ do
+  let options = def { inFileOpt = inFileType fType tIn
+                    , inDataTypeOpt = tIn
+                    , inFileTypeOpt = Just fType
+                    , outDataTypeOpt = Just tOut
+                    , outFileOpt = testFile fType
+                    , outFileTypeOpt = Just fType
+                    }
+  result <- liftIO . runAppIO $ fileApp options
+  if (legalConversion tIn tOut)
+    then do
+      assert $ isRight result
+      let inHeader = header3x3 { dataType = tIn }
+      let outHeader = header3x3 { dataType = tOut }
+      inRes <- readDoubleList fType inHeader (inFileType fType tIn)
+      outRes <- readDoubleList fType outHeader (testFile fType)
+      liftIO $ removeFile (testFile fType)
+      assert $ inRes == outRes
+    else assert $ isLeft result
+
+prop_convert_file_type :: FileType -> FileType -> DataType -> Property
+prop_convert_file_type fTypeIn fTypeOut dType = monadicIO $ do
+  let options = def { inFileOpt = inFileType fTypeIn dType
+                    , inDataTypeOpt = dType
+                    , inFileTypeOpt = Just fTypeIn
+                    , outFileOpt = testFile fTypeOut
+                    , outFileTypeOpt = Just fTypeOut
+                    }
+  result <- liftIO . runAppIO $ fileApp options
+  assert $ isRight result
+  let header = header3x3 { dataType = dType }
+  inRes <- readDoubleList fTypeIn header (inFileType fTypeIn dType)
+  outRes <- readDoubleList fTypeOut header (testFile fTypeOut)
+  liftIO $ removeFile (testFile fTypeOut)
+  assert $ inRes == outRes
+
+prop_convert_both_types :: FileType -> FileType -> DataType -> DataType -> Property
+prop_convert_both_types fTypeIn fTypeOut tIn tOut = monadicIO $ do
+  let options = def { inFileOpt = inFileType fTypeIn tIn
+                    , inDataTypeOpt = tIn
+                    , inFileTypeOpt = Just fTypeIn
+                    , outDataTypeOpt = Just tOut
+                    , outFileOpt = testFile fTypeOut
+                    , outFileTypeOpt = Just fTypeOut
+                    }
+  result <- liftIO . runAppIO $ fileApp options
+  if (legalConversion tIn tOut)
+    then do
+      assert $ isRight result
+      let inHeader = header3x3 { dataType = tIn }
+      let outHeader = header3x3 { dataType = tOut }
+      inRes <- readDoubleList fTypeIn inHeader (inFileType fTypeIn tIn)
+      outRes <- readDoubleList fTypeOut outHeader (testFile fTypeOut)
+      liftIO $ removeFile (testFile fTypeOut)
+      assert $ inRes == outRes
+    else assert $ isLeft result
+
+prop_copy_twice :: FileType -> Property
+prop_copy_twice fType = monadicIO $ do
+  let options = def { inFileOpt = inFileNameTwice DBL64B fType
+                    , inFileTypeOpt = Just fType
+                    , outFileOpt = testFile fType
+                    , outFileTypeOpt = Just fType
+                    }
+  result <- liftIO . runAppIO $ fileApp options
+  assert $ isRight result
+  let header = header3x3 { rows = 6 }
+  inRes <- readDoubleList fType header (inFileNameTwice DBL64B fType)
+  outRes <- readDoubleList fType header (testFile fType)
+  assert $ inRes == outRes
+
+
+prop_convert_data_twice :: FileType -> DataType -> DataType -> Property
+prop_convert_data_twice fType tIn tOut = monadicIO $ do
+  let options = def { inFileOpt = inFileNameTwice tIn fType
+                    , inDataTypeOpt = tIn
+                    , inFileTypeOpt = Just fType
+                    , outDataTypeOpt = Just tOut
+                    , outFileOpt = testFile fType
+                    , outFileTypeOpt = Just fType
+                    }
+  result <- liftIO . runAppIO $ fileApp options
+  if (legalConversion tIn tOut)
+    then do
+      assert $ isRight result
+      let inHeader = header3x3 { dataType = tIn }
+      let outHeader = header3x3 { dataType = tOut }
+      inRes <- readDoubleList fType inHeader (inFileNameTwice tIn fType)
+      outRes <- readDoubleList fType outHeader (testFile fType)
+      liftIO $ removeFile (testFile fType)
+      assert $ inRes == outRes
+    else assert $ isLeft result
 
 fileTransformerTest :: TestTree
 fileTransformerTest = $(testGroupGenerator)

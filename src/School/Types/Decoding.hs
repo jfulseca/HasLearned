@@ -15,18 +15,19 @@ import Data.Serialize.Get (Get, getInt32be, runGet)
 import Data.Serialize.IEEE754 (getFloat64be)
 import Numeric.LinearAlgebra ((><), Matrix, I, R)
 import School.Types.DataType (DataType(..))
+import School.Types.Error (Error)
 import School.Utils.Either (mapRight)
 
 getDouble :: Get R
 getDouble = getFloat64be
 
-binToDouble :: ByteString -> Either String R
+binToDouble :: ByteString -> Either Error R
 binToDouble = runGet getDouble
 
 binToMatrixDouble :: DataType
                   -> Int
                   -> Int
-                  -> (ByteString -> Either String
+                  -> (ByteString -> Either Error
                                            (Matrix R))
 binToMatrixDouble DBL64B nRows nCols =
   runGet (getDoubleMatrixDouble nRows nCols)
@@ -49,14 +50,14 @@ getDoubleMatrixDouble nRows nCols = do
 getInt :: Get Int32
 getInt = getInt32be
 
-binToInt :: ByteString -> Either String I
+binToInt :: ByteString -> Either Error I
 binToInt = (mapRight fromIntegral)
          . (runGet getInt)
 
 binToMatrixInt :: DataType
                -> Int
                -> Int
-               -> (ByteString -> Either String
+               -> (ByteString -> Either Error
                                         (Matrix I))
 binToMatrixInt DBL64B _ _ = const . Left $
   "Reject conversion from floating point DBL64B to integral"

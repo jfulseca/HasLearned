@@ -9,7 +9,7 @@ import Conduit ((.|), ($$+), ($$++), ConduitM, ResumableSource,
                 mapMC, mapM_C, sinkList, takeCE, takeWhileCE)
 import Control.Monad (liftM2, when)
 import Control.Monad.Except (MonadError(..))
-import Data.Attoparsec.ByteString (parseOnly) 
+import Data.Attoparsec.ByteString (parseOnly)
 import Data.ByteString (ByteString, unpack)
 import Data.ByteString.Conversion (FromByteString(..))
 import Data.Void (Void)
@@ -33,7 +33,7 @@ conduitHeader :: (LiftResult m, MonadError Error m)
 conduitHeader SM header source = do
   let sink = smConduitHeader header
   (resumable, _) <- source $$+ sink
-  return resumable 
+  return resumable
 conduitHeader IDX header source =
   idxConduitHeader header source
 conduitHeader _ _ _ = undefined
@@ -48,7 +48,7 @@ getInt xs = do
   when (length xs < 1)
        (throwError "Insufficient data in IDX file")
   return . fromIntegral . head $ xs
-  
+
 getDim :: (LiftResult m)
        => ResumableSource m ByteString
        -> m (ResumableSource m ByteString, [I])
@@ -72,7 +72,7 @@ idxConduitHeader header source = do
             && spec!!1 == 0
   when (not checks)
        (throwError "Incorrect IDX header")
-  dataType <- liftResult . fromIdxIndicator $ spec!!2  
+  dataType <- liftResult . fromIdxIndicator $ spec!!2
   let dims = spec!!3
   (resumable', nRows) <- getDim resumable
   rows <- getInt nRows

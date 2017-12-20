@@ -11,14 +11,15 @@ import Prelude hiding (drop, length, take)
 import School.Types.Decoding (binToInt)
 import School.Types.Encoding (Put, putInt, putDouble, runPut)
 import School.Types.DataType (DataType(..))
+import School.Types.Error (Error)
 
 type Converter = ByteString
-              -> Either String ByteString
+              -> Either Error ByteString
 
-floatMsg :: String
-floatMsg = "Illegal conversion fokm floating point to integral"
+floatMsg :: Error
+floatMsg = "Illegal conversion from floating point to integral"
 
-precMsg :: String
+precMsg :: Error
 precMsg = "Illegal conversion from higher to lower "
        ++ "precision variables"
 
@@ -34,8 +35,8 @@ convertWords fromInt put = Right
 
 decodeList :: Int
            -> (a -> b)
-           -> (ByteString -> Either String a)
-           -> (ByteString -> Either String [b])
+           -> (ByteString -> Either Error a)
+           -> (ByteString -> Either Error [b])
 decodeList s convert decode bytes = reverse <$>
   go s bytes [] where
     go n b acc = if length b < n
@@ -44,7 +45,6 @@ decodeList s convert decode bytes = reverse <$>
                      e <- decode . (take n) $ b
                      let e' = convert e
                      go n (drop n b) (e':acc)
-
 
 binConversion :: DataType
               -> DataType
@@ -57,7 +57,6 @@ binConversion INT32B INT08B = const $ Left precMsg
 binConversion INT32B DBL64B = \bytes -> do
   !doubles <- decodeList 4 fromIntegral binToInt bytes
   return . runPut $ mapM_ putDouble doubles
-
 binConversion DBL64B INT08B = const $ Left floatMsg
 binConversion DBL64B INT32B = const $ Left floatMsg
 binConversion _ _ = Right . id

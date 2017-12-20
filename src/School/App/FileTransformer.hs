@@ -3,13 +3,14 @@
 module School.App.FileTransformer
 ( FileTransformerOptions(..) ) where
 
-import Conduit ((.|), ConduitM, mapC)
+import Conduit ((.|), ConduitM, mapC, mapMC, nullC, takeCE)
 import Control.Monad (when)
 import Data.ByteString (ByteString)
 import Data.Conduit.Binary (sinkFile, sourceFileRange)
 import Data.Default.Class (Default(..))
 import Data.Void (Void)
 import School.FileIO.AppIO (AppIO, liftResult)
+import School.FileIO.BinConversion (binConversion)
 import School.FileIO.FileApp (FileApp(..))
 import School.FileIO.FilePath (FilePath, guessFileType)
 import School.FileIO.FileType (FileType(..))
@@ -26,16 +27,20 @@ data FileTransformerOptions =
                          , outFileOpt :: FilePath
                          , outDataTypeOpt :: Maybe DataType
                          , outFileTypeOpt :: Maybe FileType
+                         , processLineOpt :: Maybe Int
                          , skipRowsOpt :: Maybe Integer
                          } deriving (Eq, Show)
 
 instance FileApp FileTransformerOptions where
   data FAParams FileTransformerOptions =
     FileTransformerParams { inputFile :: FilePath
+                          , inputFormat :: DataType
                           , totalOffset :: Maybe Integer
                           , outHeader :: MatrixHeader
                           , outputFile :: FilePath
+                          , outputFormat :: DataType
                           , outputType :: FileType
+                          , processChunk :: Int
                           , size :: Maybe Integer
                           } deriving (Eq, Show)
   scan = scanOptions
@@ -49,12 +54,9 @@ instance Default FileTransformerOptions where
                                , outFileOpt = ""
                                , outDataTypeOpt = Nothing
                                , outFileTypeOpt = Nothing
+                               , processLineOpt = Nothing
                                , skipRowsOpt = Nothing
                                }
-
-getHandler :: FAParams FileTransformerOptions
-           -> ConduitM ByteString ByteString AppIO ()
-getHandler _ = mapC id
 
 getOffset :: Integer
           -> DataType
@@ -116,6 +118,7 @@ scanOptions FileTransformerOptions { inFileOpt
                                    , outFileOpt
                                    , outDataTypeOpt
                                    , outFileTypeOpt
+                                   , processLineOpt
                                    , skipRowsOpt
                                    } = do
   let (inputType, inputFile) = guessFileType False (inFileTypeOpt, inFileOpt)
@@ -144,13 +147,38 @@ scanOptions FileTransformerOptions { inFileOpt
                                , cols
                                , rows = outRows
                                }
-  return FileTransformerParams { inputFile
+  let nLines = maybe 1 id processLineOpt
+  let processChunk = (getSize inDataTypeOpt) * cols * nLines
+  return FileTransformerParams { inputFormat = inDataTypeOpt
+                               , inputFile
                                , totalOffset
                                , outHeader
                                , outputFile
+                               , outputFormat
                                , outputType
+                               , processChunk
                                , size
                                }
+
+
+getHandler :: FAParams FileTransformerOptions
+           -> ConduitM ByteString ByteString AppIO ()
+getHandler FileTransformerParams { inputFormat
+                                 , outputFormat
+                                 , processChunk
+                                 } =
+  if inputFormat == outputFormat
+    then mapC id
+    else do
+      let conversion = liftResult
+                     . (binConversion inputFormat outputFormat)
+      let loop = do
+            takeCE processChunk .| mapMC conversion
+            isEmpty <- nullC
+            if isEmpty
+              then return ()
+              else loop
+      loop
 
 prepareHandler :: FAParams FileTransformerOptions
                -> ConduitM () Void AppIO ()
@@ -162,6 +190,6 @@ prepareHandler p@FileTransformerParams { inputFile
                                        , size
                                        } =
     sourceFileRange inputFile totalOffset size
- .| putHeader outputType outHeader
  .| getHandler p
+ .| putHeader outputType outHeader
  .| sinkFile outputFile
