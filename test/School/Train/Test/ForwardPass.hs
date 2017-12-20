@@ -5,7 +5,7 @@ module School.Train.Test.ForwardPass
 
 import Conduit ((.|), yield, liftIO, sinkList, await)
 import Data.Either (isLeft)
-import Numeric.LinearAlgebra (R, ident)
+import Numeric.LinearAlgebra (R)
 import School.TestUtils (doCost, fromRight, randomAffineParams, randomMatrix, testState, weight1)
 import School.Train.ForwardPass
 import School.Train.TrainState (TrainState(..), def)

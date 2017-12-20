@@ -7,7 +7,7 @@ module School.Utils.Either
 , maybeToEither
 ) where
 
-import Data.Either (either, isLeft, isRight)
+import Data.Either (isLeft, isRight)
 
 fromLeft :: a -> Either a b -> a
 fromLeft _ (Left x) = x
@@ -19,10 +19,10 @@ fromRight x _ = x
 
 eitherToBool :: (b -> Bool)
              -> Either a b
-             -> Bool 
+             -> Bool
 eitherToBool _ (Left _) = False
 eitherToBool f (Right x) = f x
 
 maybeToEither :: a -> Maybe b -> Either a b
 maybeToEither x Nothing = Left x
-maybeToEither _ (Just x) = Right x 
+maybeToEither _ (Just x) = Right x
