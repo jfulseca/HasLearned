@@ -15,7 +15,7 @@ import Data.ByteString.Conversion (FromByteString(..))
 import Data.Void (Void)
 import Numeric.LinearAlgebra (I)
 import School.FileIO.FileType (FileType(..))
-import School.FileIO.MatrixHeader (MatrixHeader(..), compatibleHeaders)
+import School.FileIO.FileHeader (FileHeader(..), compatibleHeaders)
 import School.Types.DataType (fromIdxIndicator)
 import School.Types.Decoding (binToInt)
 import School.Types.Error (Error)
@@ -28,7 +28,7 @@ type ConduitHeader m =
 
 conduitHeader :: (LiftResult m, MonadError Error m)
               => FileType
-              -> MatrixHeader
+              -> FileHeader
               -> ConduitHeader m
 conduitHeader SM header source = do
   let sink = smConduitHeader header
@@ -58,7 +58,7 @@ getDim resumable =
          .| sinkList
 
 idxConduitHeader :: (LiftResult m, MonadError Error m)
-                 => MatrixHeader
+                 => FileHeader
                  -> ConduitHeader m
 idxConduitHeader header source = do
   (resumable, first) <- source $$+ takeCE 4
@@ -83,14 +83,14 @@ idxConduitHeader header source = do
                        go (d - 1) r' (liftM2 (*) n acc)
   (resumable'', nCols) <- go dims resumable' [1]
   cols <- getInt nCols
-  let header' = MatrixHeader { dataType, cols, rows }
+  let header' = FileHeader { dataType, cols, rows }
   when (not $ compatibleHeaders header header')
        (throwError $ "Expected header " ++ (show header)
                   ++ ", found " ++ (show header'))
   return resumable''
 
 smConduitHeader :: (LiftResult m)
-                => MatrixHeader
+                => FileHeader
                 -> HeaderSink m
 smConduitHeader header = do
   let sepEq = (==separator)

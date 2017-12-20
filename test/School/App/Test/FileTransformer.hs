@@ -14,7 +14,7 @@ import School.FileIO.AppIO (runAppIO)
 import School.FileIO.DoubleSourcery (doubleSourcery)
 import School.FileIO.FileApp (fileApp)
 import School.FileIO.FileType (FileType(..), toExtension)
-import School.FileIO.MatrixHeader (MatrixHeader(..))
+import School.FileIO.FileHeader (FileHeader(..))
 import School.FileIO.MatrixSourcery (matrixDoubleSourcery)
 import School.TestUtils (assertRight, dummyMatrix)
 import School.Types.DataType (DataType(..))
@@ -38,8 +38,8 @@ inFileNameTwice INT32B fType = "test/data/matrix3x3Twice_INT32B."
 inFileNameTwice INT08B fType = "test/data/matrix3x3Twice_INT08B."
                             ++ toExtension fType
 
-header3x3 :: MatrixHeader
-header3x3 = MatrixHeader { dataType = DBL64B
+header3x3 :: FileHeader
+header3x3 = FileHeader { dataType = DBL64B
                          , cols = 3
                          , rows = 3
                          }
@@ -51,7 +51,7 @@ fileEq :: FilePath -> FilePath -> IO (Bool)
 fileEq = liftA2 (==) `on` BL.readFile
 
 readMat :: FileType
-        -> MatrixHeader
+        -> FileHeader
         -> FilePath
         -> PropertyM IO (Either Error
                                 (Maybe (Matrix R)))
@@ -59,7 +59,7 @@ readMat fType header path = run . runAppIO $
  matrixDoubleSourcery fType header path await
 
 readDoubleList :: FileType
-               -> MatrixHeader
+               -> FileHeader
                -> FilePath
                -> PropertyM IO (Either Error
                                        [Double])
@@ -262,6 +262,7 @@ prop_copy_twice fType = monadicIO $ do
   let header = header3x3 { rows = 6 }
   inRes <- readDoubleList fType header (inFileNameTwice DBL64B fType)
   outRes <- readDoubleList fType header (testFile fType)
+  liftIO $ removeFile (testFile fType)
   assert $ inRes == outRes
 
 

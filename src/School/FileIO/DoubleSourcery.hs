@@ -10,7 +10,7 @@ import Data.ByteString (ByteString)
 import School.FileIO.BinConversion (binConversion)
 import School.FileIO.ConduitHeader (conduitHeader)
 import School.FileIO.FileType (FileType(..))
-import School.FileIO.MatrixHeader (MatrixHeader(..))
+import School.FileIO.FileHeader (FileHeader(..))
 import School.Types.Decoding (binToDouble)
 import School.Types.DataType (DataType(..), getSize)
 import School.Types.Error (Error)
@@ -31,10 +31,10 @@ poolDouble chunkSize transformer = loop where
 
 doubleSourcery :: (LiftResult m, MonadError Error m, MonadResource m)
                => FileType
-               -> MatrixHeader
+               -> FileHeader
                -> FilePath
                -> Sourcery Double m r
-doubleSourcery fType header@MatrixHeader { dataType } path sink = do
+doubleSourcery fType header@FileHeader { dataType } path sink = do
   let size = getSize dataType
   let source = sourceFileBS path
   cHeader <- conduitHeader fType header source

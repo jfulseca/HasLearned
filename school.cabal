@@ -25,7 +25,7 @@ library
                      , School.FileIO.FileApp
                      , School.FileIO.FilePath
                      , School.FileIO.FileType
-                     , School.FileIO.MatrixHeader
+                     , School.FileIO.FileHeader
                      , School.FileIO.MatrixSink
                      , School.FileIO.MatrixSourcery
                      , School.Train.BackwardPass
@@ -113,7 +113,7 @@ test-suite school-test
                      , School.App.Test.FileTransformer
                      , School.Evaluate.Test.Evaluate
                      , School.FileIO.Test.BinConversion
-                     , School.FileIO.Test.MatrixHeader
+                     , School.FileIO.Test.FileHeader
                      , School.FileIO.Test.MatrixSink
                      , School.FileIO.Test.MatrixSourcery
                      , School.TestUtils

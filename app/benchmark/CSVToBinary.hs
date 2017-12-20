@@ -2,7 +2,7 @@ import Conduit (ConduitM, runConduit)
 import Criterion.Main
 import Data.Void (Void)
 import School.FileIO.AppIO (AppIO, runAppIO)
-import School.FileIO.MatrixHeader (MatrixHeader(..))
+import School.FileIO.FileHeader (FileHeader(..))
 import School.App.CSVReader (csvToBinary)
 import School.Types.DataType (DataType(..))
 import School.Utils.SafeEncoding (safeStdEncodings)
@@ -14,14 +14,14 @@ dataDir = "app/benchmark/data/"
 
 convert :: (  FilePath
            -> FilePath
-           -> MatrixHeader
+           -> FileHeader
            -> ConduitM () Void AppIO ())
         -> FilePath
         -> Int
         -> Int
         -> IO ()
 convert readWrite fName nRows nCols = do
-  let header = MatrixHeader DBL64B nRows nCols
+  let header = FileHeader DBL64B nRows nCols
   let outFile = (takeBaseName fName) ++ ".dat"
   let conversion = readWrite (dataDir ++ fName)
                              outFile

@@ -13,7 +13,7 @@ import Control.Monad.Except (MonadError(..))
 import Data.ByteString (ByteString)
 import School.FileIO.ConduitHeader (conduitHeader)
 import School.FileIO.FileType (FileType(..))
-import School.FileIO.MatrixHeader (MatrixHeader(..))
+import School.FileIO.FileHeader (FileHeader(..))
 import School.Types.Decoding (binToMatrixDouble)
 import School.Types.DataType (getSize)
 import School.Types.Error (Error)
@@ -43,11 +43,11 @@ type MatrixSourcery m a r =
 
 matrixDoubleSourcery :: (LiftResult m, MonadError Error m, MonadResource m)
                      => FileType
-                     -> MatrixHeader
+                     -> FileHeader
                      -> FilePath
                      -> MatrixSourcery m R r
 matrixDoubleSourcery fType
-                     header@MatrixHeader { cols, rows, dataType }
+                     header@FileHeader { cols, rows, dataType }
                      path
                      sink = do
   let size = rows * cols * getSize dataType

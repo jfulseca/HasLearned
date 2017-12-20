@@ -1,7 +1,7 @@
 {-# LANGUAGE NamedFieldPuns #-}
 
-module School.FileIO.MatrixHeader
-( MatrixHeader(..)
+module School.FileIO.FileHeader
+( FileHeader(..)
 , compatibleHeaders
 , headerBuilder
 , headerParser
@@ -23,61 +23,61 @@ import School.Types.Encoding (intToBin)
 import School.Utils.Constants (separator)
 import School.Utils.Either (maybeToEither)
 
-data MatrixHeader = MatrixHeader
+data FileHeader = FileHeader
   { dataType :: DataType
   , rows :: Int
   , cols :: Int
   } deriving (Eq, Show)
 
-instance Default MatrixHeader where
-  def = MatrixHeader { dataType = DBL64B
+instance Default FileHeader where
+  def = FileHeader { dataType = DBL64B
                      , cols = 1
                      , rows = 1
                      }
 
-compatibleHeaders :: MatrixHeader
-                  -> MatrixHeader
+compatibleHeaders :: FileHeader
+                  -> FileHeader
                   -> Bool
 compatibleHeaders
-  MatrixHeader { dataType = type1, rows = rows1, cols = cols1 }
-  MatrixHeader { dataType = type2, rows = rows2, cols = cols2 }
+  FileHeader { dataType = type1, rows = rows1, cols = cols1 }
+  FileHeader { dataType = type2, rows = rows2, cols = cols2 }
     = type1 == type2
    && cols1 == cols2
    && rows2 `mod` rows1 == 0
 
-instance ToByteString MatrixHeader where
+instance ToByteString FileHeader where
   builder header = sep <> t <> r <> c <> sep where
     sep = builder separator
     t = (builder . dataType) header
     r = (builder 'r') <> (builder . rows) header
     c = (builder 'c') <> (builder . cols) header
 
-parseMatrixHeader :: Parser MatrixHeader
-parseMatrixHeader = do
+parseFileHeader :: Parser FileHeader
+parseFileHeader = do
   typeName <- parser
   _ <- char 'r'
   r <- parser
   _ <- char 'c'
   c <- parser
-  return $ MatrixHeader typeName r c
+  return $ FileHeader typeName r c
 
-instance FromByteString MatrixHeader where
-  parser = parseMatrixHeader
+instance FromByteString FileHeader where
+  parser = parseFileHeader
 
 stripSeparators :: B.ByteString ->
-                   Either String MatrixHeader
+                   Either String FileHeader
 stripSeparators = parseOnly strip where
   strip = do
     _ <- char separator
-    header <- parseMatrixHeader
+    header <- parseFileHeader
     _ <- char separator
     return header
 
 headerBuilder :: FileType
-              -> MatrixHeader
+              -> FileHeader
               -> B.ByteString
 headerBuilder SM header = toByteString' header
-headerBuilder IDX MatrixHeader { cols, dataType, rows } =
+headerBuilder IDX FileHeader { cols, dataType, rows } =
   let i = toIdxIndicator dataType
   in (B.pack $ toEnum <$> [0, 0, i, 2])
   <> (intToBin . fromIntegral $ rows)
@@ -89,7 +89,7 @@ getIntN n = binToInt . (B.take 4) . (B.drop $ 4 * n)
 
 headerParser :: FileType
              -> B.ByteString
-             -> Either String MatrixHeader
+             -> Either String FileHeader
 headerParser IDX bytes = do
   let spec = B.unpack . (B.take 4) $ bytes
   let checks = length spec == 4
@@ -106,7 +106,7 @@ headerParser IDX bytes = do
                      n <- getIntN i bytes
                      go (acc * n) (i + 1)
   cols <- fromIntegral <$> go 1 2
-  return MatrixHeader { dataType, cols, rows }
+  return FileHeader { dataType, cols, rows }
 headerParser SM bytes =
  maybeToEither "Could not parse SM header"
                (fromByteString bytes)

@@ -7,7 +7,7 @@ module School.App.MultiLayerPerceptron
 
 import Numeric.LinearAlgebra (R)
 import School.FileIO.FileType (FileType(..))
-import School.FileIO.MatrixHeader (MatrixHeader(..))
+import School.FileIO.FileHeader (FileHeader(..))
 import School.FileIO.MatrixSourcery (matrixDoubleSourcery)
 import School.Train.GradientDescent (gradientDescent)
 import School.Train.IterationHandler (logCost)
@@ -93,7 +93,7 @@ multiLayerPerceptron (MLPOptions { nClasses = nC
                                  , writeCost
                                  })
                       path = do
-  let header = MatrixHeader { cols = nF
+  let header = FileHeader { cols = nF
                             , rows = nB
                             , dataType = DBL64B
                             }

@@ -16,7 +16,7 @@ import Data.Void (Void)
 import qualified Data.Conduit.Binary as CB
 import School.FileIO.AppIO (AppIO, maybeToAppIO)
 import School.FileIO.FileType (FileType(..))
-import School.FileIO.MatrixHeader (MatrixHeader(..))
+import School.FileIO.FileHeader (FileHeader(..))
 import School.FileIO.MatrixSink (matrixDoubleSink)
 import School.Utils.Constants (binComma)
 import Numeric.LinearAlgebra ((><), Matrix)
@@ -32,19 +32,19 @@ readCSV path = sourceFileBS path
             .| CB.lines
             .| mapC (BS.split binComma)
 
-csvToMatrixDouble :: MatrixHeader
+csvToMatrixDouble :: FileHeader
                   -> ConduitM [BS.ByteString]
                               (Matrix Double)
                               AppIO
                               ()
-csvToMatrixDouble MatrixHeader { cols } =
+csvToMatrixDouble FileHeader { cols } =
     mapC parseDoubles
  .| mapMC (maybeToAppIO "Could not parse doubles")
  .| mapC (1 >< (cols))
 
 csvToBinary :: FilePath
             -> FilePath
-            -> MatrixHeader
+            -> FileHeader
             -> ConduitM () Void AppIO ()
 csvToBinary inPath outPath header  = 
     readCSV inPath

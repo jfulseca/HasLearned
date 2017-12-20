@@ -20,7 +20,7 @@ import School.FileIO.AppIO (AppIO)
 import School.FileIO.ConduitHeader (conduitHeader)
 import School.FileIO.FilePath (FilePath)
 import School.FileIO.FileType (FileType(..))
-import School.FileIO.MatrixHeader (MatrixHeader(..), headerBuilder)
+import School.FileIO.FileHeader (FileHeader(..), headerBuilder)
 import School.Types.DataType (DataType, getSize)
 import School.Types.LiftResult (liftResult)
 import School.Utils.Constants (binSeparator)
@@ -59,7 +59,7 @@ getHeaderBytes SM path = do
   liftBytes bytes
 
 putHeader :: FileType
-          -> MatrixHeader
+          -> FileHeader
           -> ConduitM B.ByteString B.ByteString AppIO ()
 putHeader fType header = do
   yield $ headerBuilder fType header
@@ -74,7 +74,7 @@ fileExists path = do
   
 checkFile :: FilePath
           -> FileType
-          -> MatrixHeader
+          -> FileHeader
           -> AppIO ()
 checkFile path fType header = do
   let source = sourceFile path :: ConduitM () B.ByteString AppIO ()

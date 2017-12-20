@@ -8,7 +8,7 @@ import Conduit ((.|), ConduitM, mapC, sinkFileBS, yield)
 import Data.Void (Void)
 import School.FileIO.AppIO (AppIO)
 import School.FileIO.FileType (FileType)
-import School.FileIO.MatrixHeader (MatrixHeader(..), headerBuilder)
+import School.FileIO.FileHeader (FileHeader(..), headerBuilder)
 import School.Types.Encoding (matrixDoubleToBin, matrixIntToBin)
 import Numeric.LinearAlgebra.Data (I, Matrix, R)
 
@@ -18,7 +18,7 @@ type MatrixSink a = ConduitM (Matrix a)
                              ()
 
 matrixDoubleSink :: FileType
-                 -> MatrixHeader
+                 -> FileHeader
                  -> FilePath
                  -> MatrixSink R
 matrixDoubleSink fType header path =
@@ -29,7 +29,7 @@ matrixDoubleSink fType header path =
       mapC (matrixDoubleToBin dType)
 
 matrixIntSink :: FileType
-              -> MatrixHeader
+              -> FileHeader
               -> FilePath
               -> MatrixSink I
 matrixIntSink fType header path =

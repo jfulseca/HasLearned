@@ -3,7 +3,7 @@ import Data.Either (either)
 import Data.Semigroup ((<>))
 import School.App.CSVReader
 import School.FileIO.AppIO (runAppIO)
-import School.FileIO.MatrixHeader (MatrixHeader(..))
+import School.FileIO.FileHeader (FileHeader(..))
 import School.Types.DataType (DataType(..))
 import Options.Applicative
 
@@ -41,7 +41,7 @@ title = "CSVToBinary"
 
 convert :: Conversion -> IO ()
 convert args = do
-  let matrixHeader = MatrixHeader DBL64B (nRows args) (nCols args)
+  let matrixHeader = FileHeader DBL64B (nRows args) (nCols args)
   let conv = csvToBinary (inFile args)
                          (outFile args)
                          matrixHeader

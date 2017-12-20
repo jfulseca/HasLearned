@@ -14,7 +14,7 @@ import School.FileIO.BinConversion (binConversion)
 import School.FileIO.FileApp (FileApp(..))
 import School.FileIO.FilePath (FilePath, guessFileType)
 import School.FileIO.FileType (FileType(..))
-import School.FileIO.MatrixHeader (MatrixHeader(..), headerParser)
+import School.FileIO.FileHeader (FileHeader(..), headerParser)
 import School.Types.DataType (DataType, getSize)
 import School.Utils.FileApp (checkFile, fileExists, getFileHeaderLength,
                              getHeaderBytes, getNElements, putHeader)
@@ -36,7 +36,7 @@ instance FileApp FileTransformerOptions where
     FileTransformerParams { inputFile :: FilePath
                           , inputFormat :: DataType
                           , totalOffset :: Maybe Integer
-                          , outHeader :: MatrixHeader
+                          , outHeader :: FileHeader
                           , outputFile :: FilePath
                           , outputFormat :: DataType
                           , outputType :: FileType
@@ -125,7 +125,7 @@ scanOptions FileTransformerOptions { inFileOpt
   fileExists inputFile
   hBytes <- getHeaderBytes inputType inputFile
   let nHeader = getFileHeaderLength inputType hBytes
-  inHeader@MatrixHeader { cols } <- liftResult $
+  inHeader@FileHeader { cols } <- liftResult $
     headerParser inputType hBytes
   checkFile inputFile inputType inHeader
   nEl <- getNElements inDataTypeOpt
@@ -143,7 +143,7 @@ scanOptions FileTransformerOptions { inFileOpt
   let outRows = maybe ((rows inHeader) - skip)
                       fromIntegral
                       nRowsOpt
-  let outHeader = MatrixHeader { dataType = outputFormat
+  let outHeader = FileHeader { dataType = outputFormat
                                , cols
                                , rows = outRows
                                }

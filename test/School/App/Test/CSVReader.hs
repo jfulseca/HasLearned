@@ -9,7 +9,7 @@ import Data.Either (isRight)
 import Data.List.Split (chunksOf)
 import School.App.CSVReader
 import School.FileIO.AppIO (runAppIO)
-import School.FileIO.MatrixHeader (MatrixHeader(..))
+import School.FileIO.FileHeader (FileHeader(..))
 import School.FileIO.MatrixSourcery (matrixDoubleSourcery)
 import School.FileIO.FileType (FileType(..))
 import School.Types.FloatEq (FloatEq(..))
@@ -38,7 +38,7 @@ prop_convert_csv_file :: Property
 prop_convert_csv_file = monadicIO $ do
   let filePath = "test/data/csvTest.csv"
   let bFileName = "test.dat"
-  let header = MatrixHeader DBL64B 51 3
+  let header = FileHeader DBL64B 51 3
   writeRes <- run . runAppIO . runConduit $
     csvToBinary filePath bFileName header
   assert $ isRight writeRes

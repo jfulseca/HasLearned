@@ -10,7 +10,7 @@ import Data.Either (isLeft, isRight)
 import Data.Monoid ((<>))
 import School.FileIO.AppIO (AppIO, runAppIO)
 import School.FileIO.ConduitHeader (conduitHeader)
-import School.FileIO.MatrixHeader (MatrixHeader(..))
+import School.FileIO.FileHeader (FileHeader(..))
 import School.FileIO.MatrixSourcery
 import School.FileIO.FileType (FileType(..)) 
 import School.TestUtils (def, dummyList, dummyMatrix)
@@ -24,7 +24,7 @@ import Test.Tasty.QuickCheck hiding ((><))
 import Test.Tasty.TH
 import Test.QuickCheck.Monadic (PropertyM, assert, monadicIO, pre, run)
 
-testHeader :: MatrixHeader
+testHeader :: FileHeader
            -> ByteString
            -> PropertyM IO (Either String [ByteString])
 testHeader header byteString = run . runAppIO $ do
@@ -54,7 +54,7 @@ testMatrix pr pc bytes = run . runAppIO . runConduit $
 prop_accepts_header :: DataType -> (Positive Int) -> Property
 prop_accepts_header name (Positive n) =
   monadicIO $ do
-    let h = MatrixHeader name n n
+    let h = FileHeader name n n
     result <- testHeader h (toByteString' h)
     assert $ isRight result
 
@@ -93,8 +93,8 @@ prop_rejects_wrong_header name1
     pre $ name1 /= name2
        || mod n3 n1 /= 0
        || n2 /= n4
-    let h1 = MatrixHeader name1 n1 n2
-    let h2 = MatrixHeader name2 n3 n4
+    let h1 = FileHeader name1 n1 n2
+    let h2 = FileHeader name2 n3 n4
     result <- testHeader h1 (toByteString' h2)
     assert $ isLeft result
 
@@ -134,7 +134,7 @@ prop_read_with_extra pr@(Positive r) pc@(Positive c) =
 
 prop_read_3x3_matrix :: Property
 prop_read_3x3_matrix = monadicIO $ do
-  let h = MatrixHeader DBL64B 3 3
+  let h = FileHeader DBL64B 3 3
   let path = "test/data/matrix3x3.sm"
   matrix <- run . runAppIO $
     matrixDoubleSourcery SM h path sinkList
@@ -143,7 +143,7 @@ prop_read_3x3_matrix = monadicIO $ do
 
 prop_read_3x3_matrix_twice :: Property
 prop_read_3x3_matrix_twice = monadicIO $ do
-  let h = MatrixHeader DBL64B 3 3
+  let h = FileHeader DBL64B 3 3
   let path = "test/data/matrix3x3Twice.sm"
   matrix <- run . runAppIO $
     matrixDoubleSourcery SM h path sinkList
