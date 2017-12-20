@@ -15,7 +15,6 @@ import School.Unit.CostFunction (CostFunction)
 import School.Unit.Unit (Unit)
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitGradient (UnitGradient)
-import School.Utils.Either (mapRight)
 
 stopping :: StoppingCondition a
          -> ConduitM (UnitGradient a)
@@ -52,4 +51,4 @@ gradientDescent sourcerer
           .| sinkNull
   result <- runAppTrain initState $
     sourcerer sink
-  return $ mapRight snd result
+  return $ fmap snd result

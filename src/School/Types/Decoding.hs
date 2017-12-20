@@ -16,7 +16,6 @@ import Data.Serialize.IEEE754 (getFloat64be)
 import Numeric.LinearAlgebra ((><), Matrix, I, R)
 import School.Types.DataType (DataType(..))
 import School.Types.Error (Error)
-import School.Utils.Either (mapRight)
 
 getDouble :: Get R
 getDouble = getFloat64be
@@ -51,7 +50,7 @@ getInt :: Get Int32
 getInt = getInt32be
 
 binToInt :: ByteString -> Either Error I
-binToInt = (mapRight fromIntegral)
+binToInt = (fmap fromIntegral)
          . (runGet getInt)
 
 binToMatrixInt :: DataType

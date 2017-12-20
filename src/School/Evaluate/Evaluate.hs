@@ -12,7 +12,6 @@ import School.Unit.CostFunction (CostFunction)
 import School.Unit.Unit (Unit)
 import School.Unit.UnitActivation (ActivationSource)
 import School.Unit.UnitParams (UnitParams)
-import School.Utils.Either (mapRight)
 
 evaluate :: (Num a)
          => [Unit a]
@@ -26,4 +25,4 @@ evaluate units costF paramList source = do
           .| sinkList
   let state = def { paramList }
   result <- runAppTrain state $ runConduit pass
-  return $ mapRight (cost . snd) result
+  return $ fmap (cost . snd) result

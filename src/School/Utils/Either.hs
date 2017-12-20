@@ -4,14 +4,10 @@ module School.Utils.Either
 , fromRight
 , isLeft
 , isRight
-, mapRight
 , maybeToEither
 ) where
 
 import Data.Either (either, isLeft, isRight)
-
-mapRight :: (b -> c) -> Either a b -> Either a c
-mapRight f = either Left (Right . f)
 
 fromLeft :: a -> Either a b -> a
 fromLeft _ (Left x) = x
