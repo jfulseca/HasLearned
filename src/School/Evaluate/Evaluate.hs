@@ -10,14 +10,14 @@ import School.Train.TrainState (TrainState(..), def)
 import School.Types.PingPong (PingPong)
 import School.Unit.CostFunction (CostFunction)
 import School.Unit.Unit (Unit)
-import School.Unit.UnitActivation (ActivationSource)
+import School.Unit.UnitForward (ForwardSource)
 import School.Unit.UnitParams (UnitParams)
 
 evaluate :: (Num a)
          => [Unit a]
          -> CostFunction a
          -> PingPong (UnitParams a)
-         -> ActivationSource a
+         -> ForwardSource a
          -> IO (Either String a)
 evaluate units costF paramList source = do
   let pass = source

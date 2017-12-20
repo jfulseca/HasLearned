@@ -11,9 +11,11 @@ import School.Train.BackwardPass (backwardPass)
 import School.Train.ForwardPass (forwardPass)
 import School.Train.TrainState (TrainState(..))
 import School.Train.UpdateParams (UpdateParams)
+import School.Types.Slinky (Slinky(..))
 import School.Unit.CostFunction (CostFunction)
 import School.Unit.Unit (Unit)
 import School.Unit.UnitActivation (UnitActivation)
+import School.Unit.UnitForward (ForwardStack)
 import School.Unit.UnitBackward (BackwardStack)
 import School.Unit.UnitGradient (UnitGradient(..))
 
@@ -34,6 +36,13 @@ updateStep update = mapMC $ \(_, grad) -> do
          tryUpdate
   return grad
 
+setupPass :: ConduitM (UnitActivation a)
+                      (ForwardStack a)
+                      (AppTrain a)
+                      ()
+setupPass = mapMC $ \activation ->
+  return ([activation], SNil)
+
 gradientDescentPass :: [Unit a]
                     -> CostFunction a
                     -> UpdateParams a
@@ -42,6 +51,7 @@ gradientDescentPass :: [Unit a]
                                 (AppTrain a)
                                 ()
 gradientDescentPass units cost update =
-    forwardPass units cost
+    setupPass
+ .| forwardPass units cost
  .| backwardPass units
  .| updateStep update

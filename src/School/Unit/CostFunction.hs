@@ -20,7 +20,7 @@ data CostFunction a =
                , derivCost :: UnitActivation a
                            -> Slinky CostParams
                            -> Either String (UnitGradient a)
-               , setupCost :: ConduitM (UnitActivation a)
+               , setupCost :: ConduitM (ForwardStack a)
                                        (ForwardStack a)
                                        (AppTrain a)
                                        ()
@@ -41,9 +41,9 @@ instance (Container Vector a, Num a) => Monoid (CostFunction a) where
             return $ BatchGradient $
               add res1 res2
           d3 _ _ = Left "mappend costfunctions needs two cost params"
-          s3 = s1 .| mapC head .| s2
+          s3 = s1 .| s2
   mempty = CostFunction { computeCost
-                        , derivCost 
+                        , derivCost
                         , setupCost
                         } where
     computeCost _ _ = Right 0
@@ -52,4 +52,4 @@ instance (Container Vector a, Num a) => Monoid (CostFunction a) where
       where r = rows g
             c = cols g
     derivCost _ _ = Left "mempty deriv cost expects batch activation"
-    setupCost = mapC pure
+    setupCost = mapC id

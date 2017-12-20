@@ -10,6 +10,7 @@ import School.TestUtils (assertRight, fromRight, randomAffineParams, randomMatri
 import School.Train.TrainState (TrainState(..), def)
 import School.Types.FloatEq ((~=))
 import School.Types.PingPong (pingPongSingleton, toPingPong)
+import School.Types.Slinky (Slinky(..))
 import School.Unit.Affine (affine)
 import School.Unit.RecLin (recLin)
 import School.Unit.Unit (Unit(..))
@@ -24,7 +25,7 @@ import Test.QuickCheck.Monadic (assert, monadicIO)
 prop_affine_input_fail :: Property
 prop_affine_input_fail = monadicIO $ do
   let forward = unitForward affine
-  let acts = [ApplyFail "init"]
+  let acts = ([ApplyFail "init"], SNil)
   let network =  yield acts
               .| forward
               .| sinkList
@@ -35,12 +36,12 @@ prop_affine_param_fail :: Positive Int -> Positive Int -> Property
 prop_affine_param_fail (Positive fSize) (Positive oSize) = monadicIO $ do
   let forward = unitForward affine
   actMat <- liftIO $ randomMatrix oSize fSize
-  let acts = [BatchActivation actMat]
+  let acts = ([BatchActivation actMat], SNil)
   let network =  yield acts
               .| forward
               .| sinkList
   result <- testState network def
-  assertRight (isApplyFail . head . head . fst)
+  assertRight (isApplyFail . head . fst . head . fst)
               result
 
 prop_affine_apply_single :: Positive Int
@@ -52,7 +53,7 @@ prop_affine_apply_single (Positive bSize)
                          (Positive oSize) = monadicIO $ do
   let forward = unitForward affine
   actMat <- liftIO $ randomMatrix bSize fSize
-  let acts = [BatchActivation actMat]
+  let acts = ([BatchActivation actMat], SNil)
   let network =  yield acts
               .| forward
               .| sinkList
@@ -60,8 +61,8 @@ prop_affine_apply_single (Positive bSize)
   let paramList = pingPongSingleton params
   let initState = def { paramList }
   result <- testState network initState
-  let check = apply affine params (head acts)
-  assertRight (((~=) check) . head . head . fst)
+  let check = apply affine params (head . fst $ acts)
+  assertRight (((~=) check) . head . fst . head . fst)
               result
 
 prop_apply_aff_rl_aff_rl :: Positive Int
@@ -74,7 +75,7 @@ prop_apply_aff_rl_aff_rl (Positive b)
                          (Positive h)
                          (Positive o) = monadicIO $ do
   input <- liftIO $ randomMatrix b f
-  let acts = [BatchActivation input]
+  let acts = ([BatchActivation input], SNil)
   let network =  yield acts
               .| unitForward affine
               .| unitForward recLin
@@ -91,11 +92,11 @@ prop_apply_aff_rl_aff_rl (Positive b)
   let paramList = fromRight (pingPongSingleton EmptyParams) allParams
   let initState = def { paramList }
   result <- testState network initState
-  let out1 = apply affine params1 (head acts)
+  let out1 = apply affine params1 (head . fst $ acts)
   let out2 = apply recLin EmptyParams out1
   let out3 = apply affine params2 out2
   let check = apply recLin EmptyParams out3
-  assertRight (((~=) check) . head . head . fst)
+  assertRight (((~=) check) . head . fst . head . fst)
               result
 
 unitForwardTest :: TestTree

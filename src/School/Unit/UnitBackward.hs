@@ -8,15 +8,14 @@ import School.Train.AppTrain (AppTrain)
 import School.Train.StateFunctions (getParams, putParamDerivs)
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitActivation (UnitActivation(..))
-import School.Unit.UnitForward (ForwardStack)
 import School.Unit.UnitGradient (UnitGradient(..))
 
 type BackwardStack a =
-  ( ForwardStack a
+  ( [UnitActivation a]
   , UnitGradient a
   )
 
-derivUnit :: Unit a 
+derivUnit :: Unit a
           -> BackwardStack a
           -> AppTrain a (BackwardStack a)
 derivUnit _ ([], _) =

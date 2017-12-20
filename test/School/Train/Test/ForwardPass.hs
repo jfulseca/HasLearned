@@ -25,7 +25,7 @@ import Test.QuickCheck.Monadic (assert, monadicIO)
 prop_no_units :: Property
 prop_no_units = monadicIO $ do
   let forward = forwardPass [] weight1
-  let source = yield . BatchActivation $ ident 1
+  let source = yield ([], SNil)
   let pass = source .| forward .| sinkList
   result <- testState pass def
   assert $ isLeft result
@@ -34,7 +34,7 @@ prop_single_recLin :: (Positive Int) -> (Positive Int) -> Property
 prop_single_recLin (Positive bSize) (Positive fSize) = monadicIO $ do
   let forward = forwardPass [recLin] weight1
   input <- liftIO $ BatchActivation <$> (randomMatrix bSize fSize)
-  let source = yield input
+  let source = yield ([input], SNil)
   let pass = source .| forward .| await
   result <- testState pass def
   let out = apply recLin EmptyParams input
@@ -50,7 +50,7 @@ prop_aff_rl_aff_rl (Positive b) (Positive f) (Positive h) (Positive o) = monadic
   let units = [affine, recLin, affine, recLin]
   let forward = forwardPass units weight1
   input <- liftIO $ BatchActivation <$> (randomMatrix b f)
-  let source = yield input
+  let source = yield ([input], SNil)
   let pass = source .| forward .| await
   params1 <- liftIO $ randomAffineParams f h
   params2 <- liftIO $ randomAffineParams h o

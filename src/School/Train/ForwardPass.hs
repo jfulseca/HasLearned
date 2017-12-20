@@ -7,7 +7,6 @@ import School.Train.AppTrain (AppTrain)
 import School.Unit.ApplyCost (applyCost)
 import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.Unit (Unit)
-import School.Unit.UnitActivation (UnitActivation)
 import School.Unit.UnitBackward (BackwardStack)
 import School.Unit.UnitForward (ForwardStack, unitForward)
 
@@ -23,7 +22,7 @@ hiddenUnits (unit:units) =
 
 forwardPass :: [Unit a]
             -> CostFunction a
-            -> ConduitM (UnitActivation a)
+            -> ConduitM (ForwardStack a)
                         (BackwardStack a)
                         (AppTrain a)
                         ()

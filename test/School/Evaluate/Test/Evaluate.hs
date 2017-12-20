@@ -8,6 +8,7 @@ import School.Evaluate.Evaluate
 import School.TestUtils (addClasses, assertRight, fromRight, randomAffineParams,
                          randomMatrix, randomNNInts, unitCorrect)
 import School.Types.PingPong (pingPongSingleton, toPingPong)
+import School.Types.Slinky (Slinky(..))
 import School.Unit.Affine (affine)
 import School.Unit.LogSoftMax (logSoftMax)
 import School.Unit.RecLin (recLin)
@@ -30,7 +31,7 @@ prop_single_layer (Positive b) (Positive f) (Positive h) (Positive c) = monadicI
   let params = [p1, EmptyParams, p2, EmptyParams]
   let paramList = fromRight (pingPongSingleton EmptyParams)
                             (toPingPong params)
-  let source = yield . BatchActivation $ addClasses classes input
+  let source = yield ([BatchActivation $ addClasses classes input], SNil)
   result <- liftIO $ evaluate units
                               multiNoulli
                               paramList
@@ -42,7 +43,7 @@ prop_correct (Positive b) (Positive c) = monadicIO $ do
   input <- liftIO $ randomMatrix b c
   classes <- liftIO $ randomNNInts (c - 1) b
   let paramList = pingPongSingleton EmptyParams
-  let source = yield . BatchActivation $ addClasses classes input
+  let source = yield ([BatchActivation $ addClasses classes input], SNil)
   result <- liftIO $ evaluate [unitCorrect classes]
                               multiNoulli
                               paramList

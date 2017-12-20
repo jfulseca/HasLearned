@@ -3,13 +3,15 @@
 module School.Unit.WeightDecay
 ( weightDecay ) where
 
-import Conduit (mapC)
+import Conduit (ConduitM, mapMC)
 import Numeric.LinearAlgebra (Container, Matrix, Vector,
                               cmap, scale, sumElements)
-import School.Types.Slinky (Slinky(..))
+import School.Train.AppTrain (AppTrain)
+import School.Types.Slinky (Slinky(..), slinkyAppend)
 import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.CostParams (CostParams(..))
 import School.Unit.UnitActivation (UnitActivation(..))
+import School.Unit.UnitForward (ForwardStack)
 import School.Unit.UnitGradient (UnitGradient(..))
 
 square :: (Num a) => a -> a
@@ -20,7 +22,7 @@ weight :: (Container Vector a, Num a)
 weight coeff input =
   (*coeff) . sumElements $ cmap square input
 
-weightDeriv :: (Container Vector a, Num a) 
+weightDeriv :: (Container Vector a, Num a)
             => a -> Matrix a -> UnitGradient a
 weightDeriv coeff input =
   BatchGradient . (scale coeff) $
@@ -59,11 +61,18 @@ deriv coeff
   Right $ weightDeriv coeff input
 deriv _ _ _ = Left errorMsg
 
+setup :: ConduitM (ForwardStack a)
+                  (ForwardStack a)
+                  (AppTrain a)
+                  ()
+setup = mapMC $ \(activations, cParams) ->
+  return (activations, slinkyAppend NoCostParams cParams)
+
 weightDecay :: (Container Vector a, Num a)
             => a
             -> CostFunction a
 weightDecay coeff =
   CostFunction { computeCost = compute coeff
                , derivCost = deriv coeff
-               , setupCost = mapC pure
+               , setupCost = setup
                } where

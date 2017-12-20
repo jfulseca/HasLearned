@@ -9,8 +9,6 @@ module School.Train.TrainState
 import Data.Default.Class (Default(..))
 import Numeric.LinearAlgebra (Container, Vector)
 import School.Types.PingPong (PingPong, pingPongSingleton)
-import School.Types.Slinky (Slinky(..))
-import School.Unit.CostParams (CostParams)
 import School.Unit.UnitParams (UnitParams(..))
 
 data HandlerStore a = CostList [a]
@@ -18,7 +16,6 @@ data HandlerStore a = CostList [a]
 
 data TrainState a = TrainState
   { cost :: a
-  , costParams :: Slinky (CostParams)
   , handlerStore :: HandlerStore a
   , iterationCount :: Int
   , learningRate :: a
@@ -35,7 +32,6 @@ instance (Container Vector a, Eq a, Num a) => Eq (TrainState a) where
 
 instance (Num a) => Default (TrainState a) where
   def = TrainState { cost = 0
-                   , costParams = SNil
                    , handlerStore = NoStore
                    , iterationCount = 0
                    , learningRate = 0

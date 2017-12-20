@@ -9,7 +9,7 @@ import School.TestUtils (addClasses, assertRight, diffCost, randomMatrix,
                          randomNNInts, singleClassOutput, testState, unitCorrect)
 import School.Train.ForwardPass (forwardPass)
 import School.Train.TrainState (TrainState(..), def)
-import School.Types.Slinky (slinkySingleton)
+import School.Types.Slinky (Slinky(..), slinkySingleton)
 import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.CostParams (CostParams(..))
 import School.Unit.LogSoftMax (logSoftMax)
@@ -78,7 +78,7 @@ prop_correct_forward_pass (Positive c) (Positive b) = monadicIO $ do
   let forward = forwardPass [unitCorrect classes]
                             multiNoulli
   activation <- liftIO $ randomMatrix b c
-  let input = BatchActivation $ addClasses classes activation
+  let input = ([BatchActivation $ addClasses classes activation], SNil)
   let pass = yield input
           .| forward
           .| await
