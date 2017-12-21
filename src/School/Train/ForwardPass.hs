@@ -29,6 +29,6 @@ forwardPass :: [Unit a]
 forwardPass [] _ = mapM_C . const $
   (throwError "No units given to forwardPass")
 forwardPass units cost =
-    setupCost cost
+    prepareCost cost
  .| hiddenUnits units
  .| applyCost cost

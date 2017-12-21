@@ -61,11 +61,11 @@ deriv coeff
   Right $ weightDeriv coeff input
 deriv _ _ _ = Left errorMsg
 
-setup :: ConduitM (ForwardStack a)
-                  (ForwardStack a)
-                  (AppTrain a)
-                  ()
-setup = mapMC $ \(activations, cParams) ->
+prepare :: ConduitM (ForwardStack a)
+                    (ForwardStack a)
+                    (AppTrain a)
+                    ()
+prepare = mapMC $ \(activations, cParams) ->
   return (activations, slinkyAppend NoCostParams cParams)
 
 weightDecay :: (Container Vector a, Num a)
@@ -74,5 +74,5 @@ weightDecay :: (Container Vector a, Num a)
 weightDecay coeff =
   CostFunction { computeCost = compute coeff
                , derivCost = deriv coeff
-               , setupCost = setup
+               , prepareCost = prepare
                } where

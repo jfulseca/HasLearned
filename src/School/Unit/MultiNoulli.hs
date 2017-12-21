@@ -31,7 +31,7 @@ multiNoulli =
         . (zipWith (flip (!!)) target)
         . toLists
         $ input
-      computeCost _ _ = Left "MultiNoulli expects batch activation and batch classification target"
+      computeCost _ _ = Left "MultiNoulli expects batch activation and batch class target"
       derivCost (BatchActivation input)
                 (SNode (BatchClassTarget target) _) =
         let factor = (-1) / (fromIntegral . rows $ input)
@@ -42,7 +42,7 @@ multiNoulli =
         . map (\idx -> assoc c 0 [(idx, factor)])
         $ target
       derivCost _ _ = Left "MultiNoulli expects batch activation and batch class target"
-      setupCost = mapMC $ \(activations, cParams) -> do
+      prepareCost = mapMC $ \(activations, cParams) -> do
         case activations of
           [BatchActivation input] -> do
             let c = cols input
@@ -52,5 +52,5 @@ multiNoulli =
           _ -> throwError "MultiNoulli setup expects single batch activation"
   in CostFunction { computeCost
                   , derivCost
-                  , setupCost
+                  , prepareCost
                   }
