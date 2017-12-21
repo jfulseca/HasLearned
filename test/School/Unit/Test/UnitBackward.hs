@@ -18,6 +18,7 @@ import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitBackward
 import School.Unit.UnitGradient (UnitGradient(..), isGradientFail)
 import School.Unit.UnitParams (UnitParams(..))
+import School.Utils.Tuple (snd3)
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck
 import Test.Tasty.TH
@@ -28,7 +29,7 @@ prop_affine_input_fail = monadicIO $ do
   let backward = unitBackward affine
   let acts = [ApplyFail "init"]
   let inGrad = BatchGradient $ ident 1
-  let network =  yield (acts, inGrad)
+  let network =  yield (acts, inGrad, 0)
               .| backward
               .| sinkList
   result <- testState network def
@@ -39,7 +40,7 @@ prop_affine_gradient_fail = monadicIO $ do
   let backward = unitBackward affine
   let acts = [BatchActivation $ ident 1]
   let inGrad = GradientFail "init"
-  let network =  yield (acts, inGrad)
+  let network =  yield (acts, inGrad, 0)
               .| backward
               .| sinkList
   result <- testState network def
@@ -51,12 +52,12 @@ prop_affine_param_fail (Positive fSize) (Positive oSize) = monadicIO $ do
   actMat <- liftIO $ randomMatrix oSize fSize
   gradMat <- liftIO $ randomMatrix oSize fSize
   let acts = [BatchActivation actMat]
-  let fStack = (acts, BatchGradient gradMat)
+  let fStack = (acts, BatchGradient gradMat, 0)
   let network =  yield fStack
               .| backward
               .| sinkList
   result <- testState network def
-  assertRight (isGradientFail . snd . head . fst)
+  assertRight (isGradientFail . snd3 . head . fst)
               result
 
 prop_reclin_gradient :: Positive Int -> Positive Int -> Property
@@ -66,13 +67,13 @@ prop_reclin_gradient (Positive bSize) (Positive fSize) = monadicIO $ do
   let input = BatchActivation actMat
   gradMat <- liftIO $ randomMatrix bSize fSize
   let inGrad = BatchGradient gradMat
-  let fStack = ([input], inGrad)
+  let fStack = ([input], inGrad, 0)
   let network =  yield fStack
               .| backward
               .| sinkList
   result <- testState network def
   let (check, _) = deriv recLin EmptyParams inGrad input
-  assertRight (((~=) check) . snd . head . fst)
+  assertRight (((~=) check) . snd3 . head . fst)
               result
 
 prop_affine_derivs :: Positive Int -> Positive Int -> Positive Int -> Property
@@ -82,7 +83,7 @@ prop_affine_derivs (Positive bSize) (Positive fSize) (Positive oSize) = monadicI
   let input = BatchActivation actMat
   gradMat <- liftIO $ randomMatrix bSize oSize
   let inGrad = BatchGradient gradMat
-  let fStack = ([input], inGrad)
+  let fStack = ([input], inGrad, 0)
   let network =  yield fStack
               .| backward
               .| sinkList
@@ -114,7 +115,7 @@ prop_deriv_aff_rl_aff_rl (Positive b)
                                  ]
   gradMat <- liftIO $ randomMatrix b o
   let inGrad = BatchGradient gradMat
-  let network =  yield (acts, inGrad)
+  let network =  yield (acts, inGrad, 0)
               .| unitBackward recLin
               .| unitBackward affine
               .| unitBackward recLin

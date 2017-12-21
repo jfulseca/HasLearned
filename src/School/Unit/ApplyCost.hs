@@ -7,7 +7,7 @@ import Conduit (ConduitM, mapMC)
 import Control.Monad (when)
 import Control.Monad.Except (throwError)
 import School.Train.AppTrain (AppTrain)
-import School.Train.StateFunctions (putCost)
+import School.Types.LiftResult (liftResult)
 import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.UnitBackward (BackwardStack)
 import School.Unit.UnitForward (ForwardStack)
@@ -20,9 +20,8 @@ applyCost :: CostFunction a
 applyCost costFunc = mapMC $ \(activations, cParams) -> do
   when (length activations < 1) $ throwError "No activations in applyCost"
   let activation = head activations
-  let cost = computeCost costFunc activation cParams
-  either throwError putCost cost
+  cost <- liftResult $ computeCost costFunc activation cParams
   let grad = derivCost costFunc activation cParams
   either throwError
-    (\g -> return (tail activations, g))
+    (\g -> return (tail activations, g, cost))
     grad

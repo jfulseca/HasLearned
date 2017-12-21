@@ -40,8 +40,8 @@ prop_single_recLin (Positive bSize) (Positive fSize) = monadicIO $ do
   let out = apply recLin EmptyParams input
   let (cost, grad) = doCost weight1 out SNil
   let bParams = reversePingPong . paramList $ def
-  let state = def { cost, paramList = bParams }
-  let stack = ([input], grad)
+  let state = def { paramList = bParams }
+  let stack = ([input], grad, cost)
   let check = Right $ (Just stack, state) :: Either String (Maybe (BackwardStack R), TrainState R)
   assert $ result == check
 
@@ -68,8 +68,8 @@ prop_aff_rl_aff_rl (Positive b) (Positive f) (Positive h) (Positive o) = monadic
   let out4 = apply recLin EmptyParams out3
   let (cost, grad) = doCost weight1 out4 SNil
   let bParams = reversePingPong paramList
-  let state = def { cost, paramList = bParams }
-  let stack = ([out3, out2, out1, input], grad)
+  let state = def { paramList = bParams }
+  let stack = ([out3, out2, out1, input], grad, cost)
   let check = Right $ (Just stack, state) :: Either String (Maybe (BackwardStack R), TrainState R)
   assert $ result == check
 

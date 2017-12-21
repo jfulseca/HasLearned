@@ -14,25 +14,25 @@ import School.Train.TrainState (TrainState)
 import School.Unit.CostFunction (CostFunction)
 import School.Unit.Unit (Unit)
 import School.Unit.UnitActivation (UnitActivation(..))
-import School.Unit.UnitGradient (UnitGradient)
+import School.Unit.UnitBackward (BackwardStack)
 
 stopping :: StoppingCondition a
-         -> ConduitM (UnitGradient a)
-                     (Maybe (UnitGradient a))
+         -> ConduitM (BackwardStack a)
+                     (Maybe ())
                      (AppTrain a)
                      ()
-stopping condition = mapMC $ \input -> do
+stopping condition = mapMC $ \_ -> do
   state <- get
   if (runCondition condition) state
     then return Nothing
-    else return . Just $ input
+    else return (Just ())
 
 gradientDescent :: MatrixSourcery (AppTrain a) a ()
                 -> [Unit a]
                 -> CostFunction a
                 -> UpdateParams a
                 -> StoppingCondition a
-                -> IterationHandler a (UnitGradient a)
+                -> IterationHandler a
                 -> TrainState a
                 -> IO (Either String
                               (TrainState a))

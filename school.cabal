@@ -71,6 +71,7 @@ library
                      , School.Utils.Random
                      , School.Utils.Maybe
                      , School.Utils.SafeEncoding
+                     , School.Utils.Tuple
   build-depends:       QuickCheck
                      , attoparsec
                      , base >= 4.9

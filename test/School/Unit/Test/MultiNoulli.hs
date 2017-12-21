@@ -4,11 +4,11 @@ module School.Unit.Test.MultiNoulli
 ( multiNoulliTest ) where
 
 import Conduit ((.|), await, liftIO, yield)
+import Data.Default.Class (def)
 import Numeric.LinearAlgebra ((><))
 import School.TestUtils (addClasses, assertRight, diffCost, randomMatrix,
                          randomNNInts, singleClassOutput, testState, unitCorrect)
 import School.Train.ForwardPass (forwardPass)
-import School.Train.TrainState (TrainState(..), def)
 import School.Types.Slinky (Slinky(..), slinkySingleton)
 import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.CostParams (CostParams(..))
@@ -19,6 +19,7 @@ import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitGradient (UnitGradient(..))
 import School.Unit.UnitParams (UnitParams(..))
 import School.Utils.LinearAlgebra (compareDoubleMatrix)
+import School.Utils.Tuple (trd3)
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck hiding ((><))
 import Test.Tasty.TH
@@ -83,7 +84,8 @@ prop_correct_forward_pass (Positive c) (Positive b) = monadicIO $ do
           .| forward
           .| await
   result <- testState pass def
-  assertRight ((== (-1)) . cost . snd) result
+  assertRight ((maybe False ((== (-1)) . trd3)) . fst)
+              result
 
 multiNoulliTest :: TestTree
 multiNoulliTest = $(testGroupGenerator)

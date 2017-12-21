@@ -9,6 +9,7 @@ import Control.Monad.State.Lazy (get, put)
 import School.Train.AppTrain (AppTrain)
 import School.Train.BackwardPass (backwardPass)
 import School.Train.ForwardPass (forwardPass)
+import School.Train.IterationHandler (BackwardConduit)
 import School.Train.TrainState (TrainState(..))
 import School.Train.UpdateParams (UpdateParams)
 import School.Types.Slinky (Slinky(..))
@@ -17,14 +18,10 @@ import School.Unit.Unit (Unit)
 import School.Unit.UnitActivation (UnitActivation)
 import School.Unit.UnitForward (ForwardStack)
 import School.Unit.UnitBackward (BackwardStack)
-import School.Unit.UnitGradient (UnitGradient(..))
 
 updateStep :: UpdateParams a
-           -> ConduitM (BackwardStack a)
-                       (UnitGradient a)
-                       (AppTrain a)
-                       ()
-updateStep update = mapMC $ \(_, grad) -> do
+           -> BackwardConduit a
+updateStep update = mapMC $ \(stack, grad, cost) -> do
   state@TrainState{ iterationCount } <- get
   let tryUpdate = update state
   either throwError
@@ -34,7 +31,7 @@ updateStep update = mapMC $ \(_, grad) -> do
                                  }
             put state'')
          tryUpdate
-  return grad
+  return (stack, grad, cost)
 
 setupPass :: ConduitM (UnitActivation a)
                       (ForwardStack a)
@@ -47,7 +44,7 @@ gradientDescentPass :: [Unit a]
                     -> CostFunction a
                     -> UpdateParams a
                     -> ConduitM (UnitActivation a)
-                                (UnitGradient a)
+                                (BackwardStack a)
                                 (AppTrain a)
                                 ()
 gradientDescentPass units cost update =

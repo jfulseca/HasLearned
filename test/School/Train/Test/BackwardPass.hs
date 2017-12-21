@@ -26,7 +26,9 @@ import Test.QuickCheck.Monadic (assert, monadicIO)
 prop_no_units :: Property
 prop_no_units = monadicIO $ do
   let backward = backwardPass []
-  let source = yield (([BatchActivation empty], BatchGradient empty) :: BackwardStack Double)
+  let source = yield (([BatchActivation empty],
+                       BatchGradient empty,
+                       0 ) :: BackwardStack Double)
   let pass = source .| backward .| sinkList
   result <- testState pass def
   assert $ isLeft result
@@ -37,7 +39,7 @@ prop_single_affine (Positive bSize) (Positive fSize) (Positive oSize) = monadicI
   input <- liftIO $ BatchActivation <$> (randomMatrix bSize fSize)
   grad <- liftIO $ BatchGradient <$> (randomMatrix bSize oSize)
   params <- liftIO $ randomAffineParams fSize bSize
-  let source = yield ([input], grad)
+  let source = yield ([input], grad, 0)
   let pass = source .| backward .| await
   let pl = reversePingPong $ pingPongSingleton params
   let state = def { paramList = pl }
@@ -68,9 +70,9 @@ prop_aff_rl_aff_rl (Positive b) (Positive f) (Positive h) (Positive o) = monadic
   let (grad3, deriv2) = deriv affine params2 grad2 out2
   let (grad4, deriv3) = deriv recLin EmptyParams grad3 out1
   let (_, deriv4) = deriv affine params1 grad4 input
-  let source = yield ([out3, out2, out1, input], grad)
+  let source = yield ([out3, out2, out1, input], grad, cost)
   let pass = source .| backward .| await
-  let initState = def { cost, paramList }
+  let initState = def { paramList }
   result <- testState pass initState
   let check = [deriv4, deriv3, deriv2, deriv1]
   assertRight ((== check) . paramDerivs . snd)
@@ -78,4 +80,3 @@ prop_aff_rl_aff_rl (Positive b) (Positive f) (Positive h) (Positive o) = monadic
 
 backwardPassTest :: TestTree
 backwardPassTest = $(testGroupGenerator)
-

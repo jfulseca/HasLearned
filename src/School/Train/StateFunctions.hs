@@ -2,7 +2,6 @@
 
 module School.Train.StateFunctions
 ( getParams
-, putCost
 , putParamDerivs
 ) where
 
@@ -23,8 +22,3 @@ putParamDerivs :: UnitParams a -> AppTrain a ()
 putParamDerivs derivs = do
   state@TrainState{ paramDerivs } <- get
   put state { paramDerivs = derivs:paramDerivs }
-
-putCost :: a -> AppTrain a ()
-putCost value = do
-  state <- get
-  put state { cost = value }
