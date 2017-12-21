@@ -21,9 +21,9 @@ data CostFunction a =
                            -> Slinky CostParams
                            -> Either String (UnitGradient a)
                , prepareCost :: ConduitM (ForwardStack a)
-                                       (ForwardStack a)
-                                       (AppTrain a)
-                                       ()
+                                         (ForwardStack a)
+                                         (AppTrain a)
+                                         ()
                }
 
 instance (Container Vector a, Num a) => Monoid (CostFunction a) where
