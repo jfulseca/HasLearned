@@ -33,7 +33,7 @@ prop_single_layer (Positive b) (Positive f) (Positive h) (Positive c) = monadicI
                             (toPingPong params)
   let source = yield ([BatchActivation $ addClasses classes input], SNil)
   result <- liftIO $ evaluate units
-                              multiNoulli
+                              (multiNoulli Nothing)
                               paramList
                               source
   assertRight (> (-1)) result
@@ -45,7 +45,7 @@ prop_correct (Positive b) (Positive c) = monadicIO $ do
   let paramList = pingPongSingleton EmptyParams
   let source = yield ([BatchActivation $ addClasses classes input], SNil)
   result <- liftIO $ evaluate [unitCorrect classes]
-                              multiNoulli
+                              (multiNoulli Nothing)
                               paramList
                               source
   assertRight (== (-1)) result

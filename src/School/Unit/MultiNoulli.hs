@@ -3,7 +3,7 @@
 module School.Unit.MultiNoulli
 ( multiNoulli ) where
 
-import Conduit (ConduitM, mapMC)
+import Conduit (ConduitM, mapC, mapMC)
 import Control.Monad.Except (throwError)
 import Numeric.LinearAlgebra (Container, Element, Vector, assoc, cols, fromRows,
                               rows, takeColumns, toColumns, toList, toLists)
@@ -53,11 +53,12 @@ deriv (BatchActivation input)
 deriv _ _ = Left "MultiNoulli expects batch activation and batch class target"
 
 prepare :: (Element a, RealFrac a)
-        => ConduitM (ForwardStack a)
+        => Maybe FilePath
+        -> ConduitM (ForwardStack a)
                     (ForwardStack a)
                     (AppTrain a)
                     ()
-prepare = mapMC $ \(activations, cParams) -> do
+prepare Nothing = mapMC $ \(activations, cParams) -> do
   case activations of
     [BatchActivation input] -> do
       let c = cols input
@@ -65,10 +66,12 @@ prepare = mapMC $ \(activations, cParams) -> do
       let newParams = toTarget . last . toColumns $ input
       return ([BatchActivation activation], slinkyAppend newParams cParams)
     _ -> throwError "MultiNoulli setup expects single batch activation"
+prepare _ = mapC id
 
 multiNoulli :: (Container Vector a, RealFrac a)
-            => CostFunction a
-multiNoulli = CostFunction { computeCost = compute
-                           , derivCost = deriv
-                           , prepareCost = prepare
-                           }
+            => Maybe FilePath
+            -> CostFunction a
+multiNoulli path = CostFunction { computeCost = compute
+                                , derivCost = deriv
+                                , prepareCost = prepare path
+                                }

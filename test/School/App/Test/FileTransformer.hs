@@ -76,6 +76,7 @@ prop_copy fType = monadicIO $ do
   result <- liftIO . runAppIO $ fileApp options
   assert $ isRight result
   equal <- liftIO $ fileEq (inFileName fType) (testFile fType)
+  liftIO $ removeFile (testFile fType)
   assert equal
 
 prop_copy_guess_filetypes :: FileType -> Property
