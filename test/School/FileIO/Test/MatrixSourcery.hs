@@ -12,12 +12,14 @@ import School.FileIO.AppIO (AppIO, runAppIO)
 import School.FileIO.ConduitHeader (conduitHeader)
 import School.FileIO.FileHeader (FileHeader(..))
 import School.FileIO.MatrixSourcery
-import School.FileIO.FileType (FileType(..)) 
+import School.FileIO.FileType (FileType(..))
 import School.TestUtils (def, dummyList, dummyMatrix)
 import School.Types.Decoding (binToMatrixDouble)
 import School.Types.Encoding (doubleToBin)
 import School.Types.DataType (DataType(..), getSize)
 import School.Types.LiftResult (liftResult)
+import School.Types.Slinky (Slinky(..))
+import School.Unit.UnitActivation (UnitActivation(..))
 import Numeric.LinearAlgebra.Data (Matrix)
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck hiding ((><))
@@ -102,16 +104,16 @@ encodeDoubles :: [Double] -> ByteString
 encodeDoubles = foldMap doubleToBin
 
 prop_read_double_matrix :: Positive Int
-                      -> Positive Int 
+                      -> Positive Int
                       -> Property
 prop_read_double_matrix pr@(Positive r) pc@(Positive c) =
   monadicIO $ do
     let bytes = encodeDoubles $ dummyList r c
     matrix <- testMatrix pr pc bytes
     assert $ matrix == Right [dummyMatrix r c]
- 
+
 prop_read_two_double_matrices :: Positive Int
-                           -> Positive Int 
+                           -> Positive Int
                            -> Property
 prop_read_two_double_matrices pr@(Positive r) pc@(Positive c) =
   monadicIO $ do
@@ -122,7 +124,7 @@ prop_read_two_double_matrices pr@(Positive r) pc@(Positive c) =
     assert $ matrices == Right [check, check]
 
 prop_read_with_extra :: Positive Int
-                   -> Positive Int 
+                   -> Positive Int
                    -> Property
 prop_read_with_extra pr@(Positive r) pc@(Positive c) =
   monadicIO $ do
@@ -136,19 +138,19 @@ prop_read_3x3_matrix :: Property
 prop_read_3x3_matrix = monadicIO $ do
   let h = FileHeader DBL64B 3 3
   let path = "test/data/matrix3x3.sm"
-  matrix <- run . runAppIO $
-    matrixDoubleSourcery SM h path sinkList
-  let check = Right $ [dummyMatrix 3 3]
-  assert $ matrix == check
+  stack <- run . runAppIO $
+    matrixDoubleSourcery SM h path id sinkList
+  let check = Right $ [([BatchActivation $ dummyMatrix 3 3], SNil)]
+  assert $ stack == check
 
 prop_read_3x3_matrix_twice :: Property
 prop_read_3x3_matrix_twice = monadicIO $ do
   let h = FileHeader DBL64B 3 3
   let path = "test/data/matrix3x3Twice.sm"
-  matrix <- run . runAppIO $
-    matrixDoubleSourcery SM h path sinkList
-  let check = dummyMatrix 3 3
-  assert $ matrix == Right [check, check]
+  stack <- run . runAppIO $
+    matrixDoubleSourcery SM h path id sinkList
+  let check = ([BatchActivation $ dummyMatrix 3 3], SNil)
+  assert $ stack == Right [check, check]
 
 matrixSourceryTest :: TestTree
 matrixSourceryTest = $(testGroupGenerator)

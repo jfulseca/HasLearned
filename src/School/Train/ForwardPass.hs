@@ -21,7 +21,7 @@ hiddenUnits (unit:units) =
   unitForward unit .| hiddenUnits units
 
 forwardPass :: [Unit a]
-            -> CostFunction a
+            -> CostFunction a (AppTrain a)
             -> ConduitM (ForwardStack a)
                         (BackwardStack a)
                         (AppTrain a)

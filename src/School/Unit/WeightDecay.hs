@@ -6,7 +6,6 @@ module School.Unit.WeightDecay
 import Conduit (ConduitM, mapMC)
 import Numeric.LinearAlgebra (Container, Matrix, Vector,
                               cmap, scale, sumElements)
-import School.Train.AppTrain (AppTrain)
 import School.Types.Slinky (Slinky(..), slinkyAppend)
 import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.CostParams (CostParams(..))
@@ -61,18 +60,20 @@ deriv coeff
   Right $ weightDeriv coeff input
 deriv _ _ _ = Left errorMsg
 
-prepare :: ConduitM (ForwardStack a)
+prepare :: (Monad m)
+        => ConduitM (ForwardStack a)
                     (ForwardStack a)
-                    (AppTrain a)
+                    m
                     ()
 prepare = mapMC $ \(activations, cParams) ->
   return (activations, slinkyAppend NoCostParams cParams)
 
-weightDecay :: (Container Vector a, Num a)
+weightDecay :: (Container Vector a, Num a, Monad m)
             => a
-            -> CostFunction a
+            -> CostFunction a m
 weightDecay coeff =
   CostFunction { computeCost = compute coeff
                , derivCost = deriv coeff
                , prepareCost = prepare
+               , alterConduit = id
                } where

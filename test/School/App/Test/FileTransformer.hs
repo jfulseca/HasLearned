@@ -19,6 +19,9 @@ import School.FileIO.MatrixSourcery (matrixDoubleSourcery)
 import School.TestUtils (assertRight, dummyMatrix)
 import School.Types.DataType (DataType(..))
 import School.Types.Error (Error)
+import School.Types.Slinky (Slinky(..))
+import School.Unit.UnitActivation (UnitActivation(..))
+import School.Unit.UnitForward (ForwardStack)
 import School.Utils.Either (isLeft, isRight)
 import System.Directory (removeFile)
 import Test.Tasty (TestTree)
@@ -54,9 +57,12 @@ readMat :: FileType
         -> FileHeader
         -> FilePath
         -> PropertyM IO (Either Error
-                                (Maybe (Matrix R)))
+                                (Maybe (ForwardStack R)))
 readMat fType header path = run . runAppIO $
- matrixDoubleSourcery fType header path await
+  matrixDoubleSourcery fType header path id await
+
+toStack :: Matrix a -> ForwardStack a
+toStack matrix = ([BatchActivation matrix], SNil)
 
 readDoubleList :: FileType
                -> FileHeader
@@ -114,7 +120,7 @@ prop_skip_rows fType = monadicIO $ do
                     }
   result <- liftIO . runAppIO $ fileApp options
   assert $ isRight result
-  let check = Just $ dummyMatrix 3 3 ? [2]
+  let check = Just . toStack $ dummyMatrix 3 3 ? [2]
   readRes <- readMat fType outHeader (testFile fType)
   liftIO $ removeFile (testFile fType)
   assertRight (== check) readRes
@@ -137,7 +143,7 @@ prop_limit_extent fType = monadicIO $ do
                     }
   result <-liftIO . runAppIO $ fileApp options
   assert $ isRight result
-  let check = Just $ dummyMatrix 3 3 ? [0, 1]
+  let check = Just . toStack $ dummyMatrix 3 3 ? [0, 1]
   let outHeader = header3x3 { rows = 2 }
   readRes <- readMat fType outHeader (testFile fType)
   liftIO $ removeFile (testFile fType)
@@ -153,7 +159,7 @@ prop_skip_and_limit fType = monadicIO $ do
                     }
   result <-liftIO . runAppIO $ fileApp options
   assert $ isRight result
-  let check = Just $ dummyMatrix 3 3 ? [1]
+  let check = Just . toStack $ dummyMatrix 3 3 ? [1]
   let outHeader = header3x3 { rows = 1 }
   readRes <- readMat fType outHeader (testFile fType)
   liftIO $ removeFile (testFile fType)

@@ -1,7 +1,7 @@
 module School.Train.GradientDescent
 ( gradientDescent ) where
 
-import Conduit ((.|), ConduitM, mapC, mapMC, sinkNull, takeWhileC)
+import Conduit ((.|), ConduitM, mapMC, sinkNull, takeWhileC)
 import Control.Monad.State.Lazy (get)
 import Data.Maybe (isJust)
 import School.Train.AppTrain (AppTrain, runAppTrain)
@@ -11,9 +11,8 @@ import School.Train.IterationHandler (IterationHandler(..))
 import School.Train.UpdateParams (UpdateParams)
 import School.Train.StoppingCondition (StoppingCondition(..))
 import School.Train.TrainState (TrainState)
-import School.Unit.CostFunction (CostFunction)
+import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.Unit (Unit)
-import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitBackward (BackwardStack)
 
 stopping :: StoppingCondition a
@@ -29,26 +28,26 @@ stopping condition = mapMC $ \_ -> do
 
 gradientDescent :: MatrixSourcery (AppTrain a) a ()
                 -> [Unit a]
-                -> CostFunction a
+                -> CostFunction a (AppTrain a)
                 -> UpdateParams a
                 -> StoppingCondition a
                 -> IterationHandler a
                 -> TrainState a
                 -> IO (Either String
                               (TrainState a))
-gradientDescent sourcerer
+gradientDescent sourcery
                 units
                 cost
                 update
                 condition
                 handler
                 initState = do
-  let sink = mapC BatchActivation
-          .| gradientDescentPass units cost update
+  let sink = gradientDescentPass units cost update
           .| runHandler handler
           .| stopping condition
           .| takeWhileC isJust
           .| sinkNull
+  let sourcerer = sourcery (alterConduit cost)
   result <- runAppTrain initState $
     sourcerer sink
   return $ fmap snd result

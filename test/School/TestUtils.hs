@@ -150,7 +150,7 @@ fromRight b = either (const b) id
 fromLeft :: a -> Either a b -> a
 fromLeft b = either id (const b)
 
-diffCost :: CostFunction R
+diffCost :: CostFunction R m
          -> UnitActivation R
          -> Double
          -> IndexOf Matrix
@@ -172,16 +172,16 @@ type AlterInput = Double
                -> UnitActivation R
 
 matIndexes :: Int -> Int -> [IndexOf Matrix]
-matIndexes r c = [ (j, k) | j <- [0..r-1], k <- [0..c-1] ] 
+matIndexes r c = [ (j, k) | j <- [0..r-1], k <- [0..c-1] ]
 
 empty :: (Element a) => Matrix a
 empty = (0><0) []
 
-weight1 :: CostFunction R
+weight1 :: (Monad m) => CostFunction R m
 weight1 = weightDecay 1
 
 doCost :: (Element a, Num a)
-       => CostFunction a
+       => CostFunction a m
        -> UnitActivation a
        -> Slinky CostParams
        -> (a, UnitGradient a)
@@ -217,4 +217,3 @@ unitCorrect classes = Unit { apply, deriv } where
     where (_, n) = size input
   apply _ _ = ApplyFail ""
   deriv = undefined
-

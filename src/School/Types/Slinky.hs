@@ -8,7 +8,7 @@ module School.Types.Slinky
 
 data Slinky a =
    SNode a (Slinky a)
- | SNil deriving (Show)
+ | SNil deriving (Eq, Show)
 
 slinkySingleton :: a -> Slinky a
 slinkySingleton val = SNode val SNil

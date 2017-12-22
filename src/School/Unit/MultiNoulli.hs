@@ -4,17 +4,16 @@ module School.Unit.MultiNoulli
 ( multiNoulli ) where
 
 import Conduit (ConduitM, mapC, mapMC)
-import Control.Monad.Except (throwError)
+import Control.Monad.Except (MonadError, throwError)
 import Numeric.LinearAlgebra (Container, Element, Vector, assoc, cols, fromRows,
                               rows, takeColumns, toColumns, toList, toLists)
-import School.Train.AppTrain (AppTrain)
 import School.Types.Error (Error)
 import School.Types.Slinky (Slinky(..), slinkyAppend)
 import School.Unit.CostParams (CostParams(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitForward (ForwardStack)
 import School.Unit.UnitGradient (UnitGradient(..))
-import School.Unit.CostFunction (CostFunction(..))
+import School.Unit.CostFunction (AlterConduit, CostFunction(..))
 
 toTarget :: (Element a, RealFrac a)
          => Vector a
@@ -52,11 +51,11 @@ deriv (BatchActivation input)
    $ target
 deriv _ _ = Left "MultiNoulli expects batch activation and batch class target"
 
-prepare :: (Element a, RealFrac a)
+prepare :: (Element a, RealFrac a, MonadError Error m)
         => Maybe FilePath
         -> ConduitM (ForwardStack a)
                     (ForwardStack a)
-                    (AppTrain a)
+                    m
                     ()
 prepare Nothing = mapMC $ \(activations, cParams) -> do
   case activations of
@@ -68,10 +67,14 @@ prepare Nothing = mapMC $ \(activations, cParams) -> do
     _ -> throwError "MultiNoulli setup expects single batch activation"
 prepare _ = mapC id
 
-multiNoulli :: (Container Vector a, RealFrac a)
+alter :: AlterConduit a m
+alter = id
+
+multiNoulli :: (Container Vector a, RealFrac a, MonadError Error m)
             => Maybe FilePath
-            -> CostFunction a
+            -> CostFunction a m
 multiNoulli path = CostFunction { computeCost = compute
                                 , derivCost = deriv
                                 , prepareCost = prepare path
+                                , alterConduit = alter
                                 }

@@ -3,7 +3,7 @@
 module School.Train.Test.BackwardPass
 ( backwardPassTest ) where
 
-import Conduit ((.|), yield, liftIO, sinkList, await)
+import Conduit ((.|), Identity, yield, liftIO, sinkList, await)
 import Data.Either (isLeft)
 import School.TestUtils (assertRight, empty, doCost, fromRight, randomAffineParams,
                          randomMatrix, testState, weight1)
@@ -12,6 +12,7 @@ import School.Train.TrainState (TrainState(..), def)
 import School.Types.PingPong (pingPongSingleton, reversePingPong, toPingPong)
 import School.Types.Slinky (Slinky(..))
 import School.Unit.Affine (affine)
+import School.Unit.CostFunction (CostFunction)
 import School.Unit.RecLin (recLin)
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitActivation (UnitActivation(..))
@@ -65,7 +66,8 @@ prop_aff_rl_aff_rl (Positive b) (Positive f) (Positive h) (Positive o) = monadic
   let out2 = apply recLin EmptyParams out1
   let out3 = apply affine params2 out2
   let out4 = apply recLin EmptyParams out3
-  let (cost, grad) = doCost weight1 out4 SNil
+  let weight = weight1 :: CostFunction Double Identity
+  let (cost, grad) = doCost weight out4 SNil
   let (grad2, deriv1) = deriv recLin EmptyParams grad out3
   let (grad3, deriv2) = deriv affine params2 grad2 out2
   let (grad4, deriv3) = deriv recLin EmptyParams grad3 out1

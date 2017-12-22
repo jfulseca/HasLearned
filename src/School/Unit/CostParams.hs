@@ -2,4 +2,4 @@ module School.Unit.CostParams
 ( CostParams(..) ) where
 
 data CostParams = BatchClassTarget [Int]
-                | NoCostParams deriving (Show)
+                | NoCostParams deriving (Eq, Show)

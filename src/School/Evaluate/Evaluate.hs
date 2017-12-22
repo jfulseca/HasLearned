@@ -4,7 +4,7 @@ module School.Evaluate.Evaluate
 ( evaluate ) where
 
 import Conduit ((.|), await, runConduit)
-import School.Train.AppTrain (runAppTrain)
+import School.Train.AppTrain (AppTrain, runAppTrain)
 import School.Train.ForwardPass (forwardPass)
 import School.Train.TrainState (TrainState(..), def)
 import School.Types.Error (Error)
@@ -25,7 +25,7 @@ eitherMaybe _ f (Right ((Just x), _)) = Right . f $ x
 
 evaluate :: (Num a)
          => [Unit a]
-         -> CostFunction a
+         -> CostFunction a (AppTrain a)
          -> PingPong (UnitParams a)
          -> ForwardSource a
          -> IO (Either String a)

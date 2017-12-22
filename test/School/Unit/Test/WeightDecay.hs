@@ -3,7 +3,7 @@
 module School.Unit.Test.WeightDecay
 ( weightDecayTest ) where
 
-import Control.Monad.IO.Class (liftIO)
+import Conduit(Identity, liftIO)
 import Numeric.LinearAlgebra ((><))
 import School.TestUtils (diffCost, randomMatrix)
 import School.Types.FloatEq ((~=))
@@ -24,11 +24,14 @@ eps = 1e-5
 prec :: Double
 prec = 5e-2
 
+weight :: Double -> CostFunction Double Identity
+weight coeff = weightDecay coeff
+
 prop_coeff_zero :: (Positive Int) -> (Positive Int) -> Property
 prop_coeff_zero (Positive bSize) (Positive fSize) = monadicIO $ do
   inputMat <- liftIO $ randomMatrix bSize fSize
   let input = BatchActivation inputMat
-  let cost = computeCost (weightDecay 0) input SNil
+  let cost = computeCost (weight 0) input SNil
   either (const (assert False))
          (\result -> assert $ result ~= 0)
          cost
@@ -38,7 +41,7 @@ prop_numerical_deriv (Positive bSize) (Positive fSize) coeff = monadicIO $ do
   pre $ bSize < 23 && fSize < 23
   inputMat <- liftIO $ randomMatrix bSize fSize
   let input = BatchActivation inputMat
-  let costFunc = weightDecay coeff
+  let costFunc = weight coeff
   let deriv = derivCost costFunc input SNil
   let check = (bSize >< fSize) [ diffCost costFunc
                                           input

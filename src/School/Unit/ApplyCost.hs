@@ -12,7 +12,7 @@ import School.Unit.CostFunction (CostFunction(..))
 import School.Unit.UnitBackward (BackwardStack)
 import School.Unit.UnitForward (ForwardStack)
 
-applyCost :: CostFunction a
+applyCost :: CostFunction a (AppTrain a)
           -> ConduitM (ForwardStack a)
                       (BackwardStack a)
                       (AppTrain a)

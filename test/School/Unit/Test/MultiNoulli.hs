@@ -8,6 +8,7 @@ import Data.Default.Class (def)
 import Numeric.LinearAlgebra ((><))
 import School.TestUtils (addClasses, assertRight, diffCost, randomMatrix,
                          randomNNInts, singleClassOutput, testState, unitCorrect)
+import School.Train.AppTrain (AppTrain)
 import School.Train.ForwardPass (forwardPass)
 import School.Types.FloatEq ((~=))
 import School.Types.Slinky (Slinky(..), slinkySingleton)
@@ -32,12 +33,15 @@ eps = 1e-5
 prec :: Double
 prec = 5e-2
 
+multi :: CostFunction Double (AppTrain a)
+multi = multiNoulli Nothing
+
 prop_correct_classes :: (Positive Int) -> (Positive Int) -> Property
 prop_correct_classes (Positive c) (Positive b) = monadicIO $ do
   classes <- liftIO $ randomNNInts (c - 1) b
   let out = singleClassOutput c classes
   let params = slinkySingleton $ BatchClassTarget classes
-  let cost = computeCost (multiNoulli Nothing) out params
+  let cost = computeCost multi out params
   assert $ cost ~= Right (-1)
 
 prop_wrong_classes :: (Positive Int) -> (Positive Int) -> Property
@@ -47,7 +51,7 @@ prop_wrong_classes (Positive c) (Positive b) = monadicIO $ do
   let wrong = map (\k -> mod (k + 1) c) classes
   let out = singleClassOutput c wrong
   let params = slinkySingleton $ BatchClassTarget classes
-  let cost = computeCost (multiNoulli Nothing) out params
+  let cost = computeCost multi out params
   assert $ cost == Right 0
 
 prop_norm :: (Positive Int) -> (Positive Int) -> Property
@@ -56,7 +60,7 @@ prop_norm (Positive c) (Positive b) = monadicIO $ do
   input <- liftIO $ BatchActivation <$> randomMatrix b c
   let out = apply logSoftMax EmptyParams input
   let params = slinkySingleton $ BatchClassTarget classes
-  let cost = computeCost (multiNoulli Nothing) out params
+  let cost = computeCost multi out params
   assertRight (>= (-1)) cost
 
 prop_numerical_deriv :: (Positive Int) -> (Positive Int) -> Property
@@ -64,8 +68,8 @@ prop_numerical_deriv (Positive c) (Positive b) = monadicIO $ do
   pre $ b < 23 && c < 23
   classes <- liftIO $ slinkySingleton . BatchClassTarget <$> randomNNInts (c - 1) b
   input <- liftIO $ BatchActivation <$> randomMatrix b c
-  let deriv = derivCost (multiNoulli Nothing) input classes
-  let check = (b >< c) [ diffCost (multiNoulli Nothing)
+  let deriv = derivCost multi input classes
+  let check = (b >< c) [ diffCost multi
                                   input
                                   eps
                                   (j, k)
@@ -77,8 +81,7 @@ prop_numerical_deriv (Positive c) (Positive b) = monadicIO $ do
 prop_correct_forward_pass :: (Positive Int) -> (Positive Int) -> Property
 prop_correct_forward_pass (Positive c) (Positive b) = monadicIO $ do
   classes <- liftIO $ randomNNInts (c - 1) b
-  let forward = forwardPass [unitCorrect classes]
-                            (multiNoulli Nothing)
+  let forward = forwardPass [unitCorrect classes] multi
   activation <- liftIO $ randomMatrix b c
   let input = ([BatchActivation $ addClasses classes activation], SNil)
   let pass = yield input
