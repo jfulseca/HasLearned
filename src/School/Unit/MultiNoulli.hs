@@ -13,7 +13,7 @@ import School.Unit.CostParams (CostParams(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitForward (ForwardStack)
 import School.Unit.UnitGradient (UnitGradient(..))
-import School.Unit.CostFunction (AlterConduit, CostFunction(..))
+import School.Unit.CostFunction (SetupCost, CostFunction(..))
 
 toTarget :: (Element a, RealFrac a)
          => Vector a
@@ -67,8 +67,8 @@ prepare Nothing = mapMC $ \(activations, cParams) -> do
     _ -> throwError "MultiNoulli setup expects single batch activation"
 prepare _ = mapC id
 
-alter :: AlterConduit a m
-alter = id
+setup :: SetupCost a m
+setup = undefined
 
 multiNoulli :: (Container Vector a, RealFrac a, MonadError Error m)
             => Maybe FilePath
@@ -76,5 +76,5 @@ multiNoulli :: (Container Vector a, RealFrac a, MonadError Error m)
 multiNoulli path = CostFunction { computeCost = compute
                                 , derivCost = deriv
                                 , prepareCost = prepare path
-                                , alterConduit = alter
+                                , setupCost = setup
                                 }

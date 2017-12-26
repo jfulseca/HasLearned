@@ -75,5 +75,5 @@ weightDecay coeff =
   CostFunction { computeCost = compute coeff
                , derivCost = deriv coeff
                , prepareCost = prepare
-               , alterConduit = id
+               , setupCost = undefined
                } where
