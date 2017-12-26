@@ -7,7 +7,7 @@ import Conduit (ConduitM, mapMC)
 import Numeric.LinearAlgebra (Container, Matrix, Vector,
                               cmap, scale, sumElements)
 import School.Types.Slinky (Slinky(..), slinkyAppend)
-import School.Unit.CostFunction (CostFunction(..))
+import School.Unit.CostFunction (CostFunction(..), defSetupCost)
 import School.Unit.CostParams (CostParams(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitForward (ForwardStack)
@@ -75,5 +75,5 @@ weightDecay coeff =
   CostFunction { computeCost = compute coeff
                , derivCost = deriv coeff
                , prepareCost = prepare
-               , setupCost = undefined
+               , setupCost = defSetupCost
                } where

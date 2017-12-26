@@ -1,11 +1,12 @@
-{-# LANGUAGE FlexibleContexts, NamedFieldPuns, UndecidableInstances #-}
+{-# LANGUAGE FlexibleContexts, NamedFieldPuns #-}
 
 module School.Unit.CostFunction
 ( SetupCost
 , CostFunction(..)
+, defSetupCost
 ) where
 
-import Conduit ((.|), ConduitM, mapC)
+import Conduit ((.|), ConduitM, mapC, mapMC)
 import Numeric.LinearAlgebra (Container, Matrix, Vector, add, cols, rows)
 import School.Types.Slinky (Slinky(..))
 import School.Unit.CostParams (CostParams)
@@ -14,9 +15,12 @@ import School.Unit.UnitForward (ForwardStack)
 import School.Unit.UnitGradient (UnitGradient(..))
 import School.Utils.LinearAlgebra (zeroMatrix)
 
-
 type SetupCost a m = ConduitM () (Matrix a) m ()
                   -> ConduitM () (ForwardStack a) m ()
+
+defSetupCost :: (Monad m) => SetupCost a m
+defSetupCost source =
+  source .| mapMC (\matrix -> return ([BatchActivation matrix], SNil))
 
 data CostFunction a m =
   CostFunction { computeCost :: UnitActivation a
@@ -62,8 +66,8 @@ instance (Container Vector a, Num a, Monad m) => Monoid (CostFunction a m) where
           p3 = p1 .| p2
   mempty = CostFunction { computeCost
                         , derivCost
-                        , prepareCost
-                        , setupCost = undefined
+                        , prepareCost = mapC id
+                        , setupCost = defSetupCost
                         } where
     computeCost _ _ = Right 0
     derivCost (BatchActivation g) _ =
@@ -71,4 +75,3 @@ instance (Container Vector a, Num a, Monad m) => Monoid (CostFunction a m) where
       where r = rows g
             c = cols g
     derivCost _ _ = Left "mempty deriv cost expects batch activation"
-    prepareCost = mapC id
