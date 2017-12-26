@@ -3,12 +3,16 @@
 module School.Unit.MultiNoulli
 ( multiNoulli ) where
 
-import Conduit (ConduitM, mapC, mapMC)
+import Conduit ((.|), ConduitM, MonadResource, ZipSource(..),
+                getZipSource, mapC, mapM_C, mapMC)
 import Control.Monad.Except (MonadError, throwError)
-import Numeric.LinearAlgebra (Container, Element, Vector, assoc, cols, fromRows,
+import Numeric.LinearAlgebra (Container, Element, Matrix, Vector, assoc, cols, fromRows,
                               rows, takeColumns, toColumns, toList, toLists)
+import School.FileIO.FileHeader (FileHeader)
+import School.FileIO.IntListSource (intListSource)
 import School.Types.Error (Error)
-import School.Types.Slinky (Slinky(..), slinkyAppend)
+import School.Types.LiftResult (LiftResult)
+import School.Types.Slinky (Slinky(..), slinkyAppend, slinkySingleton)
 import School.Unit.CostParams (CostParams(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitForward (ForwardStack)
@@ -67,14 +71,36 @@ prepare Nothing = mapMC $ \(activations, cParams) -> do
     _ -> throwError "MultiNoulli setup expects single batch activation"
 prepare _ = mapC id
 
-setup :: (Monad m) => Maybe FilePath -> SetupCost a m
-setup Nothing = defSetupCost
+setupError :: (MonadError Error m) => ConduitM () (ForwardStack a) m ()
+setupError =
+  mapM_C . const $ throwError "Need both filepath and file header"
 
-multiNoulli :: (Container Vector a, RealFrac a, MonadError Error m)
+appendTarget :: CostParams -> Matrix a -> ForwardStack a
+appendTarget costParams =
+  (flip (,) $ slinkySingleton costParams) . pure . BatchActivation
+
+setup :: (LiftResult m, MonadError Error m, MonadResource m)
+      => Maybe FilePath
+      -> Maybe FileHeader
+      -> SetupCost a m
+setup Nothing Nothing source = defSetupCost source
+setup Nothing (Just _) _ = setupError
+setup (Just _) Nothing _ = setupError
+setup (Just path) (Just header) matrixSource =
+  getZipSource $ targetZipSource <*> ZipSource matrixSource
+  where targetSource = intListSource header path
+                    .| mapC BatchClassTarget
+                    .| mapMC (return . appendTarget)
+        targetZipSource = ZipSource targetSource
+
+
+multiNoulli :: ( Container Vector a, LiftResult m, RealFrac a
+               , MonadError Error m, MonadResource m )
             => Maybe FilePath
+            -> Maybe FileHeader
             -> CostFunction a m
-multiNoulli path = CostFunction { computeCost = compute
-                                , derivCost = deriv
-                                , prepareCost = prepare path
-                                , setupCost = setup path
-                                }
+multiNoulli path header = CostFunction { computeCost = compute
+                                       , derivCost = deriv
+                                       , prepareCost = prepare path
+                                       , setupCost = setup path header
+                                       }

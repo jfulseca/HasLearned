@@ -34,7 +34,7 @@ prec :: Double
 prec = 5e-2
 
 multi :: CostFunction Double (AppTrain a)
-multi = multiNoulli Nothing
+multi = multiNoulli Nothing Nothing
 
 prop_correct_classes :: (Positive Int) -> (Positive Int) -> Property
 prop_correct_classes (Positive c) (Positive b) = monadicIO $ do

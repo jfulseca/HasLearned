@@ -4,7 +4,7 @@ module School.Types.Decoding
 , getDouble
 , getInt
 , binToMatrixDouble
-, binToMatrixInt
+, binToListInt
 , runGet
 ) where
 
@@ -53,18 +53,12 @@ binToInt :: ByteString -> Either Error I
 binToInt = (fmap fromIntegral)
          . (runGet getInt)
 
-binToMatrixInt :: DataType
-               -> Int
-               -> Int
-               -> (ByteString -> Either Error
-                                        (Matrix I))
-binToMatrixInt DBL64B _ _ = const . Left $
+binToListInt :: DataType
+             -> (ByteString -> Either Error [Int])
+binToListInt DBL64B = const . Left $
   "Reject conversion from floating point DBL64B to integral"
-binToMatrixInt dType nRows nCols =
-  if elem dType [INT32B, INT08B]
-    then Right
-      . (nRows >< nCols)
-      . map (fromIntegral . fromEnum)
-      . unpack
-    else const . Left $
-      "Conversion to Matrix Int undefined for " ++ (show dType)
+binToListInt INT32B = undefined
+binToListInt INT08B =
+    Right
+  . map (fromIntegral . fromEnum)
+  . unpack

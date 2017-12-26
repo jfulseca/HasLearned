@@ -1,6 +1,7 @@
 module School.Types.Slinky
 ( Slinky(..)
 , slinkyAppend
+, slinkyConcat
 , slinkyPrepend
 , slinkySingleton
 , toSlinky
@@ -28,6 +29,12 @@ slinkyAppend val SNil =
   slinkySingleton val
 slinkyAppend val (SNode first rest)
   = slinkyAppend first (SNode val rest)
+
+slinkyConcat :: Slinky a -> Slinky a -> Slinky a
+slinkyConcat xs SNil = xs
+slinkyConcat xs (SNode y SNil) = slinkyAppend y xs
+slinkyConcat xs (SNode y ys) =
+  slinkyConcat (slinkyAppend y xs) ys
 
 toSlinky :: [a] -> Slinky a
 toSlinky = foldl (flip slinkyPrepend) SNil

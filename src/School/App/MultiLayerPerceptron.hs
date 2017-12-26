@@ -104,10 +104,10 @@ multiLayerPerceptron (MLPOptions { nClasses = nC
   case setup of
     Left e -> return . Left $ e
     Right (units, paramList) -> do
+      let multi = multiNoulli Nothing Nothing
       let cost = if (weightDecayCoeff ~= 0)
-                   then multiNoulli Nothing
-                   else mappend (multiNoulli Nothing)
-                                (weightDecay weightDecayCoeff)
+                   then multi
+                   else mappend multi (weightDecay weightDecayCoeff)
       let update = simpleDescentUpdate
       let condition = maxIterations maxIter
       let handler = case writeCost of
