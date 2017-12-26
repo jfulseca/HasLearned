@@ -6,7 +6,7 @@ import School.Evaluate.Test.Evaluate (evaluateTest)
 import School.FileIO.Test.BinConversion (binConversionTest)
 import School.FileIO.Test.FileHeader (matrixHeaderTest)
 import School.FileIO.Test.MatrixSink (matrixSinkTest)
-import School.FileIO.Test.MatrixSourcery (matrixSourceryTest)
+import School.FileIO.Test.MatrixSource (matrixSourceTest)
 import School.Train.Test.BackwardPass (backwardPassTest)
 import School.Train.Test.ForwardPass (forwardPassTest)
 import School.Train.Test.GradientDescent (gradientDescentTest)
@@ -44,7 +44,7 @@ fileIOProps = testGroup "FileIO"
   [ binConversionTest
   , matrixHeaderTest
   , matrixSinkTest
-  , matrixSourceryTest
+  , matrixSourceTest
   ]
 
 unitProps :: TestTree

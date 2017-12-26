@@ -7,6 +7,7 @@ import Conduit (liftIO, yield)
 import School.Evaluate.Evaluate
 import School.TestUtils (addClasses, assertRight, fromRight, randomAffineParams,
                          randomMatrix, randomNNInts, unitCorrect)
+import School.Types.FloatEq ((~=))
 import School.Types.PingPong (pingPongSingleton, toPingPong)
 import School.Types.Slinky (Slinky(..))
 import School.Unit.Affine (affine)
@@ -48,7 +49,7 @@ prop_correct (Positive b) (Positive c) = monadicIO $ do
                               (multiNoulli Nothing)
                               paramList
                               source
-  assertRight (== (-1)) result
+  assertRight (~= (-1)) result
 
 evaluateTest :: TestTree
 evaluateTest = $(testGroupGenerator)

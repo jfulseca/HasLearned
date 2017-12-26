@@ -124,9 +124,9 @@ scanOptions FileTransformerOptions { inFileOpt
   let (inputType, inputFile) = guessFileType False (inFileTypeOpt, inFileOpt)
   fileExists inputFile
   hBytes <- getHeaderBytes inputType inputFile
-  let nHeader = getFileHeaderLength inputType hBytes
+  let nHeader = getFileHeaderLength hBytes
   inHeader@FileHeader { cols } <- liftResult $ parseHeader hBytes
-  checkFile inputFile inputType inHeader
+  checkFile inputFile inHeader
   nEl <- getNElements inDataTypeOpt
                       inputFile
                       nHeader

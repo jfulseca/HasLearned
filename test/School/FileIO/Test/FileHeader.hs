@@ -14,7 +14,7 @@ prop_parse_equal :: DataType -> Positive Int -> Positive Int -> Bool
 prop_parse_equal name (Positive r) (Positive c) =
   Right header == parsedHeader where
     header = FileHeader name r c
-    parsedHeader = (stripSeparators . toByteString') header
+    parsedHeader = (parseHeader . toByteString') header
 
 prop_compatible_check :: DataType -> Positive Int -> Positive Int -> Positive Int -> Bool
 prop_compatible_check name (Positive c) (Positive r1) (Positive r2) =

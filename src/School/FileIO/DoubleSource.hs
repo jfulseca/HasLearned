@@ -1,21 +1,19 @@
 {-# LANGUAGE FlexibleContexts, NamedFieldPuns #-}
 
-module School.FileIO.DoubleSourcery
-( doubleSourcery ) where
+module School.FileIO.DoubleSource
+( doubleSource ) where
 
-import Conduit (($$+-), (.|), ConduitM, MonadResource, mapMC,
+import Conduit ((.|), ConduitM, MonadResource, mapMC,
                 nullC, sourceFileBS, takeCE)
 import Control.Monad.Except (MonadError(..))
 import Data.ByteString (ByteString)
 import School.FileIO.BinConversion (binConversion)
 import School.FileIO.ConduitHeader (conduitHeader)
-import School.FileIO.FileType (FileType(..))
 import School.FileIO.FileHeader (FileHeader(..))
 import School.Types.Decoding (binToDouble)
 import School.Types.DataType (DataType(..), getSize)
 import School.Types.Error (Error)
 import School.Types.LiftResult (LiftResult(..))
-import School.Types.Sourcery (Sourcery)
 
 poolDouble :: (Monad m)
            => Int
@@ -29,15 +27,14 @@ poolDouble chunkSize transformer = loop where
       then return ()
       else loop
 
-doubleSourcery :: (LiftResult m, MonadError Error m, MonadResource m)
-               => FileType
-               -> FileHeader
-               -> FilePath
-               -> Sourcery Double m r
-doubleSourcery fType header@FileHeader { dataType } path sink = do
+doubleSource :: (LiftResult m, MonadError Error m, MonadResource m)
+             => FileHeader
+             -> FilePath
+             -> ConduitM () Double m ()
+doubleSource header@FileHeader { dataType } path =
   let size = getSize dataType
-  let source = sourceFileBS path
-  cHeader <- conduitHeader fType header source
-  let trans = liftResult
+      source = sourceFileBS path
+      cHeader = conduitHeader header
+      trans = liftResult
             . (\b -> binConversion dataType DBL64B b >>= binToDouble)
-  cHeader $$+- (poolDouble size trans) .| sink
+  in source .| cHeader .| poolDouble size trans

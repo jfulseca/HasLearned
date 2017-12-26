@@ -9,7 +9,7 @@ module School.Utils.FileApp
 , putHeader
 ) where
 
-import Conduit (($$+-), (.|),  ConduitM, await, liftIO, mapC, runConduitRes,
+import Conduit ((.|),  ConduitM, await, liftIO, mapC, runConduit, runConduitRes,
                 sinkNull, sourceFileBS, takeCE, takeWhileCE, yield)
 import Control.Monad (when)
 import Control.Monad.Except (throwError)
@@ -41,6 +41,9 @@ getNBytes path n = do
     .| await
   liftBytes bytes
 
+addSeparator :: B.ByteString -> B.ByteString
+addSeparator = (B.cons binSeparator) . (flip B.snoc $ binSeparator)
+
 getHeaderBytes :: FileType
                -> FilePath
                -> AppIO B.ByteString
@@ -49,14 +52,14 @@ getHeaderBytes IDX path = do
   specBytes <- getNBytes path 4
   let spec = fromEnum <$> B.unpack specBytes
   let dim = spec!!3
-  getNBytes path $ (dim + 1) * 4  
+  getNBytes path $ (dim + 1) * 4
 getHeaderBytes SM path = do
   bytes <- runConduitRes $
        sourceFileBS path
     .| (takeCE 1 .| sinkNull >> mapC id)
     .| takeWhileCE (/= binSeparator)
     .| await
-  liftBytes bytes
+  addSeparator <$> liftBytes bytes
 
 putHeader :: FileType
           -> FileHeader
@@ -71,26 +74,20 @@ fileExists path = do
   if (not exists)
     then throwError $ "File " ++ path ++ " not found"
     else return ()
-  
+
 checkFile :: FilePath
-          -> FileType
           -> FileHeader
           -> AppIO ()
-checkFile path fType header = do
+checkFile path header = do
   let source = sourceFile path :: ConduitM () B.ByteString AppIO ()
-  cHeader <- conduitHeader fType header source
-  confirmResult <- cHeader $$+- await
+  let cHeader = conduitHeader header
+  confirmResult <- runConduit $ source .| cHeader .| await
   when (isNothing confirmResult) $
     throwError $ "no data in " ++ show path
   return ()
 
-getFileHeaderLength :: FileType
-                    -> B.ByteString
-                    -> Int
-getFileHeaderLength SM hBytes =
-  B.length hBytes + 2
-getFileHeaderLength _ hBytes =
-  B.length hBytes
+getFileHeaderLength :: B.ByteString -> Int
+getFileHeaderLength = B.length
 
 getNElements :: DataType
              -> FilePath

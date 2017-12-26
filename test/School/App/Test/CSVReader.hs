@@ -10,11 +10,8 @@ import Data.List.Split (chunksOf)
 import School.App.CSVReader
 import School.FileIO.AppIO (runAppIO)
 import School.FileIO.FileHeader (FileHeader(..))
-import School.FileIO.MatrixSourcery (matrixDoubleSourcery)
-import School.FileIO.FileType (FileType(..))
+import School.FileIO.MatrixSource (matrixDoubleSource)
 import School.Types.DataType (DataType(..))
-import School.Types.Slinky (Slinky(..))
-import School.Unit.UnitActivation (UnitActivation(..))
 import qualified Numeric.LinearAlgebra as NL
 import Prelude hiding (appendFile, writeFile)
 import System.Directory (removeFile)
@@ -48,11 +45,10 @@ prop_convert_csv_file = monadicIO $ do
      .| csvToMatrixDouble header
      .| sinkList
   let original = readRes >>= matrixConcat
-  let check = fmap (fmap $ \m -> ([BatchActivation m], SNil)) original
-  written <- run . runAppIO $
-    matrixDoubleSourcery SM header bFileName id sinkList
+  written <- run . runAppIO . runConduit $
+    matrixDoubleSource header bFileName .| sinkList
   liftIO $ removeFile bFileName
-  assert $ check == written
+  assert $ original == written
 
 csvReaderTest :: TestTree
 csvReaderTest = $(testGroupGenerator)

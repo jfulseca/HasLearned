@@ -1,9 +1,9 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module School.FileIO.Test.MatrixSourcery
-( matrixSourceryTest ) where
+module School.FileIO.Test.MatrixSource
+( matrixSourceTest ) where
 
-import Conduit (($$+-), (.|), runConduit, sinkList, yield)
+import Conduit ((.|), ConduitM, runConduit, sinkList, yield)
 import Data.ByteString (ByteString)
 import Data.ByteString.Conversion (toByteString')
 import Data.Either (isLeft, isRight)
@@ -11,15 +11,12 @@ import Data.Monoid ((<>))
 import School.FileIO.AppIO (AppIO, runAppIO)
 import School.FileIO.ConduitHeader (conduitHeader)
 import School.FileIO.FileHeader (FileHeader(..))
-import School.FileIO.MatrixSourcery
-import School.FileIO.FileType (FileType(..))
+import School.FileIO.MatrixSource
 import School.TestUtils (def, dummyList, dummyMatrix)
 import School.Types.Decoding (binToMatrixDouble)
 import School.Types.Encoding (doubleToBin)
 import School.Types.DataType (DataType(..), getSize)
 import School.Types.LiftResult (liftResult)
-import School.Types.Slinky (Slinky(..))
-import School.Unit.UnitActivation (UnitActivation(..))
 import Numeric.LinearAlgebra.Data (Matrix)
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck hiding ((><))
@@ -29,14 +26,12 @@ import Test.QuickCheck.Monadic (PropertyM, assert, monadicIO, pre, run)
 testHeader :: FileHeader
            -> ByteString
            -> PropertyM IO (Either String [ByteString])
-testHeader header byteString = run . runAppIO $ do
-  let source = yield byteString
-  cHeader <- conduitHeader SM header source
-  cHeader $$+- sinkList
+testHeader header byteString = run . runAppIO . runConduit $
+  yield byteString .| conduitHeader header .| sinkList
 
 poolMatrixDouble :: Positive Int
                  -> Positive Int
-                 -> MatrixConduit AppIO Double
+                 -> ConduitM ByteString (Matrix Double) AppIO ()
 poolMatrixDouble (Positive r) (Positive c) =
   let trans = liftResult
             . (binToMatrixDouble DBL64B r c)
@@ -138,19 +133,18 @@ prop_read_3x3_matrix :: Property
 prop_read_3x3_matrix = monadicIO $ do
   let h = FileHeader DBL64B 3 3
   let path = "test/data/matrix3x3.sm"
-  stack <- run . runAppIO $
-    matrixDoubleSourcery SM h path id sinkList
-  let check = Right $ [([BatchActivation $ dummyMatrix 3 3], SNil)]
-  assert $ stack == check
+  stack <- run . runAppIO . runConduit $
+    matrixDoubleSource h path .| sinkList
+  assert $ stack == Right [dummyMatrix 3 3]
 
 prop_read_3x3_matrix_twice :: Property
 prop_read_3x3_matrix_twice = monadicIO $ do
   let h = FileHeader DBL64B 3 3
   let path = "test/data/matrix3x3Twice.sm"
-  stack <- run . runAppIO $
-    matrixDoubleSourcery SM h path id sinkList
-  let check = ([BatchActivation $ dummyMatrix 3 3], SNil)
-  assert $ stack == Right [check, check]
+  stack <- run . runAppIO . runConduit $
+    matrixDoubleSource h path .| sinkList
+  let mat = dummyMatrix 3 3
+  assert $ stack == Right [mat, mat]
 
-matrixSourceryTest :: TestTree
-matrixSourceryTest = $(testGroupGenerator)
+matrixSourceTest :: TestTree
+matrixSourceTest = $(testGroupGenerator)

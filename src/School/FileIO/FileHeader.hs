@@ -5,7 +5,6 @@ module School.FileIO.FileHeader
 , compatibleHeaders
 , headerBuilder
 , parseHeader
-, stripSeparators
 ) where
 
 import Control.Applicative ((<|>))
@@ -72,11 +71,13 @@ parseIdxHeader = do
 
 parseSmHeader :: Parser FileHeader
 parseSmHeader = do
+  _ <- char separator
   typeName <- parser
   _ <- char 'r'
   r <- parser
   _ <- char 'c'
   c <- parser
+  _ <- char separator
   return $ FileHeader typeName r c
 
 parseHeader :: B.ByteString -> Either Error FileHeader
@@ -84,15 +85,6 @@ parseHeader = parseOnly $ parseSmHeader <|> parseIdxHeader
 
 instance FromByteString FileHeader where
   parser = parseSmHeader <|> parseIdxHeader
-
-stripSeparators :: B.ByteString ->
-                   Either String FileHeader
-stripSeparators = parseOnly strip where
-  strip = do
-    _ <- char separator
-    header <- parseSmHeader
-    _ <- char separator
-    return header
 
 headerBuilder :: FileType
               -> FileHeader

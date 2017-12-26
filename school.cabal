@@ -21,13 +21,13 @@ library
                      , School.FileIO.AppIO
                      , School.FileIO.BinConversion
                      , School.FileIO.ConduitHeader
-                     , School.FileIO.DoubleSourcery
+                     , School.FileIO.DoubleSource
                      , School.FileIO.FileApp
                      , School.FileIO.FilePath
                      , School.FileIO.FileType
                      , School.FileIO.FileHeader
                      , School.FileIO.MatrixSink
-                     , School.FileIO.MatrixSourcery
+                     , School.FileIO.MatrixSource
                      , School.Train.BackwardPass
                      , School.Train.ForwardPass
                      , School.Train.GradientDescent
@@ -46,7 +46,6 @@ library
                      , School.Types.LiftResult
                      , School.Types.PingPong
                      , School.Types.Slinky
-                     , School.Types.Sourcery
                      , School.Unit.Affine
                      , School.Unit.ApplyCost
                      , School.Unit.CostFunction
@@ -116,7 +115,7 @@ test-suite school-test
                      , School.FileIO.Test.BinConversion
                      , School.FileIO.Test.FileHeader
                      , School.FileIO.Test.MatrixSink
-                     , School.FileIO.Test.MatrixSourcery
+                     , School.FileIO.Test.MatrixSource
                      , School.TestUtils
                      , School.Types.Test.Conversion
                      , School.Types.Test.FloatEq
