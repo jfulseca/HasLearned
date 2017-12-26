@@ -14,7 +14,7 @@ import School.FileIO.BinConversion (binConversion)
 import School.FileIO.FileApp (FileApp(..))
 import School.FileIO.FilePath (FilePath, guessFileType)
 import School.FileIO.FileType (FileType(..))
-import School.FileIO.FileHeader (FileHeader(..), headerParser)
+import School.FileIO.FileHeader (FileHeader(..), parseHeader)
 import School.Types.DataType (DataType, getSize)
 import School.Utils.FileApp (checkFile, fileExists, getFileHeaderLength,
                              getHeaderBytes, getNElements, putHeader)
@@ -125,8 +125,7 @@ scanOptions FileTransformerOptions { inFileOpt
   fileExists inputFile
   hBytes <- getHeaderBytes inputType inputFile
   let nHeader = getFileHeaderLength inputType hBytes
-  inHeader@FileHeader { cols } <- liftResult $
-    headerParser inputType hBytes
+  inHeader@FileHeader { cols } <- liftResult $ parseHeader hBytes
   checkFile inputFile inputType inHeader
   nEl <- getNElements inDataTypeOpt
                       inputFile
