@@ -9,11 +9,12 @@ module School.Types.Decoding
 ) where
 
 import Control.Monad (replicateM)
-import Data.ByteString (ByteString, unpack)
+import Data.ByteString (ByteString, length, splitAt, unpack)
 import Data.Int (Int32)
 import Data.Serialize.Get (Get, getInt32be, runGet)
 import Data.Serialize.IEEE754 (getFloat64be)
 import Numeric.LinearAlgebra ((><), Matrix, I, R)
+import Prelude hiding (length, splitAt)
 import School.Types.DataType (DataType(..))
 import School.Types.Error (Error)
 
@@ -57,7 +58,13 @@ binToListInt :: DataType
              -> (ByteString -> Either Error [Int])
 binToListInt DBL64B = const . Left $
   "Reject conversion from floating point DBL64B to integral"
-binToListInt INT32B = undefined
+binToListInt INT32B = loop [] where
+  loop acc bytes = if length bytes < 4
+                     then return acc
+                     else do
+                       let (current, next) = splitAt 4 bytes
+                       int <- fmap fromIntegral $ binToInt current
+                       loop (acc ++ [int]) next
 binToListInt INT08B =
     Right
   . map (fromIntegral . fromEnum)

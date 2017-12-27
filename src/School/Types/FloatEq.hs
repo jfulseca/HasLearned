@@ -7,6 +7,7 @@ module School.Types.FloatEq
 
 import Numeric.LinearAlgebra (Element)
 import Numeric.LinearAlgebra.Data (Matrix, Vector, cols, toList, toLists)
+import School.Train.TrainState (HandlerStore(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitGradient (UnitGradient(..))
 import School.Unit.UnitParams (UnitParams(..))
@@ -67,4 +68,9 @@ instance (Element a, FloatEq a) => FloatEq (UnitParams a) where
   AffineParams { affineBias = b1, affineWeights = w1 } ~= AffineParams { affineBias = b2, affineWeights = w2 } =
     b1 ~= b2 && w1 ~= w2
   EmptyParams ~= EmptyParams = True
+  _ ~= _ = False
+
+instance (FloatEq a) => FloatEq (HandlerStore a) where
+  (CostList l1) ~= (CostList l2) = l1 ~= l2
+  NoStore ~= NoStore = True
   _ ~= _ = False

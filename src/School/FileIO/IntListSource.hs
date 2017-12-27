@@ -10,7 +10,7 @@ import Data.ByteString (ByteString)
 import School.FileIO.ConduitHeader (conduitHeader)
 import School.FileIO.FileHeader (FileHeader(..))
 import School.Types.Decoding (binToListInt)
-import School.Types.DataType (DataType(..), getSize)
+import School.Types.DataType (getSize)
 import School.Types.Error (Error)
 import School.Types.LiftResult (LiftResult(..))
 
@@ -35,5 +35,5 @@ intListSource header@FileHeader { dataType, rows } path =
       source = sourceFileBS path
       cHeader = conduitHeader header
       trans = liftResult
-            . (binToListInt INT08B)
+            . (binToListInt dataType)
   in source .| cHeader .| poolInt size trans
