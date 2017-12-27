@@ -1,3 +1,5 @@
+{-# LANGUAGE BangPatterns #-}
+
 module School.Types.Decoding
 ( binToDouble
 , binToInt
@@ -59,12 +61,13 @@ binToListInt :: DataType
 binToListInt DBL64B = const . Left $
   "Reject conversion from floating point DBL64B to integral"
 binToListInt INT32B = loop [] where
-  loop acc bytes = if length bytes < 4
-                     then return acc
-                     else do
-                       let (current, next) = splitAt 4 bytes
-                       int <- fmap fromIntegral $ binToInt current
-                       loop (acc ++ [int]) next
+  loop acc bytes = let len = length bytes in
+    if len < 4
+      then return acc
+      else do
+        let !(next, current) = splitAt (len - 4) bytes
+        int <- fmap fromIntegral $ binToInt current
+        loop (int:acc) next
 binToListInt INT08B =
     Right
   . map (fromIntegral . fromEnum)
