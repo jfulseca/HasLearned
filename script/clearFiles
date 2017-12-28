@@ -1,5 +1,6 @@
 set -euo pipefail
 
 find -type f -name "*save*" -delete
+find -type f -name "*.bk" -delete
 
 set +euo

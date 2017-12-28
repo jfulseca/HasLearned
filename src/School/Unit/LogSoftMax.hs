@@ -5,8 +5,8 @@
 module School.Unit.LogSoftMax
 ( logSoftMax ) where
 
-import Numeric.LinearAlgebra (Container, Matrix, R, Vector,
-                              add, atIndex, build, cmap, maxElement, size, sumElements)
+import Numeric.LinearAlgebra (Container, Matrix, R, Vector, add, atIndex,
+                              build, cmap, maxElement, size, sumElements)
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitParams (UnitParams(..))

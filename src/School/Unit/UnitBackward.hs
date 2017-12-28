@@ -9,6 +9,7 @@ import School.Train.StateFunctions (getParams, putParamDerivs)
 import School.Unit.Unit (Unit(..))
 import School.Unit.UnitActivation (UnitActivation(..))
 import School.Unit.UnitGradient (UnitGradient(..))
+import School.Utils.Monad (headMonad)
 
 type BackwardStack a = ( [UnitActivation a]
                        , UnitGradient a
@@ -18,19 +19,16 @@ type BackwardStack a = ( [UnitActivation a]
 derivUnit :: Unit a
           -> BackwardStack a
           -> AppTrain a (BackwardStack a)
-derivUnit _ ([], _, _) =
-  throwError $ "No input activations " ++
-          "to backward network unit "
 derivUnit _ (_, GradientFail msg, _) = throwError msg
-derivUnit unit (acts, inGrad, cost) = do
-  let input = head acts
+derivUnit unit (activations, inGrad, cost) = do
+  input <- headMonad activations "No input activations to backward unit"
   case input of
     (ApplyFail msg) -> throwError msg
     _ -> do
       params <- getParams
       let (gradient, derivs) = deriv unit params inGrad input
       putParamDerivs derivs
-      return (tail acts, gradient, cost)
+      return (tail activations, gradient, cost)
 
 unitBackward :: Unit a -> ConduitM (BackwardStack a)
                                    (BackwardStack a)
