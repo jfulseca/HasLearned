@@ -9,7 +9,7 @@ import Control.Monad.Except (MonadError, throwError)
 import Numeric.LinearAlgebra (Container, Element, Matrix, Vector, assoc, cols, fromRows,
                               rows, takeColumns, toColumns, toList, toLists)
 import School.FileIO.FileHeader (FileHeader)
-import School.FileIO.IntListSource (intListSource)
+import School.FileIO.Source (source)
 import School.Types.Error (Error)
 import School.Types.LiftResult (LiftResult)
 import School.Types.Slinky (Slinky(..), slinkyAppend, slinkySingleton)
@@ -83,12 +83,12 @@ setup :: (LiftResult m, MonadError Error m, MonadResource m)
       => Maybe FilePath
       -> Maybe FileHeader
       -> SetupCost a m
-setup Nothing Nothing source = defSetupCost source
+setup Nothing Nothing byteSource = defSetupCost byteSource
 setup Nothing (Just _) _ = setupError
 setup (Just _) Nothing _ = setupError
 setup (Just path) (Just header) matrixSource =
   getZipSource $ targetZipSource <*> ZipSource matrixSource
-  where targetSource = intListSource header path
+  where targetSource = source header path
                     .| mapC BatchClassTarget
                     .| mapMC (return . appendTarget)
         targetZipSource = ZipSource targetSource

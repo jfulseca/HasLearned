@@ -4,8 +4,8 @@ module School.Train.GradientDescent
 import Conduit ((.|), ConduitM, mapMC, runConduit, sinkNull, takeWhileC)
 import Control.Monad.State.Lazy (get)
 import Data.Maybe (isJust)
+import Numeric.LinearAlgebra (Matrix)
 import School.Train.AppTrain (AppTrain, runAppTrain)
-import School.FileIO.MatrixSource (MatrixSource)
 import School.Train.GradientDescentPass (gradientDescentPass)
 import School.Train.IterationHandler (IterationHandler(..))
 import School.Train.UpdateParams (UpdateParams)
@@ -26,7 +26,7 @@ stopping condition = mapMC $ \_ -> do
     then return Nothing
     else return (Just ())
 
-gradientDescent :: MatrixSource (AppTrain a) a
+gradientDescent :: ConduitM () (Matrix a) (AppTrain a) ()
                 -> [Unit a]
                 -> CostFunction a (AppTrain a)
                 -> UpdateParams a

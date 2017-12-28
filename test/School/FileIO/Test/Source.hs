@@ -1,9 +1,10 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE FlexibleContexts, TemplateHaskell #-}
 
-module School.FileIO.Test.MatrixSource
-( matrixSourceTest ) where
+module School.FileIO.Test.Source
+( sourceTest ) where
 
-import Conduit ((.|), ConduitM, runConduit, sinkList, yield)
+import Conduit ((.|), ConduitM, MonadResource, runConduit, sinkList, yield)
+import Control.Monad.Except (MonadError)
 import Data.ByteString (ByteString)
 import Data.ByteString.Conversion (toByteString')
 import Data.Either (isLeft, isRight)
@@ -11,17 +12,24 @@ import Data.Monoid ((<>))
 import School.FileIO.AppIO (AppIO, runAppIO)
 import School.FileIO.ConduitHeader (conduitHeader)
 import School.FileIO.FileHeader (FileHeader(..))
-import School.FileIO.MatrixSource
+import School.FileIO.Source
 import School.TestUtils (def, dummyList, dummyMatrix)
 import School.Types.Decoding (binToMatrixDouble)
 import School.Types.Encoding (doubleToBin)
+import School.Types.Error (Error)
 import School.Types.DataType (DataType(..), getSize)
-import School.Types.LiftResult (liftResult)
+import School.Types.LiftResult (LiftResult(..))
 import Numeric.LinearAlgebra.Data (Matrix)
 import Test.Tasty (TestTree)
-import Test.Tasty.QuickCheck hiding ((><))
+import Test.Tasty.QuickCheck
 import Test.Tasty.TH
 import Test.QuickCheck.Monadic (PropertyM, assert, monadicIO, pre, run)
+
+matrixDoubleSource :: (LiftResult m, MonadError Error m, MonadResource m)
+                   => FileHeader
+                   -> FilePath
+                   -> ConduitM () (Matrix Double) m ()
+matrixDoubleSource = source
 
 testHeader :: FileHeader
            -> ByteString
@@ -33,10 +41,9 @@ poolMatrixDouble :: Positive Int
                  -> Positive Int
                  -> ConduitM ByteString (Matrix Double) AppIO ()
 poolMatrixDouble (Positive r) (Positive c) =
-  let trans = liftResult
-            . (binToMatrixDouble DBL64B r c)
+  let trans = liftResult . binToMatrixDouble DBL64B r c
       size = getSize DBL64B
-  in poolMatrix (r * c * size) trans
+  in pool (r * c * size) trans
 
 testMatrix :: Positive Int
            -> Positive Int
@@ -48,7 +55,7 @@ testMatrix pr pc bytes = run . runAppIO . runConduit $
  .| poolMatrixDouble pr pc
  .| sinkList
 
-prop_accepts_header :: DataType -> (Positive Int) -> Property
+prop_accepts_header :: DataType -> Positive Int -> Property
 prop_accepts_header name (Positive n) =
   monadicIO $ do
     let h = FileHeader name n n
@@ -61,7 +68,7 @@ prop_preserves_rest content =
     pre $ content /= ""
     let h = def
     let bContent = toByteString' content
-    let bytes = (toByteString' h) <> bContent
+    let bytes = toByteString' h <> bContent
     result <- testHeader h bytes
     assert $ result == Right [bContent]
 
@@ -69,16 +76,16 @@ prop_rejects_wrong_separator :: Char -> String -> Property
 prop_rejects_wrong_separator separator content =
   monadicIO $ do
     pre $ separator /= '#'
-    let bytes = (toByteString' separator) <> (toByteString' content)
+    let bytes = toByteString' separator <> toByteString' content
     result <- testHeader def bytes
     assert $ isLeft result
 
 prop_rejects_wrong_header :: DataType
                           -> DataType
-                          -> (Positive Int)
-                          -> (Positive Int)
-                          -> (Positive Int)
-                          -> (Positive Int)
+                          -> Positive Int
+                          -> Positive Int
+                          -> Positive Int
+                          -> Positive Int
                           -> Property
 prop_rejects_wrong_header name1
                           name2
@@ -146,5 +153,5 @@ prop_read_3x3_matrix_twice = monadicIO $ do
   let mat = dummyMatrix 3 3
   assert $ stack == Right [mat, mat]
 
-matrixSourceTest :: TestTree
-matrixSourceTest = $(testGroupGenerator)
+sourceTest :: TestTree
+sourceTest = $(testGroupGenerator)

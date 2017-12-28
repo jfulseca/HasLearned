@@ -7,7 +7,7 @@ module School.App.MultiLayerPerceptron
 
 import Numeric.LinearAlgebra (R)
 import School.FileIO.FileHeader (FileHeader(..))
-import School.FileIO.MatrixSource (matrixDoubleSource)
+import School.FileIO.Source (source)
 import School.Train.GradientDescent (gradientDescent)
 import School.Train.IterationHandler (logCost)
 import School.Train.SimpleDescentUpdate (simpleDescentUpdate)
@@ -96,7 +96,6 @@ multiLayerPerceptron MLPOptions { nClasses = nC
                             , rows = nB
                             , dataType = DBL64B
                             }
-  let source = matrixDoubleSource header path
   let setup = setupUnits nF nC hiddenDims randomSeed
   case setup of
     Left e -> return . Left $ e
@@ -113,7 +112,7 @@ multiLayerPerceptron MLPOptions { nClasses = nC
       let initState = def { paramList
                           , learningRate
                           }
-      endState <- gradientDescent source
+      endState <- gradientDescent (source header path)
                                   units
                                   cost
                                   update

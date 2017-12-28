@@ -11,18 +11,17 @@ import Data.Function (on)
 import Numeric.LinearAlgebra ((?), Matrix, R)
 import School.App.FileTransformer
 import School.FileIO.AppIO (runAppIO)
-import School.FileIO.DoubleSource (doubleSource)
 import School.FileIO.FileApp (fileApp)
 import School.FileIO.FileType (FileType(..), toExtension)
 import School.FileIO.FileHeader (FileHeader(..))
-import School.FileIO.MatrixSource (matrixDoubleSource)
+import School.FileIO.Source (source)
 import School.TestUtils (assertRight, dummyMatrix)
 import School.Types.DataType (DataType(..))
 import School.Types.Error (Error)
 import School.Utils.Either (isLeft, isRight)
 import System.Directory (removeFile)
 import Test.Tasty (TestTree)
-import Test.Tasty.QuickCheck hiding ((><))
+import Test.Tasty.QuickCheck
 import Test.Tasty.TH
 import Test.QuickCheck.Monadic (PropertyM, assert, monadicIO, run)
 
@@ -47,7 +46,7 @@ header3x3 = FileHeader { dataType = DBL64B
 testFile :: FileType -> String
 testFile fType = "test." ++ toExtension fType
 
-fileEq :: FilePath -> FilePath -> IO (Bool)
+fileEq :: FilePath -> FilePath -> IO Bool
 fileEq = liftA2 (==) `on` BL.readFile
 
 readMat :: FileHeader
@@ -55,14 +54,14 @@ readMat :: FileHeader
         -> PropertyM IO (Either Error
                                 (Maybe (Matrix R)))
 readMat header path = run . runAppIO . runConduit $
-  matrixDoubleSource header path .| await
+  source header path .| await
 
 readDoubleList :: FileHeader
                -> FilePath
                -> PropertyM IO (Either Error
                                        [Double])
 readDoubleList header path = run . runAppIO . runConduit $
- doubleSource header path .| sinkList
+  source header path .| sinkList
 
 prop_copy :: FileType -> Property
 prop_copy fType = monadicIO $ do
@@ -90,7 +89,7 @@ prop_copy_guess_filetypes fType = monadicIO $ do
 
 prop_copy_add_extension :: FileType -> Property
 prop_copy_add_extension fType = monadicIO $ do
-  let options = def { inFileOpt = (inFileName fType)
+  let options = def { inFileOpt = inFileName fType
                     , inFileTypeOpt = Just fType
                     , outFileOpt = "test"
                     , outFileTypeOpt = Just fType
@@ -104,9 +103,9 @@ prop_copy_add_extension fType = monadicIO $ do
 prop_skip_rows :: FileType -> Property
 prop_skip_rows fType = monadicIO $ do
   let outHeader = header3x3 { rows = 1 }
-  let options = def { inFileOpt = (inFileName fType)
+  let options = def { inFileOpt = inFileName fType
                     , inFileTypeOpt = Just fType
-                    , outFileOpt = (testFile fType)
+                    , outFileOpt = testFile fType
                     , outFileTypeOpt = Just fType
                     , skipRowsOpt = Just 2
                     }
@@ -119,7 +118,7 @@ prop_skip_rows fType = monadicIO $ do
 
 prop_skip_too_many_rows :: FileType -> Property
 prop_skip_too_many_rows fType = monadicIO $ do
-  let options = def { inFileOpt = (inFileName fType)
+  let options = def { inFileOpt = inFileName fType
                     , inFileTypeOpt = Just fType
                     , skipRowsOpt = Just 4
                     }
@@ -128,10 +127,10 @@ prop_skip_too_many_rows fType = monadicIO $ do
 
 prop_limit_extent :: FileType -> Property
 prop_limit_extent fType = monadicIO $ do
-  let options = def { inFileOpt = (inFileName fType)
+  let options = def { inFileOpt = inFileName fType
                     , inFileTypeOpt = Just fType
                     , nRowsOpt = Just 2
-                    , outFileOpt = (testFile fType)
+                    , outFileOpt = testFile fType
                     }
   result <-liftIO . runAppIO $ fileApp options
   assert $ isRight result
@@ -143,11 +142,11 @@ prop_limit_extent fType = monadicIO $ do
 
 prop_skip_and_limit :: FileType -> Property
 prop_skip_and_limit fType = monadicIO $ do
-  let options = def { inFileOpt = (inFileName fType)
+  let options = def { inFileOpt = inFileName fType
                     , inFileTypeOpt = Just fType
                     , nRowsOpt = Just 1
                     , skipRowsOpt = Just 1
-                    , outFileOpt = (testFile fType)
+                    , outFileOpt = testFile fType
                     }
   result <-liftIO . runAppIO $ fileApp options
   assert $ isRight result
@@ -159,7 +158,7 @@ prop_skip_and_limit fType = monadicIO $ do
 
 prop_limit_too_many_rows :: FileType -> Property
 prop_limit_too_many_rows fType = monadicIO $ do
-  let options = def { inFileOpt = (inFileName fType)
+  let options = def { inFileOpt = inFileName fType
                     , inFileTypeOpt = Just fType
                     , nRowsOpt = Just 4
                     }
@@ -168,7 +167,7 @@ prop_limit_too_many_rows fType = monadicIO $ do
 
 prop_limit_and_skip_too_many :: FileType -> Property
 prop_limit_and_skip_too_many fType = monadicIO $ do
-  let options = def { inFileOpt = (inFileName fType)
+  let options = def { inFileOpt = inFileName fType
                     , inFileTypeOpt = Just SM
                     , nRowsOpt = Just 3
                     , skipRowsOpt = Just 1
@@ -201,7 +200,7 @@ prop_convert_data_type fType tIn tOut = monadicIO $ do
                     , outFileTypeOpt = Just fType
                     }
   result <- liftIO . runAppIO $ fileApp options
-  if (legalConversion tIn tOut)
+  if legalConversion tIn tOut
     then do
       assert $ isRight result
       let inHeader = header3x3 { dataType = tIn }
@@ -238,7 +237,7 @@ prop_convert_both_types fTypeIn fTypeOut tIn tOut = monadicIO $ do
                     , outFileTypeOpt = Just fTypeOut
                     }
   result <- liftIO . runAppIO $ fileApp options
-  if (legalConversion tIn tOut)
+  if legalConversion tIn tOut
     then do
       assert $ isRight result
       let inHeader = header3x3 { dataType = tIn }
@@ -275,7 +274,7 @@ prop_convert_data_twice fType tIn tOut = monadicIO $ do
                     , outFileTypeOpt = Just fType
                     }
   result <- liftIO . runAppIO $ fileApp options
-  if (legalConversion tIn tOut)
+  if legalConversion tIn tOut
     then do
       assert $ isRight result
       let inHeader = header3x3 { dataType = tIn }

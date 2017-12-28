@@ -21,14 +21,12 @@ library
                      , School.FileIO.AppIO
                      , School.FileIO.BinConversion
                      , School.FileIO.ConduitHeader
-                     , School.FileIO.DoubleSource
                      , School.FileIO.FileApp
                      , School.FileIO.FilePath
                      , School.FileIO.FileType
                      , School.FileIO.FileHeader
-                     , School.FileIO.IntListSource
                      , School.FileIO.MatrixSink
-                     , School.FileIO.MatrixSource
+                     , School.FileIO.Source
                      , School.Train.BackwardPass
                      , School.Train.ForwardPass
                      , School.Train.GradientDescent
@@ -114,7 +112,7 @@ test-suite school-test
                      , School.FileIO.Test.BinConversion
                      , School.FileIO.Test.FileHeader
                      , School.FileIO.Test.MatrixSink
-                     , School.FileIO.Test.MatrixSource
+                     , School.FileIO.Test.Source
                      , School.TestUtils
                      , School.Types.Test.Conversion
                      , School.Types.Test.FloatEq

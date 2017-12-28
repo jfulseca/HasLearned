@@ -10,27 +10,26 @@ import Data.List.Split (chunksOf)
 import School.App.CSVReader
 import School.FileIO.AppIO (runAppIO)
 import School.FileIO.FileHeader (FileHeader(..))
-import School.FileIO.MatrixSource (matrixDoubleSource)
+import School.FileIO.Source (source)
 import School.Types.DataType (DataType(..))
 import qualified Numeric.LinearAlgebra as NL
-import Prelude hiding (appendFile, writeFile)
 import System.Directory (removeFile)
 import Test.QuickCheck.Monadic (assert, monadicIO, run)
+import Test.Tasty.QuickCheck
 import Test.Tasty (TestTree)
-import Test.Tasty.QuickCheck hiding ((><))
 import Test.Tasty.TH
 
 matrixConcat :: (NL.Element a)
              => [NL.Matrix a]
              -> Either String [NL.Matrix a]
-matrixConcat [] = return $ []
+matrixConcat [] = return []
 matrixConcat matrices = do
   let nCols = NL.cols . head $ matrices
-  let compat = and $ map (\m -> NL.cols m == nCols) matrices
-  if (not compat) then (Left "Matrices must have same # columns")
+  let compat = all (\m -> NL.cols m == nCols) matrices
+  if not compat then Left "Matrices must have same # columns"
     else do
       let allRows = concat . concat $ map NL.toLists matrices
-      return $ [NL.fromLists (chunksOf nCols allRows)]
+      return [NL.fromLists (chunksOf nCols allRows)]
 
 prop_convert_csv_file :: Property
 prop_convert_csv_file = monadicIO $ do
@@ -46,7 +45,7 @@ prop_convert_csv_file = monadicIO $ do
      .| sinkList
   let original = readRes >>= matrixConcat
   written <- run . runAppIO . runConduit $
-    matrixDoubleSource header bFileName .| sinkList
+    source header bFileName .| sinkList
   liftIO $ removeFile bFileName
   assert $ original == written
 
