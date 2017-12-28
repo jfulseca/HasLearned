@@ -9,7 +9,7 @@ makeEncodingSafe h = do
   case mEnc of
     Nothing -> return ()
     Just enc -> mkTextEncoding
-      ((takeWhile (/= '/') $ show enc) ++ "//TRANSLIT") >>=
+      (takeWhile (/= '/') (show enc) ++ "//TRANSLIT") >>=
         hSetEncoding h
 
 safeStdEncodings :: IO ()

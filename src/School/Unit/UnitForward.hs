@@ -30,7 +30,7 @@ applyUnit unit (activations, cParams) = do
     _ -> do
       params <- getParams
       let output = apply unit params input
-      return $ (output:activations, cParams)
+      return (output:activations, cParams)
 
 unitForward :: Unit a -> ConduitM (ForwardStack a)
                                   (ForwardStack a)

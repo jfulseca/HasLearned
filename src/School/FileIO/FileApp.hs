@@ -12,11 +12,11 @@ import School.FileIO.AppIO (AppIO)
 class FileApp options where
   data FAParams options :: *
   scan :: options -> AppIO (FAParams options)
-  prepare :: (FAParams options)
+  prepare :: FAParams options
           -> ConduitM () Void AppIO ()
 
 fileApp :: (FileApp o) => o -> AppIO ()
 fileApp options = do
   params <- scan options
-  let pipeLine = prepare params 
+  let pipeLine = prepare params
   runConduit pipeLine

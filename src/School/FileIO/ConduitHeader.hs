@@ -6,7 +6,7 @@ module School.FileIO.ConduitHeader
 ) where
 
 import Conduit (ConduitM, mapMC)
-import Control.Monad (when)
+import Control.Monad (unless)
 import Control.Monad.Except (MonadError, throwError)
 import Data.Attoparsec.ByteString (IResult(..), Result, parse)
 import Data.ByteString (ByteString)
@@ -25,14 +25,14 @@ conduitHeader header = mapMC $ \bytes -> do
   let parseResult = parse parser bytes :: Result FileHeader
   case parseResult of
     Done unused parsedHeader -> do
-      when (not $ compatibleHeaders header parsedHeader)
-           (throwError $ "Parsed header " ++ (show parsedHeader)
-                      ++ " not comparible with expected "
-                      ++ (show header))
+      unless (compatibleHeaders header parsedHeader)
+             (throwError $ "Parsed header " ++ show parsedHeader
+                        ++ " not comparible with expected "
+                        ++ show header)
       return unused
     Partial _ -> throwError "Insufficient data to parse header"
-    Fail _ context e -> throwError $ "Error " ++ (show e)
-                                  ++ if (length context > 0)
+    Fail _ context e -> throwError $ "Error " ++ show e
+                                  ++ if not (null context)
                                        then " in context "
                                        else ""
                                   ++ concat context

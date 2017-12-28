@@ -39,22 +39,21 @@ binToMatrixDouble INT08B nRows nCols =
  . map (fromIntegral . fromEnum)
  . unpack
 binToMatrixDouble dType _ _ = const . Left $
-  "Decoding to Matrix Double undefined for " ++ (show dType)
+  "Decoding to Matrix Double undefined for " ++ show dType
 
 getDoubleMatrixDouble :: Int
                       -> Int
                       -> Get (Matrix Double)
 getDoubleMatrixDouble nRows nCols = do
   let nElements = nRows * nCols
-  list <- replicateM (nElements) getDouble
+  list <- replicateM nElements getDouble
   return $ (nRows >< nCols) list
 
 getInt :: Get Int32
 getInt = getInt32be
 
 binToInt :: ByteString -> Either Error I
-binToInt = (fmap fromIntegral)
-         . (runGet getInt)
+binToInt = fmap fromIntegral . runGet getInt
 
 binToListInt :: DataType
              -> (ByteString -> Either Error [Int])
@@ -66,7 +65,7 @@ binToListInt INT32B = loop [] where
       then return acc
       else do
         let !(next, current) = splitAt (len - 4) bytes
-        int <- fmap fromIntegral $ binToInt current
+        int <- fromIntegral <$> binToInt current
         loop (int:acc) next
 binToListInt INT08B =
     Right

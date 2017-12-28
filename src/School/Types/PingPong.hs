@@ -18,7 +18,7 @@ data PingPong a =
 
 toPingPong :: [a] -> Either String (PingPong a)
 toPingPong [] = Left "Cannot have empty PingPong list"
-toPingPong list = Right $
+toPingPong list = Right
   PingPong { pingPongBackward = False
            , pingPongIdx = 0
            , pingPongLength = length list
@@ -29,7 +29,7 @@ getPingPong :: PingPong a -> (a, PingPong a)
 getPingPong p =
   let idx = pingPongIdx p
       list = pingPongList p
-  in if (pingPongBackward p)
+  in if pingPongBackward p
     then let
       goForward = idx < 1
       newIdx = if goForward then idx else idx - 1

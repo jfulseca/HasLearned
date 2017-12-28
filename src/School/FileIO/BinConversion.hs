@@ -29,8 +29,7 @@ convertWords :: (Num a)
              -> Converter
 convertWords fromInt put = Right
                          . runPut
-                         . (mapM_ put)
-                         . map (fromInt . fromEnum)
+                         . mapM_ (put . fromInt . fromEnum)
                          . unpack
 
 decodeList :: Int
@@ -42,7 +41,7 @@ decodeList s convert decode bytes = reverse <$>
     go n b acc = if length b < n
                    then return acc
                    else do
-                     e <- decode . (take n) $ b
+                     e <- decode . take n $ b
                      let e' = convert e
                      go n (drop n b) (e':acc)
 
@@ -59,4 +58,4 @@ binConversion INT32B DBL64B = \bytes -> do
   return . runPut $ mapM_ putDouble doubles
 binConversion DBL64B INT08B = const $ Left floatMsg
 binConversion DBL64B INT32B = const $ Left floatMsg
-binConversion _ _ = Right . id
+binConversion _ _ = Right

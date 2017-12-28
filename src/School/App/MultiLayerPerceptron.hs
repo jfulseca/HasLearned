@@ -39,7 +39,7 @@ data MLPOptions =
              }
 
 heLimits :: Int -> (R, R)
-heLimits d = (0, sqrt (2 / (fromIntegral d)))
+heLimits d = (0, sqrt (2 / fromIntegral d))
 
 getUnits :: [Int]
          -> StdGen
@@ -81,31 +81,28 @@ multiLayerPerceptron :: MLPOptions
                      -> FilePath
                      -> IO (Either String
                            (Maybe [R], [UnitParams R]))
-multiLayerPerceptron (MLPOptions { nClasses = nC
-                                 , nBatches = nB
-                                 , nFeatures = nF
-                                 , hiddenDims
-                                 , initRate = learningRate
-                                 , maxIter
-                                 , randomSeed
-                                 , weightDecayCoeff
-                                 , writeCost
-                                 })
+multiLayerPerceptron MLPOptions { nClasses = nC
+                                , nBatches = nB
+                                , nFeatures = nF
+                                , hiddenDims
+                                , initRate = learningRate
+                                , maxIter
+                                , randomSeed
+                                , weightDecayCoeff
+                                , writeCost
+                                }
                       path = do
   let header = FileHeader { cols = nF
                             , rows = nB
                             , dataType = DBL64B
                             }
   let source = matrixDoubleSource header path
-  let setup = setupUnits (nF)
-                         (nC)
-                         hiddenDims
-                         randomSeed
+  let setup = setupUnits nF nC hiddenDims randomSeed
   case setup of
     Left e -> return . Left $ e
     Right (units, paramList) -> do
       let multi = multiNoulli Nothing Nothing
-      let cost = if (weightDecayCoeff ~= 0)
+      let cost = if weightDecayCoeff ~= 0
                    then multi
                    else mappend multi (weightDecay weightDecayCoeff)
       let update = simpleDescentUpdate

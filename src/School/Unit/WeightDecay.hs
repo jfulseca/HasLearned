@@ -24,7 +24,7 @@ weight coeff input =
 weightDeriv :: (Container Vector a, Num a)
             => a -> Matrix a -> UnitGradient a
 weightDeriv coeff input =
-  BatchGradient . (scale coeff) $
+  BatchGradient . scale coeff $
     cmap (*2) input
 
 errorMsg :: String
@@ -76,4 +76,4 @@ weightDecay coeff =
                , derivCost = deriv coeff
                , prepareCost = prepare
                , setupCost = defSetupCost
-               } where
+               }

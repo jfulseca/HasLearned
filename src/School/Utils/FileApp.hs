@@ -11,7 +11,7 @@ module School.Utils.FileApp
 
 import Conduit ((.|),  ConduitM, await, liftIO, mapC, runConduit, runConduitRes,
                 sinkNull, sourceFileBS, takeCE, takeWhileCE, yield)
-import Control.Monad (when)
+import Control.Monad (unless, when)
 import Control.Monad.Except (throwError)
 import qualified Data.ByteString as B
 import Data.Conduit.Binary (sourceFile, sourceFileRange)
@@ -42,7 +42,7 @@ getNBytes path n = do
   liftBytes bytes
 
 addSeparator :: B.ByteString -> B.ByteString
-addSeparator = (B.cons binSeparator) . (flip B.snoc $ binSeparator)
+addSeparator = B.cons binSeparator . flip B.snoc binSeparator
 
 getHeaderBytes :: FileType
                -> FilePath
@@ -71,9 +71,7 @@ putHeader fType header = do
 fileExists :: FilePath -> AppIO ()
 fileExists path = do
   exists <- liftIO $ doesFileExist path
-  if (not exists)
-    then throwError $ "File " ++ path ++ " not found"
-    else return ()
+  unless exists $ throwError ("File " ++ path ++ " not found")
 
 checkFile :: FilePath
           -> FileHeader
@@ -100,5 +98,5 @@ getNElements dType path hSize = do
   when (mod dataSize elSize /= 0)
        (throwError $ "Size of " ++ path
               ++ " inconsistent with "
-              ++ (show dType))
+              ++ show dType)
   liftResult . Right $ quot dataSize elSize

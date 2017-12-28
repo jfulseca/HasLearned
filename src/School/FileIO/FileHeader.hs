@@ -51,11 +51,11 @@ instance ToByteString FileHeader where
   builder header = sep <> t <> r <> c <> sep where
     sep = builder separator
     t = (builder . dataType) header
-    r = (builder 'r') <> (builder . rows) header
-    c = (builder 'c') <> (builder . cols) header
+    r = builder 'r' <> (builder . rows) header
+    c = builder 'c' <> (builder . cols) header
 
 intGetter :: Parser I
-intGetter = take 4 >>= (\bytes -> liftResult $ binToInt bytes)
+intGetter = take 4 >>= liftResult . binToInt
 
 parseIdxHeader :: Parser FileHeader
 parseIdxHeader = do
@@ -92,7 +92,7 @@ headerBuilder :: FileType
 headerBuilder SM header = toByteString' header
 headerBuilder IDX FileHeader { cols, dataType, rows } =
   let i = toIdxIndicator dataType
-  in (B.pack $ toEnum <$> [0, 0, i, 2])
+  in B.pack (toEnum <$> [0, 0, i, 2])
   <> (intToBin . fromIntegral $ rows)
   <> (intToBin . fromIntegral $ cols)
 headerBuilder _ _ = undefined

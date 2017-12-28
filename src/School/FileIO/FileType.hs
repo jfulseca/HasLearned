@@ -12,10 +12,10 @@ data FileType = CSV | IDX | SM
   deriving (Eq, Read, Show)
 
 fromExtension :: String -> FileType
-fromExtension = read . (map toUpper) . tail
+fromExtension = read . map toUpper . tail
 
 toExtension :: FileType -> String
-toExtension = (map toLower) . show
+toExtension = map toLower . show
 
 instance Default FileType where
   def = SM

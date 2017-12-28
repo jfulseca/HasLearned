@@ -21,13 +21,13 @@ mapCols :: (Element a)
         => (Vector a -> Vector a)
         -> Matrix a
         -> Matrix a
-mapCols f = fromColumns . (map f) . toColumns
+mapCols f = fromColumns . map f . toColumns
 
 mapRows :: (Element a)
         => (Vector a -> Vector a)
         -> Matrix a
         -> Matrix a
-mapRows f = fromRows . (map f) . toRows
+mapRows f = fromRows . map f . toRows
 
 sumCols :: Matrix R -> Vector R
 sumCols m = n |> summedCols where
@@ -40,13 +40,13 @@ sumRows m = n |> summedRows where
   summedRows = map sumElements $ toColumns m
 
 oneVector :: Int -> Vector R
-oneVector d = konst 1 d
+oneVector = konst 1
 
 constVector :: Int -> Double -> Vector R
 constVector d v = konst v d
 
 zeroVector :: Int -> Vector R
-zeroVector d = konst 0 d
+zeroVector = konst 0
 
 zeroMatrix :: (Container Vector a, Num a)
            => Int
@@ -72,5 +72,5 @@ compareDoubleVector :: Double
                     -> Bool
 compareDoubleVector prec v1 v2 =
   and $ zipWith (compareDouble prec) l1 l2
-  where l1 = toList $ v1
-        l2 = toList $ v2
+  where l1 = toList v1
+        l2 = toList v2

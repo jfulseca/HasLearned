@@ -56,7 +56,7 @@ fromIdxIndicator 8 = Right INT08B
 fromIdxIndicator 11 = Right INT32B
 fromIdxIndicator 13 = Right DBL64B
 fromIdxIndicator k = Left $
-  "Unknown IDX type indicator " ++ (show k)
+  "Unknown IDX type indicator " ++ show k
 
 toIdxIndicator :: DataType -> Int
 toIdxIndicator INT08B = 8

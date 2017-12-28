@@ -5,6 +5,7 @@ module School.FileIO.IntListSource
 
 import Conduit ((.|), ConduitM, MonadResource, mapMC,
                 nullC, sourceFileBS, takeCE)
+import Control.Monad (unless)
 import Control.Monad.Except (MonadError(..))
 import Data.ByteString (ByteString)
 import School.FileIO.ConduitHeader (conduitHeader)
@@ -22,9 +23,7 @@ poolInt chunkSize transformer = loop where
   loop = do
     takeCE chunkSize .| mapMC transformer
     isEmpty <- nullC
-    if isEmpty
-      then return ()
-      else loop
+    unless isEmpty loop
 
 intListSource :: (LiftResult m, MonadError Error m, MonadResource m)
               => FileHeader
@@ -35,5 +34,5 @@ intListSource header@FileHeader { dataType, rows } path =
       source = sourceFileBS path
       cHeader = conduitHeader header
       trans = liftResult
-            . (binToListInt dataType)
+            . binToListInt dataType
   in source .| cHeader .| poolInt size trans

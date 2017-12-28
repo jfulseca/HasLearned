@@ -4,10 +4,11 @@ module School.App.FileTransformer
 ( FileTransformerOptions(..) ) where
 
 import Conduit ((.|), ConduitM, mapC, mapMC, nullC, takeCE)
-import Control.Monad (when)
+import Control.Monad (unless, when)
 import Data.ByteString (ByteString)
 import Data.Conduit.Binary (sinkFile, sourceFileRange)
 import Data.Default.Class (Default(..))
+import Data.Maybe (fromMaybe)
 import Data.Void (Void)
 import School.FileIO.AppIO (AppIO, liftResult)
 import School.FileIO.BinConversion (binConversion)
@@ -64,10 +65,10 @@ getOffset :: Integer
           -> Int
           -> Either String Integer
 getOffset skipRows dType nElements nCols = do
-  let skipEl = (fromIntegral nCols) * skipRows
+  let skipEl = fromIntegral nCols * skipRows
   when (skipEl > nElements)
        (Left $ "Not enough data in file to skip "
-            ++ (show skipRows) ++ " rows")
+            ++ show skipRows ++ " rows")
   let elSize = getSize dType
   return $ skipEl * fromIntegral elSize
 
@@ -78,11 +79,11 @@ getExtent :: Integer
           -> Integer
           -> Either String Integer
 getExtent size dType nElements nCols skip = do
-  let sizeEls = (fromIntegral nCols) * size
+  let sizeEls = fromIntegral nCols * size
   when (sizeEls + skip > nElements)
        (Left $ "Not enough data in file to skip "
-            ++ (show skip) ++ " and keep "
-            ++ (show size) ++ " rows")
+            ++ show skip ++ " and keep "
+            ++ show size ++ " rows")
   let elSize = getSize dType
   return $ sizeEls * fromIntegral elSize
 
@@ -135,19 +136,19 @@ scanOptions FileTransformerOptions { inFileOpt
                               cols
                               inDataTypeOpt
                               nEl
-  let totalOffset = Just $ offset + (fromIntegral nHeader)
+  let totalOffset = Just $ offset + fromIntegral nHeader
   let (outputType, outputFile) = guessFileType True (outFileTypeOpt, outFileOpt)
-  let outputFormat = maybe inDataTypeOpt id outDataTypeOpt
+  let outputFormat = fromMaybe inDataTypeOpt outDataTypeOpt
   let skip = maybe 0 fromIntegral skipRowsOpt
-  let outRows = maybe ((rows inHeader) - skip)
+  let outRows = maybe (rows inHeader - skip)
                       fromIntegral
                       nRowsOpt
   let outHeader = FileHeader { dataType = outputFormat
                                , cols
                                , rows = outRows
                                }
-  let nLines = maybe 1 id processLineOpt
-  let processChunk = (getSize inDataTypeOpt) * cols * nLines
+  let nLines = fromMaybe 1 processLineOpt
+  let processChunk = getSize inDataTypeOpt * cols * nLines
   return FileTransformerParams { inputFormat = inDataTypeOpt
                                , inputFile
                                , totalOffset
@@ -170,13 +171,11 @@ getHandler FileTransformerParams { inputFormat
     then mapC id
     else do
       let conversion = liftResult
-                     . (binConversion inputFormat outputFormat)
+                     . binConversion inputFormat outputFormat
       let loop = do
             takeCE processChunk .| mapMC conversion
             isEmpty <- nullC
-            if isEmpty
-              then return ()
-              else loop
+            unless isEmpty loop
       loop
 
 prepareHandler :: FAParams FileTransformerOptions

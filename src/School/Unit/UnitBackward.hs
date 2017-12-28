@@ -30,10 +30,7 @@ derivUnit unit (acts, inGrad, cost) = do
       params <- getParams
       let (gradient, derivs) = deriv unit params inGrad input
       putParamDerivs derivs
-      return $ ( tail acts
-               , gradient
-               , cost
-               )
+      return (tail acts, gradient, cost)
 
 unitBackward :: Unit a -> ConduitM (BackwardStack a)
                                    (BackwardStack a)

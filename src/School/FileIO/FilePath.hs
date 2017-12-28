@@ -1,11 +1,12 @@
 module School.FileIO.FilePath
 ( FilePath
-, ensureExtension 
+, ensureExtension
 , getFileType
 , guessFileType
 ) where
 
 import Data.Default.Class (def)
+import Data.Maybe (fromMaybe)
 import School.FileIO.FileType (FileType, fromExtension, toExtension)
 import System.FilePath ((<.>), FilePath, hasExtension, takeExtension)
 
@@ -25,7 +26,7 @@ guessFileType :: Bool
               -> (Maybe FileType, FilePath)
               -> (FileType, FilePath)
 guessFileType ensure (fType, path) =
-  let t = maybe (getFileType path) id fType
+  let t = fromMaybe (getFileType path) fType
       p = if ensure
             then ensureExtension t path
             else path

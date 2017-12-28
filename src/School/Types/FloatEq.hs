@@ -32,7 +32,7 @@ compareDouble prec d1 d2 = if abs d1 < prec
   else abs ((d2 - d1) / d1) < prec
 
 doubleEq :: Double -> Double -> Bool
-doubleEq d1 d2 = compareDouble 5e-11 d1 d2
+doubleEq = compareDouble 5e-11
 
 instance FloatEq Double where
   (~=) = doubleEq

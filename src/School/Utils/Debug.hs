@@ -16,7 +16,7 @@ import Numeric.LinearAlgebra (Matrix, R, toLists)
 import School.Types.FloatEq (compareDouble)
 
 sl :: (Show a) => a -> String
-sl a = (show a) ++ " "
+sl a = show a ++ " "
 
 showIO :: (MonadIO m) => String -> m ()
 showIO = liftIO . traceIO
@@ -26,18 +26,18 @@ printConduitP :: (Monad m, Show a)
               -> ConduitM a a m ()
 printConduitP str = do
   next <- peekC
-  mapC (db id (str ++ ": " ++ (show next)))
+  mapC (db id (str ++ ": " ++ show next))
 
 printConduit :: (MonadIO m, Show a)
              => String
              -> ConduitM a a m ()
 printConduit str = do
   next <- peekC
-  liftIO $ putStrLn (str ++ ": " ++ (show next))  
+  liftIO $ putStrLn (str ++ ": " ++ show next)
   mapC id
 
 printVar :: (Show a) => String -> a -> a
-printVar str x = trace (str ++ ": " ++ (show x)) x
+printVar str x = trace (str ++ ": " ++ show x) x
 
 db :: a -> String -> a
 db = flip trace
@@ -53,7 +53,6 @@ compareDoubleMatrixTrace prec m1 m2 =
            else v
         traceCompare p d1 d2 =
           let equal = compareDouble p d1 d2
-          in traceMsg (not equal) ("UNEQ " ++ (show d1) ++ " " ++(show d2)) equal
+          in traceMsg (not equal) ("UNEQ " ++ show d1 ++ " " ++ show d2) equal
         l1 = concat . toLists $ m1
         l2 = concat . toLists $ m2
-

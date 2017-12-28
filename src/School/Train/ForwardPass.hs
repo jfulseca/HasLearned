@@ -27,7 +27,7 @@ forwardPass :: [Unit a]
                         (AppTrain a)
                         ()
 forwardPass [] _ = mapM_C . const $
-  (throwError "No units given to forwardPass")
+  throwError "No units given to forwardPass"
 forwardPass units cost =
     prepareCost cost
  .| hiddenUnits units

@@ -6,7 +6,7 @@ module School.Train.AppTrain
 , maybeToAppTrain
 , runAppTrain
 , runAppTrainPure
-) where 
+) where
 
 import Conduit (ResourceT, runResourceT)
 import Control.Monad.Except (ExceptT(..), throwError, runExceptT)
@@ -34,7 +34,7 @@ runAppTrainPure :: (Num a)
                 => AppTrain a b
                 -> IO (Either String b)
 runAppTrainPure app =
-  (fst <$>) <$> (runAppTrain def app)
+  (fst <$>) <$> runAppTrain def app
 
 maybeToAppTrain :: String -> Maybe b -> AppTrain a b
 maybeToAppTrain msg =

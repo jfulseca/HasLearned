@@ -46,6 +46,6 @@ logCost :: (Show a)
         => FilePath
         -> IterationHandler a
 logCost path = toHandler . mapMC $ \(stack, grad, cost) -> do
-  let str = (show cost) ++ "\n"
+  let str = show cost ++ "\n"
   liftIO $ appendFile path str
   return (stack, grad, cost)

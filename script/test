@@ -9,4 +9,9 @@ done
 
 stack test --coverage --test-arguments="$@"
 
+echo ""
+echo "Linting..."
+hlint src
+echo ""
+
 set +euo pipefail

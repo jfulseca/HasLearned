@@ -23,7 +23,7 @@ toTarget :: (Element a, RealFrac a)
          => Vector a
          -> CostParams
 toTarget =
-  BatchClassTarget . (map round) . toList
+  BatchClassTarget . map round . toList
 
 compute :: (Element a, Fractional a, Num a)
         => UnitActivation a
@@ -35,7 +35,7 @@ compute (BatchActivation input)
   in Right
    . (*factor)
    . sum
-   . (zipWith (flip (!!)) target)
+   . zipWith (flip (!!)) target
    . toLists
    $ input
 compute _ _ = Left "MultiNoulli expects batch activation and batch class target"
@@ -61,7 +61,7 @@ prepare :: (Element a, RealFrac a, MonadError Error m)
                     (ForwardStack a)
                     m
                     ()
-prepare Nothing = mapMC $ \(activations, cParams) -> do
+prepare Nothing = mapMC $ \(activations, cParams) ->
   case activations of
     [BatchActivation input] -> do
       let c = cols input
@@ -77,7 +77,7 @@ setupError =
 
 appendTarget :: CostParams -> Matrix a -> ForwardStack a
 appendTarget costParams =
-  (flip (,) $ slinkySingleton costParams) . pure . BatchActivation
+  flip (,) (slinkySingleton costParams) . pure . BatchActivation
 
 setup :: (LiftResult m, MonadError Error m, MonadResource m)
       => Maybe FilePath

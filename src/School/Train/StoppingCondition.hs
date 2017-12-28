@@ -17,8 +17,8 @@ toCondition runCondition =
 
 instance Monoid (StoppingCondition a) where
   mappend c1 c2 =
-    toCondition $ \s -> (runCondition c1) s
-                     || (runCondition c2) s
+    toCondition $ \s -> runCondition c1 s
+                     || runCondition c2 s
   mempty = toCondition $ const False
 
 maxIterations :: Int -> StoppingCondition a

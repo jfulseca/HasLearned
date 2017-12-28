@@ -18,7 +18,7 @@ recLinApply :: UnitParams R
 recLinApply EmptyParams (BatchActivation inMatrix) =
   BatchActivation $ cmap (max 0) inMatrix
 recLinApply _ f@(ApplyFail _) = f
-recLinApply _ _ = ApplyFail "Failure when applying RecLin unit" 
+recLinApply _ _ = ApplyFail "Failure when applying RecLin unit"
 
 recLinDeriv :: UnitParams R
             -> UnitGradient R

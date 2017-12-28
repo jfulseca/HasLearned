@@ -1,6 +1,4 @@
-{-# LANGUAGE BangPatterns #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE FlexibleContexts, NamedFieldPuns #-}
 
 module School.App.CSVReader
 ( csvToBinary
@@ -22,7 +20,7 @@ import School.Utils.Constants (binComma)
 import Numeric.LinearAlgebra ((><), Matrix)
 
 parseDoubles :: [BS.ByteString] -> Maybe [Double]
-parseDoubles = sequence . map fromByteString
+parseDoubles = mapM fromByteString
 
 readCSV :: FilePath -> ConduitM ()
                                 [BS.ByteString]
@@ -40,13 +38,13 @@ csvToMatrixDouble :: FileHeader
 csvToMatrixDouble FileHeader { cols } =
     mapC parseDoubles
  .| mapMC (maybeToAppIO "Could not parse doubles")
- .| mapC (1 >< (cols))
+ .| mapC (1 >< cols)
 
 csvToBinary :: FilePath
             -> FilePath
             -> FileHeader
             -> ConduitM () Void AppIO ()
-csvToBinary inPath outPath header  = 
+csvToBinary inPath outPath header  =
     readCSV inPath
- .| csvToMatrixDouble header 
+ .| csvToMatrixDouble header
  .| matrixDoubleSink SM header outPath

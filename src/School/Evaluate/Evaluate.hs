@@ -17,11 +17,11 @@ import School.Utils.Tuple (trd3)
 
 eitherMaybe :: Error
             -> (b -> c)
-            -> Either Error ((Maybe b), d)
+            -> Either Error (Maybe b, d)
             -> Either Error c
 eitherMaybe _ _ (Left e) = Left e
 eitherMaybe e _ (Right (Nothing, _)) = Left e
-eitherMaybe _ f (Right ((Just x), _)) = Right . f $ x
+eitherMaybe _ f (Right (Just x, _)) = Right . f $ x
 
 evaluate :: (Num a)
          => [Unit a]

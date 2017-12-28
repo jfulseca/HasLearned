@@ -25,7 +25,7 @@ getNorm :: (Container Vector a, Floating a)
         -> a
 getNorm reg = log
       . sumElements
-      . (cmap (exp . (flip (-) $ reg)))
+      . cmap (exp . flip (-) reg)
 
 handleRow :: (Container Vector a, Floating a)
           => Vector a
@@ -33,7 +33,7 @@ handleRow :: (Container Vector a, Floating a)
 handleRow v =
   let !reg = maxElement v
       !norm = getNorm reg v
-  in cmap (flip (-) $ (norm + reg)) v
+  in cmap (flip (-) (norm + reg)) v
 
 lsmApply :: UnitParams R
          -> UnitActivation R
@@ -57,9 +57,9 @@ builder :: (Container Vector a, RealFrac a)
 builder exps norms gradCols dj dk =
   let j = round dj :: Int
       k = round dk :: Int
-  in (-1) * (atIndex exps (j, k))
-   * (atIndex gradCols j)
-   / (atIndex norms j)
+  in (-1) * atIndex exps (j, k)
+   * atIndex gradCols j
+   / atIndex norms j
 
 lsmDeriv :: UnitParams R
          -> UnitGradient R
@@ -72,7 +72,7 @@ lsmDeriv EmptyParams
          (BatchActivation input) =
   (outGrad, EmptyParams) where
     !reg = maxElement input
-    !exps = cmap (exp . (flip (-) $ reg)) input
+    !exps = cmap (exp . flip (-) reg) input
     !norms = sumCols exps
     !gradCols = sumCols inGrad
     delta = build (size input) (builder exps norms gradCols)

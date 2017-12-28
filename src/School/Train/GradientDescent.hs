@@ -22,7 +22,7 @@ stopping :: StoppingCondition a
                      ()
 stopping condition = mapMC $ \_ -> do
   state <- get
-  if (runCondition condition) state
+  if runCondition condition state
     then return Nothing
     else return (Just ())
 
@@ -48,5 +48,5 @@ gradientDescent source
           .| stopping condition
           .| takeWhileC isJust
           .| sinkNull
-  result <- (runAppTrain initState) . runConduit $ pass
+  result <- runAppTrain initState . runConduit $ pass
   return $ snd <$> result

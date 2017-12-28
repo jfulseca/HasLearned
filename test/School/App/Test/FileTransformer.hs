@@ -284,7 +284,9 @@ prop_convert_data_twice fType tIn tOut = monadicIO $ do
       outRes <- readDoubleList outHeader (testFile fType)
       liftIO $ removeFile (testFile fType)
       assert $ inRes == outRes
-    else assert $ isLeft result
+    else do
+      liftIO $ removeFile (testFile fType)
+      assert $ isLeft result
 
 fileTransformerTest :: TestTree
 fileTransformerTest = $(testGroupGenerator)

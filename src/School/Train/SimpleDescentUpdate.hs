@@ -16,10 +16,10 @@ update :: (Container Vector a, Num a)
        -> UnitParams a
        -> UnitParams a
 update rate
-       (AffineParams { affineBias = bias
-                     , affineWeights = weights})
-       (AffineParams { affineBias = biasGrad
-                     , affineWeights = weightGrad }) =
+       AffineParams { affineBias = bias
+                    , affineWeights = weights}
+       AffineParams { affineBias = biasGrad
+                    , affineWeights = weightGrad } =
   AffineParams { affineBias, affineWeights } where
     affineBias = add bias (scale (-rate) biasGrad)
     affineWeights = add weights (scale (-rate) weightGrad)

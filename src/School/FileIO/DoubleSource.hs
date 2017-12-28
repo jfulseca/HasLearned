@@ -5,6 +5,7 @@ module School.FileIO.DoubleSource
 
 import Conduit ((.|), ConduitM, MonadResource, mapMC,
                 nullC, sourceFileBS, takeCE)
+import Control.Monad ((>=>), unless)
 import Control.Monad.Except (MonadError(..))
 import Data.ByteString (ByteString)
 import School.FileIO.BinConversion (binConversion)
@@ -23,9 +24,7 @@ poolDouble chunkSize transformer = loop where
   loop = do
     takeCE chunkSize .| mapMC transformer
     isEmpty <- nullC
-    if isEmpty
-      then return ()
-      else loop
+    unless isEmpty loop
 
 doubleSource :: (LiftResult m, MonadError Error m, MonadResource m)
              => FileHeader
@@ -36,5 +35,5 @@ doubleSource header@FileHeader { dataType } path =
       source = sourceFileBS path
       cHeader = conduitHeader header
       trans = liftResult
-            . (\b -> binConversion dataType DBL64B b >>= binToDouble)
+            . (binConversion dataType DBL64B >=> binToDouble)
   in source .| cHeader .| poolDouble size trans
